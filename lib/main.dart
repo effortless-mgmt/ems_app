@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: 'EMS',
       theme: new ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
       ),
       home: new MainPage(),
     );
@@ -19,6 +19,9 @@ class MyApp extends StatelessWidget {
 class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Material(child: new LoginPage());
+    return new Material(
+        child: new Scaffold(
+            appBar: new AppBar(title: new Text("Test")),
+            body: new LoginPage()));
   }
 }
