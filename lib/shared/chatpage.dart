@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter/cupertino.dart";
+import 'package:flutter/services.dart';
 
 const String _name = "Temp";
 
@@ -20,29 +21,35 @@ class ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
           title: new Text("Chat"),
           elevation:
               Theme.of(context).platform == TargetPlatform.android ? 4.0 : 0.0),
-      body: new Container(
-        child: new Column(
-          children: <Widget>[
-            new Flexible(
-              child: new ListView.builder(
-                padding: new EdgeInsets.all(8.0),
-                reverse: true,
-                itemBuilder: (_, int index) => _messages[index],
-                itemCount: _messages.length,
+      body: GestureDetector(
+        onTap: () {
+          SystemChannels.textInput.invokeMethod('TextInput.hide');
+        },
+        child: new Container(
+          child: new Column(
+            children: <Widget>[
+              new Flexible(
+                child: new ListView.builder(
+                  padding: new EdgeInsets.all(8.0),
+                  reverse: true,
+                  itemBuilder: (_, int index) => _messages[index],
+                  itemCount: _messages.length,
+                ),
               ),
-            ),
-            new Divider(height: 1.0),
-            new Container(
-              decoration: new BoxDecoration(color: Theme.of(context).cardColor),
-              child: _buildEditText(),
-            )
-          ],
+              new Divider(height: 1.0),
+              new Container(
+                decoration:
+                    new BoxDecoration(color: Theme.of(context).cardColor),
+                child: _buildEditText(),
+              )
+            ],
+          ),
+          decoration: Theme.of(context).platform == TargetPlatform.android
+              ? null
+              : BoxDecoration(
+                  border:
+                      new Border(top: new BorderSide(color: Colors.grey[200]))),
         ),
-        decoration: Theme.of(context).platform == TargetPlatform.android
-            ? null
-            : BoxDecoration(
-                border:
-                    new Border(top: new BorderSide(color: Colors.grey[200]))),
       ),
     );
   }
@@ -57,6 +64,7 @@ class ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
             new Flexible(
               child: new TextField(
                   controller: _textController,
+                  textCapitalization: TextCapitalization.sentences,
                   onChanged: (String text) {
                     setState(() {
                       _isComposing = text.length > 0;
