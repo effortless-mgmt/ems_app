@@ -32,7 +32,7 @@ final sampleUser1 = new User(
     firstName: "Lee",
     lastName: "Wang",
     title: "Spreader of raughs",
-    company: "Real Good Raughs lmtd.",
+    company: "Real Good Raughs ltd.",
     description: "Does the Raughing",
     imgURL: "https://i.imgur.com/pQFvMMU.jpg",
     phoneNumber: 12345678);
@@ -45,11 +45,11 @@ final sampleUser2 = new User(
     imgURL: "https://i.imgur.com/pNpQRtB.jpg",
     phoneNumber: 12345678);
 final sampleUser3 = new User(
-    firstName: "jane",
-    lastName: "doe",
-    title: "CEO",
-    company: "BIG Inc.",
-    description: "Terrible person",
+    firstName: "Bat",
+    lastName: "Man",
+    title: "Vigilanté",
+    company: "Wayne Corp.",
+    description: "Fights crime and stuff",
     imgURL: "https://i.imgur.com/0sLF0e4.jpg",
     phoneNumber: 12345678);
 final sampleUser4 = new User(
@@ -59,28 +59,4 @@ final sampleUser4 = new User(
     company: "Army",
     description: "Generally an arse",
     imgURL: "https://i.imgur.com/RrQ0jpl.jpg",
-    phoneNumber: 12345678);
-final sampleUser5 = new User(
-    firstName: "jane",
-    lastName: "doe",
-    title: "CEO",
-    company: "BIG Inc.",
-    description: "Terrible person",
-    imgURL: "https://i.imgur.com/pQFvMMU.jpg",
-    phoneNumber: 12345678);
-final sampleUser6 = new User(
-    firstName: "jane",
-    lastName: "doe",
-    title: "CEO",
-    company: "BIG Inc.",
-    description: "Terrible person",
-    imgURL: "https://i.imgur.com/pQFvMMU.jpg",
-    phoneNumber: 12345678);
-final sampleUser7 = new User(
-    firstName: "jane",
-    lastName: "doe",
-    title: "CEO",
-    company: "BIG Inc.",
-    description: "Terrible person",
-    imgURL: "https://i.imgur.com/pQFvMMU.jpg",
     phoneNumber: 12345678);

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-// import 'package:ems_app/util/thirdParty/page-transformer.dart';
-import 'package:ems_app/util/user-list.dart';
-import 'package:ems_app/src/screens/contacts/contacts-card.dart';
+// import '../../../util/thirdParty/page_transformer.dart';
+import '../../../util/user_list.dart';
+import 'contacts_card.dart';
 
-class ContactsPageView extends StatelessWidget {
+class ContactsCardScreen extends StatelessWidget {
 //   State createState() => new ContactsPageState();
 // }
 
@@ -29,6 +29,7 @@ class ContactsPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: new AppBar(title: new Text("Contacts")),
       body: Center(
         child: SizedBox.fromSize(
           size: const Size.fromHeight(500.0),
@@ -37,7 +38,7 @@ class ContactsPageView extends StatelessWidget {
                 itemCount: sampleUserList.userList.length,
                 itemBuilder: (context, index) {
                   final user = sampleUserList.userList[index];
-                  return ContactsPageItem(
+                  return ContactsCard(
                     user: user,
                   );
                 },

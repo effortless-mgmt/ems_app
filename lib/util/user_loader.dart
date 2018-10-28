@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:ems_app/util/user-list.dart';
+import 'user_list.dart';
 
 class UserLoader {
   UserList _currentUserList;

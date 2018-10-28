@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:ems_app/util/user.dart';
+import '../../../util/user.dart';
+import '../messenger_screen.dart';
 // import 'package:ems_app/util/thirdParty/page-transformer.dart';
 
-class ContactsPageItem extends StatelessWidget {
-  ContactsPageItem({
+class ContactsCard extends StatelessWidget {
+  ContactsCard({
     @required this.user,
     // @required this.pageVisibility,
   });
@@ -93,6 +94,12 @@ class ContactsPageItem extends StatelessWidget {
       icon: Icon(Icons.chat),
       onPressed: () {
         // go to chat screen
+        Navigator.push(
+              context,
+              new MaterialPageRoute(
+                builder: (context) => MessengerScreen(),
+              ),
+            );
       },
     );
     return Row(

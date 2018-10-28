@@ -1,4 +1,4 @@
-import 'package:ems_app/util/user.dart';
+import 'user.dart';
 
 class UserList {
   UserList({this.userList});
@@ -19,7 +19,4 @@ final sampleUserList = new UserList(userList: <User>[
   sampleUser2,
   sampleUser3,
   sampleUser4,
-  sampleUser5,
-  sampleUser6,
-  sampleUser7
 ]);
