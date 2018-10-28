@@ -5,18 +5,19 @@ import 'package:flutter/services.dart';
 const String _myName = "User";
 const String _recipName = "Recipient";
 
-class ChatPage extends StatefulWidget {
+class MessengerScreen extends StatefulWidget {
   @override
-  State createState() => new ChatPageState();
+  State createState() => new MessengerScreenState();
 }
 
-class ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
+class MessengerScreenState extends State<MessengerScreen>
+    with TickerProviderStateMixin {
   List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = new TextEditingController();
   bool _isComposing = false;
   bool _test = true;
 
-  ChatPageState() {
+  MessengerScreenState() {
     debugPrint("Test enabled: $_test");
 
     if (_test) {
