@@ -1,0 +1,17 @@
+mergeable:
+  pull_requests:
+    description:
+      no-empty: false
+    stale:
+      days: 14
+      message: "This is PR is stale. Please follow up!"
+    label:
+      must_include: 
+        regex: "tested-on-android|tested-on-ios"
+        message: "Must have been tested on both Android and iOS before merging into master."
+      must_exclude: 
+        regex: "wip"
+        message: "This PR is work in progress."
+    project: "EMS"
+  issues:
+    project: "EMS"
