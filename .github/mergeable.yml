@@ -12,6 +12,3 @@ mergeable:
       must_exclude: 
         regex: "wip"
         message: "This PR is work in progress."
-    project: "EMS"
-  issues:
-    project: "EMS"
