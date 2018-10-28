@@ -77,7 +77,7 @@ class MessengerScreenState extends State<MessengerScreen>
 
   Widget _buildEditText() {
     return new IconTheme(
-      data: new IconThemeData(color: Theme.of(context).accentColor),
+      data: IconThemeData(color: Colors.blueAccent),
       child: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(textFocus),
         child: new Container(
@@ -91,6 +91,10 @@ class MessengerScreenState extends State<MessengerScreen>
                 child: new TextField(
                   focusNode: textFocus,
                   controller: _textController,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+
+                  // textInputAction: TextInputAction.newline,
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: (String text) {
                     setState(() {
@@ -243,9 +247,10 @@ class ChatMessage extends StatelessWidget {
   Widget _buildUserMessage(BuildContext context, String sender) {
     return new Row(
       mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _buildMessageBox(context, CrossAxisAlignment.end, sender),
-        _buildAvatar(sender),
+        _buildAvatar(context, sender),
       ],
     );
   }
@@ -253,19 +258,24 @@ class ChatMessage extends StatelessWidget {
   Widget _buildRecipMessage(BuildContext context, String sender) {
     return new Row(
       mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        _buildAvatar(sender),
+        _buildAvatar(context, sender),
         _buildMessageBox(context, CrossAxisAlignment.start, sender),
       ],
     );
   }
 
-  Widget _buildAvatar(String sender) {
+  Widget _buildAvatar(BuildContext context, String sender) {
     return new Container(
       margin: sender == _myName
           ? EdgeInsets.only(left: 16.0)
           : EdgeInsets.only(right: 16.0),
-      child: new CircleAvatar(child: new Text(sender[0])),
+      child: new CircleAvatar(
+          child: new Text(sender[0]),
+          backgroundColor:
+              sender == _myName ? Colors.blueAccent : Colors.grey[200],
+          foregroundColor: sender == _myName ? Colors.white : Colors.black),
     );
   }
 
@@ -275,10 +285,10 @@ class ChatMessage extends StatelessWidget {
       child: new Column(
         crossAxisAlignment: align,
         children: <Widget>[
-          new Text(sender, style: Theme.of(context).textTheme.subhead),
+          // new Text(sender, style: Theme.of(context).textTheme.subhead),
           new Container(
-            margin: const EdgeInsets.only(top: 5.0),
-            padding: const EdgeInsets.all(5.0),
+            margin: const EdgeInsets.only(top: 7.0),
+            padding: const EdgeInsets.all(7.0),
             constraints: new BoxConstraints(
                 maxWidth: MediaQuery.of(context).size.width * 0.48),
             child: new Text(text),
