@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ProfilScreen extends StatelessWidget {
+class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,7 +9,7 @@ class ProfilScreen extends StatelessWidget {
           onPressed: () {
             //
           },
-          child: Text('Personal screen'),
+          child: Text('Profile screen'),
         ),
       ),
     );

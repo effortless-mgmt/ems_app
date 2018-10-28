@@ -3,7 +3,7 @@ import '../screens/add_screen.dart';
 import '../screens/calender_screen.dart';
 import '../screens/contact_card_screen.dart';
 import '../screens/home_screen.dart';
-import '../screens/profil_screen.dart';
+import '../screens/profile_screen.dart';
 
 class Navbar extends StatefulWidget {
   @override
@@ -19,7 +19,7 @@ class _NavbarState extends State<Navbar> {
     CalenderScreen(),
     AddScreen(),
     ContactCardScreen(),
-    ProfilScreen(),
+    ProfileScreen(),
   ];
 
   @override
