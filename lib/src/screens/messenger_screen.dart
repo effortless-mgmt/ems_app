@@ -15,6 +15,8 @@ class MessengerScreenState extends State<MessengerScreen>
   List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = new TextEditingController();
   final FocusNode textFocus = new FocusNode();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   bool _isComposing = false;
   bool _test = true;
 
@@ -28,21 +30,22 @@ class MessengerScreenState extends State<MessengerScreen>
 
   @override
   Widget build(BuildContext context) {
-    // final key = new GlobalKey<ScaffoldState>();
     return new Scaffold(
-      // key: key,
+      key: _scaffoldKey,
       appBar: new AppBar(
         title: new Text(_recipName),
         elevation:
             Theme.of(context).platform == TargetPlatform.android ? 4.0 : 0.0,
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: Icon(Icons.call),
-        //     onPressed: () => key.currentState.showSnackBar(new SnackBar(
-        //           content: new Text("Call recipient"),
-        //         )),
-        //   )
-        // ],
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.call),
+            onPressed: () =>
+                _scaffoldKey.currentState.showSnackBar(new SnackBar(
+                  content: new Text("Call Recipient"),
+                  duration: new Duration(seconds: 1),
+                )),
+          )
+        ],
       ),
       body: new Container(
         child: GestureDetector(
@@ -93,8 +96,6 @@ class MessengerScreenState extends State<MessengerScreen>
                   controller: _textController,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
-
-                  // textInputAction: TextInputAction.newline,
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: (String text) {
                     setState(() {
@@ -175,12 +176,12 @@ class MessengerScreenState extends State<MessengerScreen>
     ChatMessage msg3 = ChatMessage(
         sender: "User",
         text:
-            "Can you tell me how to get in? I have been standing outside for the past 45 minutes! Also, my pants are on fire, so that sucks. Bring the fire extinguisher.",
+            "Can you tell me how to get in? I have been standing outside for the past 45 minutes! Also, my pants are on fire, so that sucks. Halp.",
         animationController: animationController);
 
     ChatMessage msg4 = ChatMessage(
         sender: "Recipient",
-        text: "Woah. I will be right there!",
+        text: "Woah! I will be right there!",
         animationController: animationController);
 
     ChatMessage msg5 = ChatMessage(
@@ -269,8 +270,8 @@ class ChatMessage extends StatelessWidget {
   Widget _buildAvatar(BuildContext context, String sender) {
     return new Container(
       margin: sender == _myName
-          ? EdgeInsets.only(left: 16.0)
-          : EdgeInsets.only(right: 16.0),
+          ? EdgeInsets.only(left: 10.0)
+          : EdgeInsets.only(right: 10.0),
       child: new CircleAvatar(
           child: new Text(sender[0]),
           backgroundColor:
@@ -287,11 +288,14 @@ class ChatMessage extends StatelessWidget {
         children: <Widget>[
           // new Text(sender, style: Theme.of(context).textTheme.subhead),
           new Container(
-            margin: const EdgeInsets.only(top: 7.0),
+            margin: const EdgeInsets.only(top: 4.0),
             padding: const EdgeInsets.all(7.0),
             constraints: new BoxConstraints(
                 maxWidth: MediaQuery.of(context).size.width * 0.48),
-            child: new Text(text),
+            child: new Text(
+              text,
+              style: new TextStyle(fontSize: 15.0),
+            ),
             decoration: new BoxDecoration(
                 color: sender == _myName ? Colors.blue[200] : Colors.black12,
                 borderRadius: new BorderRadius.all(const Radius.circular(6.0))),
