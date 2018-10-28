@@ -6,9 +6,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: RaisedButton(
-          onPressed: () {
-            //Navigator.pushNamed(context, '/Jonas');
-          },
+          onPressed: () {},
           child: Text('Home Screen'),
         ),
       ),

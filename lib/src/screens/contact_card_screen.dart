@@ -15,8 +15,6 @@ class ContactCardScreen extends StatelessWidget {
               ),
             );
           },
-          // Navigator.pushNamed(context, '/Jonas');
-
           child: Text('Contact Card Screeen'),
         ),
       ),
