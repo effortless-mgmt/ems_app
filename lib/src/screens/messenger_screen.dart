@@ -14,6 +14,7 @@ class MessengerScreenState extends State<MessengerScreen>
     with TickerProviderStateMixin {
   List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = new TextEditingController();
+  final FocusNode textFocus = new FocusNode();
   bool _isComposing = false;
   bool _test = true;
 
@@ -44,26 +45,27 @@ class MessengerScreenState extends State<MessengerScreen>
         // ],
       ),
       body: new Container(
-        // child: GestureDetector(
-        // onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
-        child: new Column(
-          children: <Widget>[
-            new Flexible(
-              child: new ListView.builder(
-                padding: new EdgeInsets.all(8.0),
-                reverse: true,
-                itemBuilder: (_, int index) => _messages[index],
-                itemCount: _messages.length,
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
+          child: new Column(
+            children: <Widget>[
+              new Flexible(
+                child: new ListView.builder(
+                  padding: new EdgeInsets.all(8.0),
+                  reverse: true,
+                  itemBuilder: (_, int index) => _messages[index],
+                  itemCount: _messages.length,
+                ),
               ),
-            ),
-            new Divider(height: 1.0),
-            new Container(
-              decoration: new BoxDecoration(color: Theme.of(context).cardColor),
-              child: _buildEditText(),
-            )
-          ],
+              new Divider(height: 1.0),
+              new Container(
+                decoration:
+                    new BoxDecoration(color: Theme.of(context).cardColor),
+                child: _buildEditText(),
+              )
+            ],
+          ),
         ),
-        // ),
         decoration: Theme.of(context).platform == TargetPlatform.android
             ? null
             : BoxDecoration(
@@ -76,12 +78,18 @@ class MessengerScreenState extends State<MessengerScreen>
   Widget _buildEditText() {
     return new IconTheme(
       data: new IconThemeData(color: Theme.of(context).accentColor),
-      child: new Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: new Row(
-          children: <Widget>[
-            new Flexible(
-              child: new TextField(
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).requestFocus(textFocus),
+        child: new Container(
+          decoration: BoxDecoration(
+              color: Colors
+                  .transparent), // Added transparent fill to allow requestFocus from the entire container
+          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: new Row(
+            children: <Widget>[
+              new Flexible(
+                child: new TextField(
+                  focusNode: textFocus,
                   controller: _textController,
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: (String text) {
@@ -91,24 +99,27 @@ class MessengerScreenState extends State<MessengerScreen>
                   },
                   onSubmitted: _submit,
                   decoration: new InputDecoration.collapsed(
-                      hintText: "Send a message")),
-            ),
-            new Container(
-                margin: new EdgeInsets.symmetric(horizontal: 4.0),
-                child: Theme.of(context).platform == TargetPlatform.android
-                    ? new IconButton(
-                        icon: new Icon(Icons.send),
-                        onPressed: _isComposing
-                            ? () => _submit(_textController.text)
-                            : null,
-                      )
-                    : new CupertinoButton(
-                        child: new Text("Send"),
-                        onPressed: _isComposing
-                            ? () => _submit(_textController.text)
-                            : null,
-                      )),
-          ],
+                    hintText: "Send a message",
+                  ),
+                ),
+              ),
+              new Container(
+                  margin: new EdgeInsets.symmetric(horizontal: 4.0),
+                  child: Theme.of(context).platform == TargetPlatform.android
+                      ? new IconButton(
+                          icon: new Icon(Icons.send),
+                          onPressed: _isComposing
+                              ? () => _submit(_textController.text)
+                              : null,
+                        )
+                      : new CupertinoButton(
+                          child: new Text("Send"),
+                          onPressed: _isComposing
+                              ? () => _submit(_textController.text)
+                              : null,
+                        )),
+            ],
+          ),
         ),
       ),
     );
