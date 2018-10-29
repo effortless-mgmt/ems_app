@@ -42,7 +42,10 @@ class MessengerScreenState extends State<MessengerScreen>
             onPressed: () =>
                 _scaffoldKey.currentState.showSnackBar(new SnackBar(
                   content: new Text("Call Recipient"),
-                  duration: new Duration(seconds: 1),
+                  duration: new Duration(
+                      seconds: 1,
+                      milliseconds:
+                          15), //Ms added for unique commit, remove later
                 )),
           )
         ],
