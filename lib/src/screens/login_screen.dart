@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginScreen extends StatelessWidget {
   VoidCallback _onLogin;
 
-  LoginPage(this._onLogin);
+  LoginScreen(this._onLogin);
 
   @override
   Widget build(BuildContext context) {

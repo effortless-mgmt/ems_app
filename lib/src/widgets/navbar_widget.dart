@@ -1,4 +1,4 @@
-import 'package:ems_app/src/screens/login.dart';
+import 'package:ems_app/src/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../screens/add_screen.dart';
 import '../screens/calender_screen.dart';
@@ -32,7 +32,6 @@ class _NavbarState extends State<Navbar> {
 
   @override
   Widget build(BuildContext context) {
-    print("TEST!");
     var mainApp = new Material(
         color: Colors.green,
         child: Scaffold(
@@ -42,9 +41,9 @@ class _NavbarState extends State<Navbar> {
           body: _screens[_currentIndex], // new
           bottomNavigationBar: customNavbar(),
         ));
-    var loginPage = new LoginPage(login);
+    var loginScreen = new LoginScreen(login);
 
-    return _loggedIn ? mainApp : loginPage;
+    return _loggedIn ? mainApp : loginScreen;
   }
 
   void onTabTapped(int index) {
