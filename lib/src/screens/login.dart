@@ -20,7 +20,7 @@ class LoginPage extends StatelessWidget {
         );
   }
 
-  _buildLoginForm(BuildContext context) {
+  Widget _buildLoginForm(BuildContext context) {
     return new Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
