@@ -32,7 +32,8 @@ class LoginScreen extends StatelessWidget {
         new FormElement(
           child: new TextField(
             keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(labelText: "Email"),
+            decoration: const InputDecoration(
+                labelText: "Email", hintText: "me@example.com"),
           ),
         ),
         new FormElement(
