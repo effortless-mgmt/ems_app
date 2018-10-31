@@ -4,7 +4,7 @@ import '../screens/calender_screen.dart';
 import '../screens/contact_card_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/profile_screen.dart';
-import '../screens/messenger_screen.dart';
+import '../screens/settings_screen.dart';
 
 class Navbar extends StatefulWidget {
   @override
@@ -49,7 +49,7 @@ class _NavbarState extends State<Navbar> {
             Navigator.push(
               context,
               new MaterialPageRoute(
-                builder: (context) => MessengerScreen(),
+                builder: (context) => SettingsScreen(),
               ),
             );
           },
