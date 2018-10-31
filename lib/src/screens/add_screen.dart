@@ -10,8 +10,8 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
   AnimationController _animationController;
   List<TempTimeRegItem> _unregTempHours;
   List<TimeReg> _unregHours;
-  TimeReg _lastAccepted;
-  int _lastAcceptedIndex;
+  // TimeReg _lastAccepted;
+  // int _lastAcceptedIndex;
 
   @override
   void initState() {
@@ -20,12 +20,14 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
         duration: new Duration(milliseconds: 250), vsync: this);
     _unregHours = <TimeReg>[];
     TimeReg tr1 = new TimeReg(
-        date: new DateTime(2018, 10, 26),
-        location: "Netto Spot",
-        start: new TimeOfDay(hour: 09, minute: 00),
-        stop: new TimeOfDay(hour: 17, minute: 00),
-        pause: 30,
-        animationController: _animationController);
+      key: _listKey,
+      date: new DateTime(2018, 10, 26),
+      location: "Netto Spot",
+      start: new TimeOfDay(hour: 09, minute: 00),
+      stop: new TimeOfDay(hour: 17, minute: 00),
+      pause: 30,
+      animationController: _animationController,
+    );
 
     TimeReg tr2 = new TimeReg(
         date: new DateTime(2018, 10, 27),
@@ -112,6 +114,53 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
     _animationController.dispose();
   }
 
+  void _regTime(BuildContext context, int index) {
+    TimeReg tr = _unregHours.removeAt(index);
+    DateTime start = new DateTime(tr.date.year, tr.date.month, tr.date.day,
+        tr.start.hour, tr.start.minute);
+    DateTime stop = new DateTime(
+        tr.date.year, tr.date.month, tr.date.day, tr.stop.hour, tr.stop.minute);
+    if (stop.hour < start.hour) {
+      debugPrint("Stops next day");
+      debugPrint("Stop before adding day: ${stop.toString()}");
+
+      stop = stop.add(new Duration(days: 1));
+      debugPrint("Start DateTime: ${start.toString()}");
+      debugPrint("Stop DateTime: ${stop.toString()}");
+    }
+    stop = stop.subtract(new Duration(minutes: tr.pause));
+    WorkHours wh = new WorkHours(stop.difference(start).inMinutes, tr.date);
+    debugPrint("Registered: ${wh.getHours()}h ${wh.getMinutes()}m");
+    _showUndoSnackBar(context, wh, tr, index);
+  }
+
+  void _showUndoSnackBar(
+      BuildContext context, WorkHours wh, TimeReg tr, int index) {
+    final snackBar = new SnackBar(
+      action: new SnackBarAction(
+          label: "Undo",
+          onPressed: () {
+            setState(() {
+              _unregHours.insert(index, tr);
+              // _buildItem(context, index);
+            });
+          }),
+      duration: new Duration(seconds: 5),
+      content: Container(
+        height: 40.0,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            new Text("${tr.location} on ${wh.getDateFormatted()}"),
+            new Text(
+                "Registered ${wh.getHours()}h ${wh.getMinutes()}m work, ${tr.pause}m break"),
+          ],
+        ),
+      ),
+    );
+    Scaffold.of(context).showSnackBar(snackBar);
+  }
+
   Widget _buildItem(BuildContext context, int index) {
     return TimeReg(
         date: _unregHours[index].date,
@@ -122,9 +171,8 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
         animationController: _unregHours[index].animationController,
         onAccepted: () {
           setState(() {
-            _lastAcceptedIndex = index;
             _unregHours[index].animationController.forward();
-            _lastAccepted = _unregHours.removeAt(index);
+            _regTime(context, index);
             debugPrint("Removed at $index");
           });
         });

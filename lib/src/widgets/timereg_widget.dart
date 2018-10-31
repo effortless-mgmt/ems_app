@@ -116,7 +116,7 @@ class _TimeRegState extends State<TimeReg> {
       debugPrint("Stop DateTime: ${stop.toString()}");
     }
     stop = stop.subtract(new Duration(minutes: _pause));
-    _wh = new WorkHours(stop.difference(start).inMinutes);
+    _wh = new WorkHours(stop.difference(start).inMinutes, widget.date);
     debugPrint("Registered: ${_wh.getHours()}h ${_wh.getMinutes()}m");
   }
 
@@ -183,9 +183,11 @@ class WorkHours {
   int _durationMinutes;
   int _minutes = 0;
   double _hours = 0.0;
+  DateTime _date;
 
-  WorkHours(int _durationMinutes) {
-    this._durationMinutes = _durationMinutes;
+  WorkHours(int durationMinutes, DateTime date) {
+    this._durationMinutes = durationMinutes;
+    this._date = date;
     convertHours();
   }
 
@@ -204,5 +206,9 @@ class WorkHours {
 
   int getDurationMinutes() {
     return _durationMinutes;
+  }
+
+  String getDateFormatted() {
+    return "${_date.day}-${_date.month}-${_date.year}";
   }
 }

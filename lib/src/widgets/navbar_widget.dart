@@ -1,4 +1,3 @@
-import 'package:ems_app/src/screens/temp.dart';
 import 'package:flutter/material.dart';
 import '../screens/add_screen.dart';
 import '../screens/calender_screen.dart';
@@ -18,8 +17,8 @@ class _NavbarState extends State<Navbar> {
   final List<Widget> _screens = [
     HomeScreen(),
     CalenderScreen(),
-    // AddScreen(),
-    AnimatedListSample(),
+    AddScreen(),
+    // AnimatedListSample(),
     ContactCardScreen(),
     ProfileScreen(),
   ];
