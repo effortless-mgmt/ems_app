@@ -1,3 +1,4 @@
+import 'package:ems_app/src/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../screens/add_screen.dart';
 import '../screens/calender_screen.dart';
@@ -15,6 +16,8 @@ class Navbar extends StatefulWidget {
 
 class _NavbarState extends State<Navbar> {
   int _currentIndex = 0;
+  bool _loggedIn = false;
+
   final List<Widget> _screens = [
     HomeScreen(),
     CalenderScreen(),
@@ -24,17 +27,25 @@ class _NavbarState extends State<Navbar> {
   ];
   List<Widget> appBarIcons = [];
 
+  void login() {
+    print("Logging in...");
+    setState(() => _loggedIn = true);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Material(
+    var mainApp = new Material(
         child: Scaffold(
       appBar: AppBar(
-        title: Text('My Flutter App'),
+        title: Text("EMS"),
         actions: appBarIcons,
       ),
       body: _screens[_currentIndex], // new
       bottomNavigationBar: customNavbar(),
     ));
+    var loginScreen = new LoginScreen(login);
+
+    return _loggedIn ? mainApp : loginScreen;
   }
 
   void onTabTapped(int index) {
