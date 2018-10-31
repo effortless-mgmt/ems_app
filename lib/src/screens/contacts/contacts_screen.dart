@@ -29,7 +29,6 @@ class ContactsCardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(title: new Text("Contacts")),
       body: Center(
         child: SizedBox.fromSize(
           size: const Size.fromHeight(500.0),
