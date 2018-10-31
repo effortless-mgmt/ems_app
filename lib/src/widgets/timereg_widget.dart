@@ -2,23 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'dart:async';
 
+// TODO
+// 1. HEADLINE
+// 2. SNACKBAR ON ACCEPT (UNDO FUNCTION)
+// 3. REMOVE ITEM WITH ANIMATION ON ACCEPT
+// 4. CUPERTINO TIME PICKERS
+
 class TimeReg extends StatefulWidget {
   final DateTime date;
   final String location;
   final TimeOfDay start;
   final TimeOfDay stop;
   final int pause;
+  final AnimationController animationController;
+  final VoidCallback onAccepted;
 
   TimeReg(
-      {Key key, this.date, this.location, this.start, this.stop, this.pause})
-      : super(key: key);
+      {Key key,
+      @required this.date,
+      @required this.location,
+      @required this.start,
+      @required this.stop,
+      @required this.pause,
+      @required this.animationController,
+      this.onAccepted})
+      : assert(date != null),
+        assert(location != null),
+        assert(start != null),
+        assert(stop != null),
+        assert(pause != null),
+        assert(animationController != null),
+        super(key: key);
+
   State<StatefulWidget> createState() => _TimeRegState();
 }
 
 class _TimeRegState extends State<TimeReg> {
-  TextStyle _headerStyle =
-      new TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500);
-
   DateTime _date;
   TimeOfDay _start;
   TimeOfDay _stop;
@@ -49,7 +68,7 @@ class _TimeRegState extends State<TimeReg> {
       context: context,
       initialTime: _start,
     );
-    print("Start selected: ${picked.toString()}");
+    debugPrint("Start selected: ${picked.toString()}");
     if (picked != _start && picked != null) {
       setState(() {
         _start = picked;
@@ -98,101 +117,61 @@ class _TimeRegState extends State<TimeReg> {
     }
     stop = stop.subtract(new Duration(minutes: _pause));
     _wh = new WorkHours(stop.difference(start).inMinutes);
+    debugPrint("Registered: ${_wh.getHours()}h ${_wh.getMinutes()}m");
+  }
+
+  String getDateFormatted() {
+    return "${_date.day}-${_date.month}-${_date.year}";
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: new EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-      child: Card(
-        elevation: 4.0,
-        child: Container(
-          margin: new EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              new Row(
+    return SizeTransition(
+      // axis: Axis.horizontal,
+      sizeFactor: new CurvedAnimation(
+          parent: widget.animationController, curve: Curves.bounceOut),
+      child: Container(
+        margin: new EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+        child: Card(
+          elevation: 4.0,
+          child: Container(
+            margin: new EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
+            child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  new Text(
-                      _weekDays[widget.date.weekday - 1] +
+                  new ListTile(
+                      title: new Text(widget.location),
+                      subtitle: new Text(_weekDays[widget.date.weekday - 1] +
                           " " +
-                          widget.date.day.toString(),
-                      style: _headerStyle),
-                  new Text(" " + widget.location, style: _headerStyle),
-                ],
-              ),
-              new Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0)),
-              // new Divider(height: 26.0),
-              new ListTile(
-                  contentPadding: const EdgeInsets.all(0.0),
-                  // dense: true,
-                  leading:
-                      const Text("Start:", style: TextStyle(fontSize: 16.0)),
-                  title: new Text(_start.format(context)),
-                  onTap: () => _selectStart(context)),
-              new ListTile(
-                  contentPadding: const EdgeInsets.all(0.0),
-                  // dense: true,
-                  leading:
-                      const Text("Stop:", style: TextStyle(fontSize: 16.0)),
-                  title: new Text(_stop.format(context)),
-                  onTap: () => _selectStop(context)),
-              new ListTile(
-                  contentPadding: const EdgeInsets.all(0.0),
-                  // dense: true,
-                  leading:
-                      const Text("Break:", style: TextStyle(fontSize: 16.0)),
-                  title: new Text(" " + _pause.toString() + " MIN"),
-                  onTap: () => _selectPause(context)),
-
-              // new GestureDetector(
-              //     onTap: () => _selectStart(context),
-              //     child: new Row(children: <Widget>[
-              //       new Text("Start"),
-              //       new Container(
-              //           padding: const EdgeInsets.symmetric(horizontal: 10.0)),
-              //       new Text(_start.format(context)),
-              //     ])),
-              // new Container(padding: const EdgeInsets.symmetric(vertical: 5.0)),
-              // new Divider(height: 26.0),
-              // new GestureDetector(
-              //   onTap: () => _selectStop(context),
-              //   child: new Row(children: <Widget>[
-              //     new Text("Stop"),
-              //     new Container(
-              //         padding: const EdgeInsets.symmetric(horizontal: 10.0)),
-              //     new Text(_stop.format(context)),
-              //   ]),
-              // ),
-              // new Divider(height: 26.0),
-
-              // new Container(padding: const EdgeInsets.symmetric(vertical: 5.0)),
-              // new Row(children: <Widget>[
-              //   new Text("Break"),
-              //   new Container(
-              //       padding: const EdgeInsets.symmetric(horizontal: 10.0)),
-              //   new Text(_pause.toString() + " min"),
-              // ]),
-              new Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 8.0, right: 2.0),
-                      width: 40.0,
-                      child: new FloatingActionButton(
-                        backgroundColor: Colors.blueAccent,
-                        child: new Icon(Icons.check,
-                            size: 20.0, color: Colors.white),
-                        onPressed: () {
-                          _regTime();
-                          debugPrint(
-                              "Registered: ${_wh.getHours()}h ${_wh.getMinutes()}m");
-                        },
-                      ),
-                    )
-                  ])
-            ],
+                          getDateFormatted())),
+                  new ListTile(
+                      leading:
+                          const Text("From", style: TextStyle(fontSize: 16.0)),
+                      title: new Text(_start.format(context)),
+                      onTap: () => _selectStart(context)),
+                  new ListTile(
+                      leading:
+                          const Text("To", style: TextStyle(fontSize: 16.0)),
+                      title: new Text(_stop.format(context)),
+                      onTap: () => _selectStop(context)),
+                  new ListTile(
+                      leading:
+                          const Text("Break", style: TextStyle(fontSize: 16.0)),
+                      title: new Text(" " + _pause.toString() + " min"),
+                      onTap: () => _selectPause(context)),
+                  new Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      new MaterialButton(
+                          child: new Text("Accept",
+                              style: new TextStyle(color: Colors.blueAccent)),
+                          onPressed: () {
+                            _regTime();
+                            widget.onAccepted();
+                          }),
+                    ],
+                  ),
+                ]),
           ),
         ),
       ),
