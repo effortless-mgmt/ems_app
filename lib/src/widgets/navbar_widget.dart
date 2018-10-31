@@ -2,7 +2,7 @@ import 'package:ems_app/src/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../screens/add_screen.dart';
 import '../screens/calender_screen.dart';
-import '../screens/contact_card_screen.dart';
+import '../screens/contacts/contacts_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/profile_screen.dart';
 
@@ -21,7 +21,7 @@ class _NavbarState extends State<Navbar> {
     HomeScreen(),
     CalenderScreen(),
     AddScreen(),
-    ContactCardScreen(),
+    ContactsCardScreen(),
     ProfileScreen(),
   ];
 
