@@ -12,33 +12,53 @@ class LoginPage extends StatelessWidget {
               image: asset,
             ),
             new Card(
-                child: new Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                new ListTile(
-                    title: new Text("Sign In"),
-                    trailing: Icon(Icons.verified_user)),
-                new Container(
-                  padding: const EdgeInsets.only(bottom: 24.0),
-                  child: new TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(labelText: "Email"),
-                  ),
-                ),
-                const Text(
-                  "Forgot your password?",
-                ),
-                new ButtonTheme.bar(
-                    child: const ButtonBar(
-                  children: <Widget>[
-                    const RaisedButton(child: const Text("NEXT"))
-                  ],
-                ))
-              ],
-            )),
+                margin: EdgeInsets.symmetric(vertical: 48.0, horizontal: 24.0),
+                child: _buildLoginForm(context))
           ],
         )
         // body: new Center(
         );
+  }
+
+  _buildLoginForm(BuildContext context) {
+    return new Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        new ListTile(
+            title: new Text("Sign In"), trailing: Icon(Icons.verified_user)),
+        new FormElement(
+          child: new TextField(
+            keyboardType: TextInputType.emailAddress,
+            decoration: const InputDecoration(labelText: "Email"),
+          ),
+        ),
+        new FormElement(
+            child: new TextField(
+          obscureText: true,
+          decoration: const InputDecoration(
+              labelText: "Password", hintText: "yourS3cur3P4ssw0!d"),
+        )),
+        const Text(
+          "Forgot your password?",
+        ),
+        new ButtonTheme.bar(
+            child: const ButtonBar(
+          children: <Widget>[const RaisedButton(child: const Text("SIGN IN"))],
+        ))
+      ],
+    );
+  }
+}
+
+class FormElement extends StatelessWidget {
+  final Widget child;
+  FormElement({this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0),
+      child: this.child,
+    );
   }
 }
