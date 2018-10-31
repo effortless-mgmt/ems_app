@@ -41,6 +41,8 @@ flutter:
     - assets/logo.svg
     - assets/logo.png
     - assets/logo@2x.png
+    - assets/logo-bw.png
+    - assets/logo-bw@2x.png
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 
