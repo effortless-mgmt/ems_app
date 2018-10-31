@@ -4,6 +4,7 @@ import '../screens/calender_screen.dart';
 import '../screens/contact_card_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/profile_screen.dart';
+import '../screens/messenger_screen.dart';
 
 class Navbar extends StatefulWidget {
   @override
@@ -21,24 +22,42 @@ class _NavbarState extends State<Navbar> {
     ContactCardScreen(),
     ProfileScreen(),
   ];
+  List<Widget> appBarIcons = [];
 
   @override
   Widget build(BuildContext context) {
     return Material(
-        color: Colors.green,
         child: Scaffold(
-          appBar: AppBar(
-            title: Text('My Flutter App'),
-          ),
-          body: _screens[_currentIndex], // new
-          bottomNavigationBar: customNavbar(),
-        ));
+      appBar: AppBar(
+        title: Text('My Flutter App'),
+        actions: appBarIcons,
+      ),
+      body: _screens[_currentIndex], // new
+      bottomNavigationBar: customNavbar(),
+    ));
   }
 
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
     });
+    if (index == 4) {
+      appBarIcons = [
+        IconButton(
+          icon: Icon(Icons.settings),
+          onPressed: () {
+            Navigator.push(
+              context,
+              new MaterialPageRoute(
+                builder: (context) => MessengerScreen(),
+              ),
+            );
+          },
+        )
+      ];
+    } else {
+      appBarIcons = [];
+    }
   }
 
   Widget customNavbar() {
