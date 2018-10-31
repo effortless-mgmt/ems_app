@@ -5,6 +5,7 @@ import '../screens/calender_screen.dart';
 import '../screens/contacts/contacts_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/profile_screen.dart';
+import '../screens/settings_screen.dart';
 
 class Navbar extends StatefulWidget {
   @override
@@ -24,6 +25,7 @@ class _NavbarState extends State<Navbar> {
     ContactsCardScreen(),
     ProfileScreen(),
   ];
+  List<Widget> appBarIcons = [];
 
   void login() {
     print("Logging in...");
@@ -33,14 +35,14 @@ class _NavbarState extends State<Navbar> {
   @override
   Widget build(BuildContext context) {
     var mainApp = new Material(
-        color: Colors.green,
         child: Scaffold(
-          appBar: AppBar(
-            title: Text('My Flutter App'),
-          ),
-          body: _screens[_currentIndex], // new
-          bottomNavigationBar: customNavbar(),
-        ));
+      appBar: AppBar(
+        title: Text("EMS"),
+        actions: appBarIcons,
+      ),
+      body: _screens[_currentIndex], // new
+      bottomNavigationBar: customNavbar(),
+    ));
     var loginScreen = new LoginScreen(login);
 
     return _loggedIn ? mainApp : loginScreen;
@@ -50,6 +52,23 @@ class _NavbarState extends State<Navbar> {
     setState(() {
       _currentIndex = index;
     });
+    if (index == 4) {
+      appBarIcons = [
+        IconButton(
+          icon: Icon(Icons.settings),
+          onPressed: () {
+            Navigator.push(
+              context,
+              new MaterialPageRoute(
+                builder: (context) => SettingsScreen(),
+              ),
+            );
+          },
+        )
+      ];
+    } else {
+      appBarIcons = [];
+    }
   }
 
   Widget customNavbar() {
