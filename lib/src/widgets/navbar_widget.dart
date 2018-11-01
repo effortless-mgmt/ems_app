@@ -1,9 +1,11 @@
+import 'package:ems_app/src/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../screens/add_screen.dart';
 import '../screens/calender_screen.dart';
-import '../screens/contact_card_screen.dart';
+import '../screens/contacts/contacts_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/profile_screen.dart';
+import '../screens/settings_screen.dart';
 
 class Navbar extends StatefulWidget {
   @override
@@ -14,32 +16,59 @@ class Navbar extends StatefulWidget {
 
 class _NavbarState extends State<Navbar> {
   int _currentIndex = 0;
+  bool _loggedIn = false;
+
   final List<Widget> _screens = [
     HomeScreen(),
     CalenderScreen(),
     AddScreen(),
-    // AnimatedListSample(),
-    ContactCardScreen(),
+    ContactsCardScreen(),
     ProfileScreen(),
   ];
+  List<Widget> appBarIcons = [];
+
+  void login() {
+    print("Logging in...");
+    setState(() => _loggedIn = true);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-        color: Colors.green,
+    var mainApp = new Material(
         child: Scaffold(
-          appBar: AppBar(
-            title: Text('My Flutter App'),
-          ),
-          body: _screens[_currentIndex], // new
-          bottomNavigationBar: customNavbar(),
-        ));
+      appBar: AppBar(
+        title: Text("EMS"),
+        actions: appBarIcons,
+      ),
+      body: _screens[_currentIndex], // new
+      bottomNavigationBar: customNavbar(),
+    ));
+    var loginScreen = new LoginScreen(login);
+
+    return _loggedIn ? mainApp : loginScreen;
   }
 
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
     });
+    if (index == 4) {
+      appBarIcons = [
+        IconButton(
+          icon: Icon(Icons.settings),
+          onPressed: () {
+            Navigator.push(
+              context,
+              new MaterialPageRoute(
+                builder: (context) => SettingsScreen(),
+              ),
+            );
+          },
+        )
+      ];
+    } else {
+      appBarIcons = [];
+    }
   }
 
   Widget customNavbar() {
