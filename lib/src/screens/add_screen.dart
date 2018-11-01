@@ -6,12 +6,8 @@ class AddScreen extends StatefulWidget {
 }
 
 class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   AnimationController _animationController;
-  List<TempTimeRegItem> _unregTempHours;
   List<TimeReg> _unregHours;
-  // TimeReg _lastAccepted;
-  // int _lastAcceptedIndex;
 
   @override
   void initState() {
@@ -20,7 +16,6 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
         duration: new Duration(milliseconds: 250), vsync: this);
     _unregHours = <TimeReg>[];
     TimeReg tr1 = new TimeReg(
-      key: _listKey,
       date: new DateTime(2018, 10, 26),
       location: "Netto Spot",
       start: new TimeOfDay(hour: 09, minute: 00),
@@ -64,49 +59,7 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
 
     _unregHours.insert(_unregHours.length, tr4);
     tr4.animationController.forward();
-
-    // _unregTempHours = <TempTimeRegItem>[
-    //   new TempTimeRegItem(
-    //       date: new DateTime(2018, 10, 26),
-    //       location: "Netto Spot",
-    //       start: new TimeOfDay(hour: 09, minute: 00),
-    //       stop: new TimeOfDay(hour: 17, minute: 00),
-    //       pause: 30),
-    //   // animation: ),
-    //   new TempTimeRegItem(
-    //       date: new DateTime(2018, 10, 27),
-    //       location: "H&M Incoming",
-    //       start: new TimeOfDay(hour: 08, minute: 30),
-    //       stop: new TimeOfDay(hour: 16, minute: 30),
-    //       pause: 30),
-    //   new TempTimeRegItem(
-    //       date: new DateTime(2018, 10, 28),
-    //       location: "L'oréal CPD Standard",
-    //       start: new TimeOfDay(hour: 06, minute: 00),
-    //       stop: new TimeOfDay(hour: 14, minute: 30),
-    //       pause: 30),
-    //   new TempTimeRegItem(
-    //       date: new DateTime(2018, 10, 29),
-    //       location: "Netto Kolonial",
-    //       start: new TimeOfDay(hour: 07, minute: 30),
-    //       stop: new TimeOfDay(hour: 15, minute: 30),
-    //       pause: 30)
-    // ];
   }
-
-  // Widget _buildItem(BuildContext context, int index) {
-  //   return TimeReg(
-  //       date: _unregTempHours[index].date,
-  //       location: _unregTempHours[index].location,
-  //       start: _unregTempHours[index].start,
-  //       stop: _unregTempHours[index].stop,
-  //       pause: _unregTempHours[index].pause,
-  //       onAccepted: () {
-  //         setState(() {
-  //           _lastAccepted = _unregTempHours.removeAt(index);
-  //         });
-  //       });
-  // }
 
   @override
   void dispose() {
@@ -185,9 +138,11 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         new Container(
-            child: new Text("Unregistered hours",
-                style: new TextStyle(fontSize: 16.0)),
-            margin: const EdgeInsets.only(top: 16.0, left: 16.0, bottom: 20.0)),
+            child: new Text(
+                "You have ${_unregHours.length} missing registrations",
+                style:
+                    new TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500)),
+            margin: const EdgeInsets.only(top: 20.0, left: 16.0, bottom: 10.0)),
         new Flexible(
           child: new ListView.builder(
               itemBuilder: _buildItem,
@@ -197,87 +152,4 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
       ],
     ));
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //       body: Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: <Widget>[
-  //       new Container(
-  //           child: new Text("Unregistered hours",
-  //               style: new TextStyle(fontSize: 16.0)),
-  //           margin: const EdgeInsets.only(top: 16.0, left: 16.0, bottom: 20.0)),
-  //       new Flexible(
-  //         child: new AnimatedList(
-  //             key: _listKey,
-  //             initialItemCount: _unregHours.length,
-  //             itemBuilder: _buildItem),
-  //       ),
-  //     ],
-  //   ));
-  // }
-}
-
-class ListModel<E> {
-  ListModel({
-    @required this.listKey,
-    @required this.removedItemBuilder,
-    Iterable<E> initialItems,
-  })  : assert(listKey != null),
-        assert(removedItemBuilder != null),
-        _items = List<E>.from(initialItems ?? <E>[]);
-
-  final GlobalKey<AnimatedListState> listKey;
-  final dynamic removedItemBuilder;
-  final List<E> _items;
-
-  AnimatedListState get _animatedList => listKey.currentState;
-
-  void insert(int index, E item) {
-    _items.insert(index, item);
-    _animatedList.insertItem(index);
-  }
-
-  E removeAt(int index) {
-    final E removedItem = _items.removeAt(index);
-    if (removedItem != null) {
-      _animatedList.removeItem(index,
-          (BuildContext context, Animation<double> animation) {
-        return removedItemBuilder(removedItem, context, animation);
-      });
-    }
-    return removedItem;
-  }
-
-  int get length => _items.length;
-
-  E operator [](int index) => _items[index];
-
-  int indexOf(E item) => _items.indexOf(item);
-}
-
-class TempTimeRegItem {
-  final VoidCallback onAccepted;
-  final DateTime date;
-  final String location;
-  final TimeOfDay start;
-  final TimeOfDay stop;
-  final int pause;
-  final Animation<double> animation;
-
-  TempTimeRegItem(
-      {Key key,
-      @required this.date,
-      @required this.location,
-      @required this.start,
-      @required this.stop,
-      @required this.pause,
-      this.animation,
-      this.onAccepted})
-      : assert(date != null),
-        assert(location != null),
-        assert(start != null),
-        assert(stop != null),
-        assert(pause != null);
 }

@@ -129,7 +129,7 @@ class _TimeRegState extends State<TimeReg> {
     return SizeTransition(
       // axis: Axis.horizontal,
       sizeFactor: new CurvedAnimation(
-          parent: widget.animationController, curve: Curves.bounceOut),
+          parent: widget.animationController, curve: Curves.linear),
       child: Container(
         margin: new EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
         child: Card(
