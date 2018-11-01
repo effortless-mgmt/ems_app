@@ -22,10 +22,12 @@ class CalendarTile extends StatelessWidget {
     this.dayOfWeekStyles,
     this.isDayOfWeek: false,
     this.isSelected: false,
-    this.hasAppointment: true,
+    this.hasAppointment,
   });
 
   Widget renderDateOrDayOfWeek(BuildContext context) {
+    bool notNull(Object o) => o != null;
+
     if (isDayOfWeek) {
       return new InkWell(
         child: new Container(
@@ -39,17 +41,19 @@ class CalendarTile extends StatelessWidget {
     } else {
       return new InkWell(
         onTap: onDateSelected,
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: new Container(
-                decoration: isSelected
-                    ? new BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Theme.of(context).primaryColor,
-                      )
-                    : new BoxDecoration(),
-                alignment: Alignment.center,
+        child: new Container(
+          decoration: isSelected
+              ? new BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).primaryColor,
+                )
+              : new BoxDecoration(),
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                margin: hasAppointment ? const EdgeInsets.only(top: 5.0) : null,
                 child: new Text(
                   Utils.formatDay(date).toString(),
                   style: isSelected
@@ -58,9 +62,13 @@ class CalendarTile extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-            ),
-            new CircleAvatar(backgroundColor: Colors.blueAccent, radius: 3.0),
-          ],
+              Container(height: 5.0),
+              hasAppointment
+                  ? new CircleAvatar(
+                      backgroundColor: Colors.blueAccent, radius: 3.0)
+                  : null,
+            ].where(notNull).toList(),
+          ),
         ),
       );
     }

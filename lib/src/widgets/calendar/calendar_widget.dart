@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/widgets/calendar/calendar_tile.dart';
 import 'package:ems_app/src/widgets/calendar/calendar_utils.dart';
 import 'package:flutter/material.dart';
@@ -16,16 +17,18 @@ class Calendar extends StatefulWidget {
   final bool showTodayAction;
   final bool showCalendarPickerIcon;
   final DateTime initialCalendarDateOverride;
+  final List<Appointment> appointments;
 
   Calendar(
       {this.onDateSelected,
       this.onSelectedRangeChange,
-      this.isExpandable: false,
+      this.isExpandable: true,
       this.dayBuilder,
       this.showTodayAction: true,
       this.showChevronsToChangeRange: true,
       this.showCalendarPickerIcon: true,
-      this.initialCalendarDateOverride});
+      this.initialCalendarDateOverride,
+      this.appointments});
 
   @override
   _CalendarState createState() => new _CalendarState();
@@ -36,13 +39,15 @@ class _CalendarState extends State<Calendar> {
   List<DateTime> selectedMonthsDays;
   Iterable<DateTime> selectedWeeksDays;
   DateTime _selectedDate = new DateTime.now();
+  List<Appointment> _appointments;
   String currentMonth;
-  bool isExpanded = true;
+  bool isExpanded = false;
   String displayMonth;
   DateTime get selectedDate => _selectedDate;
 
   void initState() {
     super.initState();
+    _appointments = widget.appointments;
     if (widget.initialCalendarDateOverride != null)
       _selectedDate = widget.initialCalendarDateOverride;
     selectedMonthsDays = Utils.daysInMonth(_selectedDate);
@@ -118,9 +123,11 @@ class _CalendarState extends State<Calendar> {
             getDirection(gestureDetails),
         onHorizontalDragEnd: (gestureDetails) => endSwipe(gestureDetails),
         child: new GridView.count(
+          primary: false,
           shrinkWrap: true,
           crossAxisCount: 7,
           padding: new EdgeInsets.only(bottom: 0.0),
+          childAspectRatio: 1.4,
           children: calendarBuilder(),
         ),
       ),
@@ -148,6 +155,13 @@ class _CalendarState extends State<Calendar> {
 
     calendarDays.forEach(
       (day) {
+        bool hasAppointment = false;
+        for (Appointment a in _appointments) {
+          if (Utils.isSameDay(a.date, day)) {
+            hasAppointment = true;
+          }
+        }
+
         if (monthStarted && day.day == 01) {
           monthEnded = true;
         }
@@ -161,6 +175,7 @@ class _CalendarState extends State<Calendar> {
             new CalendarTile(
               child: this.widget.dayBuilder(context, day),
               date: day,
+              hasAppointment: hasAppointment,
               onDateSelected: () => handleSelectedDateAndUserCallback(day),
             ),
           );
@@ -170,6 +185,7 @@ class _CalendarState extends State<Calendar> {
               onDateSelected: () => handleSelectedDateAndUserCallback(day),
               date: day,
               dateStyles: configureDateStyle(monthStarted, monthEnded),
+              hasAppointment: hasAppointment,
               isSelected: Utils.isSameDay(selectedDate, day),
             ),
           );
@@ -331,35 +347,94 @@ class _CalendarState extends State<Calendar> {
     }
   }
 
-  var gestureStart;
+  var gestureStartX;
+  var gestureStartY;
   var gestureDirection;
 
   void beginSwipe(DragStartDetails gestureDetails) {
-    gestureStart = gestureDetails.globalPosition.dx;
+    gestureStartX = gestureDetails.globalPosition.dx;
+    gestureStartY = gestureDetails.globalPosition.dy;
   }
 
   void getDirection(DragUpdateDetails gestureDetails) {
-    if (gestureDetails.globalPosition.dx < gestureStart) {
-      gestureDirection = 'rightToLeft';
-    } else {
-      gestureDirection = 'leftToRight';
+    var dy = gestureDetails.globalPosition.dy - gestureStartY;
+    var dx = gestureDetails.globalPosition.dx - gestureStartX;
+
+    if (dy.abs() > 50 || dx.abs() > 50) {
+      print("Swiped more than 100 pixels");
+      if (dy.abs() > dx.abs()) {
+        print("Swipe vertical");
+        gestureDirection = 'swipeVertical';
+        // if (dy > 0) {
+        //   gestureDirection = 'upToDown';
+        // } else {
+        //   gestureDirection = 'downToUp';
+        // }
+      } else {
+        if (dx > 0) {
+          gestureDirection = 'rightToLeft';
+        } else {
+          gestureDirection = 'leftToRight';
+        }
+      }
+
+      // if (gestureDetails.globalPosition.dx < gestureStartX) {
+      //   gestureDirection = 'rightToLeft';
+      // } else {
+      //   gestureDirection = 'leftToRight';
+      // }
+      print(gestureDirection);
     }
   }
 
   void endSwipe(DragEndDetails gestureDetails) {
-    if (gestureDirection == 'rightToLeft') {
-      if (isExpanded) {
-        nextMonth();
-      } else {
-        nextWeek();
-      }
-    } else {
-      if (isExpanded) {
-        previousMonth();
-      } else {
-        previousWeek();
-      }
+    switch (gestureDirection) {
+      // case 'downToUp':
+      //   if (isExpanded) {
+      //     toggleExpanded();
+      //   }
+      //   break;
+      // case 'upToDown':
+      //   if (!isExpanded) {
+      //     toggleExpanded();
+      //   }
+      // break;
+      case 'swipeVertical':
+        toggleExpanded();
+        break;
+      case 'rightToLeft':
+        if (isExpanded) {
+          nextMonth();
+        } else {
+          nextWeek();
+        }
+        break;
+      case 'leftToRight':
+        if (isExpanded) {
+          previousMonth();
+        } else {
+          previousWeek();
+        }
+        break;
     }
+    // if (gestureDirection == 'upToDown') {
+    //   if (!isExpanded) {
+    //     toggleExpanded();
+    //   }
+    // } else if (gestureDirection == 'rightToLeft') {
+    //   toggleExpanded();
+    //   if (isExpanded) {
+    //     // nextMonth();
+    //   } else {
+    //     nextWeek();
+    //   }
+    // } else if (gestureDirection == 'leftToRight') {
+    //   if (isExpanded) {
+    //     previousMonth();
+    //   } else {
+    //     previousWeek();
+    //   }
+    // }
   }
 
   void toggleExpanded() {
