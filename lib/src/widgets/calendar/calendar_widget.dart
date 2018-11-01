@@ -41,8 +41,10 @@ class _CalendarState extends State<Calendar> {
   DateTime _selectedDate = new DateTime.now();
   List<Appointment> _appointments;
   String currentMonth;
-  bool isExpanded = false;
+  bool isExpanded = true;
   String displayMonth;
+  Appointment appointment;
+  bool selectedHasAppointment = false;
   DateTime get selectedDate => _selectedDate;
 
   void initState() {
@@ -209,19 +211,25 @@ class _CalendarState extends State<Calendar> {
 
   Widget get expansionButtonRow {
     if (widget.isExpandable) {
-      return new Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          new Text(Utils.fullDayFormat(selectedDate)),
-          new IconButton(
-            iconSize: 20.0,
-            padding: new EdgeInsets.all(0.0),
-            onPressed: toggleExpanded,
-            icon: isExpanded
-                ? new Icon(Icons.arrow_drop_up)
-                : new Icon(Icons.arrow_drop_down),
-          ),
-        ],
+      return new Container(
+        height: 40.0,
+        //WAS A ROW WITH A TEXT, ICONBUTTON AND MAINAXISALIGNMENT.SPACEBETWEEN
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: new Center(
+          child: selectedHasAppointment
+              ? new Text(
+                  "${Utils.fullDayFormat(appointment.date)} at ${appointment.location}")
+              : new Text(
+                  "No appointments on " + Utils.fullDayFormat(selectedDate)),
+          // new IconButton(
+          //   iconSize: 20.0,
+          //   padding: new EdgeInsets.all(0.0),
+          //   onPressed: toggleExpanded,
+          //   icon: isExpanded
+          //       ? new Icon(Icons.arrow_drop_up)
+          //       : new Icon(Icons.arrow_drop_down),
+          // ),
+        ),
       );
     } else {
       return new Container();
@@ -361,9 +369,7 @@ class _CalendarState extends State<Calendar> {
     var dx = gestureDetails.globalPosition.dx - gestureStartX;
 
     if (dy.abs() > 50 || dx.abs() > 50) {
-      print("Swiped more than 100 pixels");
       if (dy.abs() > dx.abs()) {
-        print("Swipe vertical");
         gestureDirection = 'swipeVertical';
         // if (dy > 0) {
         //   gestureDirection = 'upToDown';
@@ -372,9 +378,9 @@ class _CalendarState extends State<Calendar> {
         // }
       } else {
         if (dx > 0) {
-          gestureDirection = 'rightToLeft';
-        } else {
           gestureDirection = 'leftToRight';
+        } else {
+          gestureDirection = 'rightToLeft';
         }
       }
 
@@ -383,7 +389,6 @@ class _CalendarState extends State<Calendar> {
       // } else {
       //   gestureDirection = 'leftToRight';
       // }
-      print(gestureDirection);
     }
   }
 
@@ -400,20 +405,23 @@ class _CalendarState extends State<Calendar> {
       //   }
       // break;
       case 'swipeVertical':
+        print("Swiped vertically");
         toggleExpanded();
         break;
       case 'rightToLeft':
-        if (isExpanded) {
-          nextMonth();
-        } else {
-          nextWeek();
-        }
-        break;
-      case 'leftToRight':
+        print("Swiped right -> left");
         if (isExpanded) {
           previousMonth();
         } else {
           previousWeek();
+        }
+        break;
+      case 'leftToRight':
+        print("Swiped left -> right");
+        if (isExpanded) {
+          nextMonth();
+        } else {
+          nextWeek();
         }
         break;
     }
@@ -446,6 +454,13 @@ class _CalendarState extends State<Calendar> {
   void handleSelectedDateAndUserCallback(DateTime day) {
     var firstDayOfCurrentWeek = Utils.firstDayOfWeek(day);
     var lastDayOfCurrentWeek = Utils.lastDayOfWeek(day);
+    selectedHasAppointment = false;
+    for (Appointment a in _appointments) {
+      if (Utils.isSameDay(a.date, day)) {
+        appointment = a;
+        selectedHasAppointment = true;
+      }
+    }
     setState(() {
       _selectedDate = day;
       selectedWeeksDays =
