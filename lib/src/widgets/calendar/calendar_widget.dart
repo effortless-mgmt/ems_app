@@ -45,6 +45,7 @@ class _CalendarState extends State<Calendar> {
   String displayMonth;
   Appointment appointment;
   bool selectedHasAppointment = false;
+  bool selectedAppointmentIsOld = false;
   int appointmentCount = 0;
   DateTime get selectedDate => _selectedDate;
 
@@ -159,9 +160,14 @@ class _CalendarState extends State<Calendar> {
     calendarDays.forEach(
       (day) {
         bool hasAppointment = false;
+        bool appointmentIsOld = false;
+
         for (Appointment a in _appointments) {
           if (Utils.isSameDay(a.date, day)) {
             hasAppointment = true;
+            if (day.isBefore(DateTime.now())) {
+              appointmentIsOld = true;
+            }
           }
         }
 
@@ -179,6 +185,7 @@ class _CalendarState extends State<Calendar> {
               child: this.widget.dayBuilder(context, day),
               date: day,
               hasAppointment: hasAppointment,
+              appointmentIsOld: appointmentIsOld,
               onDateSelected: () => handleSelectedDateAndUserCallback(day),
             ),
           );
@@ -187,8 +194,9 @@ class _CalendarState extends State<Calendar> {
             new CalendarTile(
               onDateSelected: () => handleSelectedDateAndUserCallback(day),
               date: day,
-              dateStyles: configureDateStyle(monthStarted, monthEnded),
+              dateStyles: configureDateStyle(monthStarted, monthEnded, day),
               hasAppointment: hasAppointment,
+              appointmentIsOld: appointmentIsOld,
               isSelected: Utils.isSameDay(selectedDate, day),
             ),
           );
@@ -198,14 +206,22 @@ class _CalendarState extends State<Calendar> {
     return dayWidgets;
   }
 
-  TextStyle configureDateStyle(monthStarted, monthEnded) {
+  TextStyle configureDateStyle(monthStarted, monthEnded, day) {
     TextStyle dateStyles;
+    bool isToday = Utils.isSameDay(day, DateTime.now());
     if (isExpanded) {
       dateStyles = monthStarted && !monthEnded
-          ? new TextStyle(color: Colors.black)
-          : new TextStyle(color: Colors.black38);
+          ? isToday
+              ? new TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
+              : new TextStyle(color: Colors.black)
+          : isToday
+              ? new TextStyle(
+                  color: Colors.black38, fontWeight: FontWeight.bold)
+              : new TextStyle(color: Colors.black38);
     } else {
-      dateStyles = new TextStyle(color: Colors.black);
+      dateStyles = isToday
+          ? new TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
+          : new TextStyle(color: Colors.black);
     }
     return dateStyles;
   }
@@ -218,10 +234,18 @@ class _CalendarState extends State<Calendar> {
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         child: new Center(
           child: selectedHasAppointment
-              ? new Text(
-                  "$appointmentCount appointment at ${appointment.location}")
-              : new Text(
-                  "No appointments on " + Utils.fullDayFormat(selectedDate)),
+              ? selectedAppointmentIsOld
+                  ? new Text(
+                      "$appointmentCount old appointment at ${appointment.location}")
+                  : Utils.isSameDay(selectedDate, DateTime.now())
+                      ? Text(
+                          "$appointmentCount appointment today at ${appointment.location}")
+                      : Text(
+                          "$appointmentCount upcoming appointment at ${appointment.location}")
+              : Utils.isSameDay(selectedDate, DateTime.now())
+                  ? new Text("No appointments today")
+                  : new Text("No appointments on " +
+                      Utils.fullDayFormat(selectedDate)),
           // new IconButton(
           //   iconSize: 20.0,
           //   padding: new EdgeInsets.all(0.0),
@@ -410,19 +434,19 @@ class _CalendarState extends State<Calendar> {
         toggleExpanded();
         break;
       case 'rightToLeft':
+        if (isExpanded) {
+          nextMonth();
+        } else {
+          nextWeek();
+        }
+        break;
+      case 'leftToRight':
+        print("Swiped left -> right");
         print("Swiped right -> left");
         if (isExpanded) {
           previousMonth();
         } else {
           previousWeek();
-        }
-        break;
-      case 'leftToRight':
-        print("Swiped left -> right");
-        if (isExpanded) {
-          nextMonth();
-        } else {
-          nextWeek();
         }
         break;
     }
@@ -456,12 +480,16 @@ class _CalendarState extends State<Calendar> {
     var firstDayOfCurrentWeek = Utils.firstDayOfWeek(day);
     var lastDayOfCurrentWeek = Utils.lastDayOfWeek(day);
     selectedHasAppointment = false;
+    selectedAppointmentIsOld = false;
     appointmentCount = 0;
     for (Appointment a in _appointments) {
       if (Utils.isSameDay(a.date, day)) {
         appointment = a;
         selectedHasAppointment = true;
         appointmentCount++;
+        if (day.isBefore(DateTime.now())) {
+          selectedAppointmentIsOld = true;
+        }
       }
     }
     setState(() {
@@ -470,6 +498,7 @@ class _CalendarState extends State<Calendar> {
           Utils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
               .toList();
       selectedMonthsDays = Utils.daysInMonth(day);
+      displayMonth = Utils.formatMonth(day);
     });
     _launchDateSelectionCallback(day);
   }

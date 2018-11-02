@@ -29,7 +29,11 @@ class CalenderScreen extends StatelessWidget {
   }
 
   Widget _appointmentBuilder(BuildContext context, int index) {
-    return AppointmentWidget(Appointment.demodata[index], selected);
+    bool isOldAppointment =
+        Appointment.demodata[index].date.isBefore(DateTime.now());
+    return isOldAppointment
+        ? AppointmentWidget(Appointment.demodata[index], selected)
+        : Container(height: 0.0, width: 0.0);
   }
   // void _handleAppointmentCallback(bool isSelected) {
 

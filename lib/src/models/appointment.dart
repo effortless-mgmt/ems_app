@@ -9,22 +9,22 @@ class Appointment {
   String location;
   static List<Appointment> appointments = <Appointment>[
     new Appointment(
-        new DateTime(2018, 10, 26),
+        new DateTime(2018, 10, 29),
         "Netto Spot",
         new TimeOfDay(hour: 07, minute: 30),
         new TimeOfDay(hour: 15, minute: 30)),
     new Appointment(
-        new DateTime(2018, 10, 27),
+        new DateTime(2018, 10, 30),
         "L'oréal CPD",
         new TimeOfDay(hour: 09, minute: 00),
         new TimeOfDay(hour: 19, minute: 00)),
     new Appointment(
-        new DateTime(2018, 10, 28),
+        new DateTime(2018, 11, 03),
         "H&M Incoming",
         new TimeOfDay(hour: 04, minute: 30),
         new TimeOfDay(hour: 13, minute: 00)),
     new Appointment(
-        new DateTime(2018, 10, 29),
+        new DateTime(2018, 11, 04),
         "Netto Kolonial",
         new TimeOfDay(hour: 07, minute: 00),
         new TimeOfDay(hour: 15, minute: 00)),
@@ -73,7 +73,6 @@ class AppointmentWidget extends StatelessWidget {
 
   final TextStyle selectedStyle =
       TextStyle(fontWeight: FontWeight.w500, color: Colors.white);
-
   AppointmentWidget(this.appointment, this.currentDatetime);
 
   @override
