@@ -1,5 +1,6 @@
 library utils;
 
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Utils {
@@ -148,6 +149,14 @@ class Utils {
       month++;
     }
     return new DateTime(year, month);
+  }
+
+  static DateTime changeTime(DateTime d, TimeOfDay t) {
+    return new DateTime(d.year, d.month, d.day, t.hour, t.minute);
+  }
+
+  static TimeOfDay asTimeOfDay(DateTime d) {
+    return new TimeOfDay(hour: d.hour, minute: d.minute);
   }
 
   static DateTime previousWeek(DateTime w) {

@@ -1,33 +1,31 @@
+import 'package:ems_app/src/models/workperiod.dart';
+import 'package:ems_app/src/widgets/calendar/calendar_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
+import 'package:duration/duration.dart';
 import 'dart:async';
 
 // TODO
-// 1. HEADLINE
-// 2. SNACKBAR ON ACCEPT (UNDO FUNCTION)
-// 3. REMOVE ITEM WITH ANIMATION ON ACCEPT
-// 4. CUPERTINO TIME PICKERS
+// 1. IMPLEMENT BLOC
+// 2. REMOVE ITEM WITH ANIMATION ON ACCEPT
+// 3. CUPERTINO TIME PICKERS
 
 class TimeReg extends StatefulWidget {
-  final DateTime date;
+  final DateTime start, stop;
   final String location;
-  final TimeOfDay start;
-  final TimeOfDay stop;
-  final int pause;
+  final Duration pause;
   final AnimationController animationController;
   final VoidCallback onAccepted;
 
   TimeReg(
       {Key key,
-      @required this.date,
       @required this.location,
       @required this.start,
       @required this.stop,
       @required this.pause,
       @required this.animationController,
       this.onAccepted})
-      : assert(date != null),
-        assert(location != null),
+      : assert(location != null),
         assert(start != null),
         assert(stop != null),
         assert(pause != null),
@@ -39,10 +37,10 @@ class TimeReg extends StatefulWidget {
 
 class _TimeRegState extends State<TimeReg> {
   DateTime _date;
-  TimeOfDay _start;
-  TimeOfDay _stop;
-  int _pause;
-  WorkHours _wh;
+  DateTime _start, _stop;
+  TimeOfDay _startTime, _stopTime;
+  Duration _pause;
+  WorkPeriod _wh;
 
   final List<String> _weekDays = <String>[
     "Mon",
@@ -57,34 +55,33 @@ class _TimeRegState extends State<TimeReg> {
   @override
   void initState() {
     super.initState();
-    _date = widget.date;
     _start = widget.start;
     _stop = widget.stop;
     _pause = widget.pause;
+    _startTime = Utils.asTimeOfDay(_start);
+    _stopTime = Utils.asTimeOfDay(_stop);
   }
 
   Future<Null> _selectStart(BuildContext context) async {
     final TimeOfDay picked = await showTimePicker(
-      context: context,
-      initialTime: _start,
-    );
+        context: context, initialTime: Utils.asTimeOfDay(_start));
     debugPrint("Start selected: ${picked.toString()}");
-    if (picked != _start && picked != null) {
+    if (picked != _startTime && picked != null) {
       setState(() {
-        _start = picked;
+        _startTime = picked;
+        _start = Utils.changeTime(_start, _startTime);
       });
     }
   }
 
   Future<Null> _selectStop(BuildContext context) async {
-    final TimeOfDay picked = await showTimePicker(
-      context: context,
-      initialTime: _stop,
-    );
+    final TimeOfDay picked =
+        await showTimePicker(context: context, initialTime: _stopTime);
     print("Stop selected: ${picked.toString()}");
-    if (picked != _stop && picked != null) {
+    if (picked != _stopTime && picked != null) {
       setState(() {
-        _stop = picked;
+        _stopTime = picked;
+        _stop = Utils.changeTime(_start, _stopTime);
       });
     }
   }
@@ -92,32 +89,27 @@ class _TimeRegState extends State<TimeReg> {
   Future<Null> _selectPause(BuildContext context) async {
     final Duration picked = await showDurationPicker(
       context: context,
-      initialTime: new Duration(minutes: _pause),
+      initialTime: _pause,
     );
     print("Pause selected: ${picked.toString()}");
-    if (picked.inMinutes != _pause && picked != null) {
+    if (picked != _pause && picked != null) {
       setState(() {
-        _pause = picked.inMinutes;
+        _pause = picked;
       });
     }
   }
 
   void _regTime() {
-    DateTime start = new DateTime(
-        _date.year, _date.month, _date.day, _start.hour, _start.minute);
-    DateTime stop = new DateTime(
-        _date.year, _date.month, _date.day, _stop.hour, _stop.minute);
-    if (stop.hour < start.hour) {
+    if (_stop.hour < _start.hour) {
       debugPrint("Stops next day");
-      debugPrint("Stop before adding day: ${stop.toString()}");
+      debugPrint("Stop before adding day: ${_stop.toString()}");
 
-      stop = stop.add(new Duration(days: 1));
-      debugPrint("Start DateTime: ${start.toString()}");
-      debugPrint("Stop DateTime: ${stop.toString()}");
+      _stop = _stop.add(new Duration(days: 1));
+      debugPrint("Start DateTime: ${_start.toString()}");
+      debugPrint("Stop DateTime: ${_stop.toString()}");
     }
-    stop = stop.subtract(new Duration(minutes: _pause));
-    _wh = new WorkHours(stop.difference(start).inMinutes, widget.date);
-    debugPrint("Registered: ${_wh.getHours()}h ${_wh.getMinutes()}m");
+    _wh = new WorkPeriod(_start, _stop, _pause);
+    printDuration(_wh.duration, abbreviated: true);
   }
 
   String getDateFormatted() {
@@ -141,23 +133,24 @@ class _TimeRegState extends State<TimeReg> {
                 children: <Widget>[
                   new ListTile(
                       title: new Text(widget.location),
-                      subtitle: new Text(_weekDays[widget.date.weekday - 1] +
+                      subtitle: new Text(_weekDays[widget.start.weekday - 1] +
                           " " +
-                          getDateFormatted())),
+                          Utils.fullDayFormat(_start))),
                   new ListTile(
                       leading:
-                          const Text("From", style: TextStyle(fontSize: 16.0)),
-                      title: new Text(_start.format(context)),
+                          const Text("Start", style: TextStyle(fontSize: 16.0)),
+                      title:
+                          new Text(Utils.asTimeOfDay(_start).format(context)),
                       onTap: () => _selectStart(context)),
                   new ListTile(
                       leading:
-                          const Text("To", style: TextStyle(fontSize: 16.0)),
-                      title: new Text(_stop.format(context)),
+                          const Text("Stop", style: TextStyle(fontSize: 16.0)),
+                      title: new Text(Utils.asTimeOfDay(_stop).format(context)),
                       onTap: () => _selectStop(context)),
                   new ListTile(
                       leading:
                           const Text("Break", style: TextStyle(fontSize: 16.0)),
-                      title: new Text(" " + _pause.toString() + " min"),
+                      title: new Text("${_pause.inMinutes} min"),
                       onTap: () => _selectPause(context)),
                   new Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -176,39 +169,5 @@ class _TimeRegState extends State<TimeReg> {
         ),
       ),
     );
-  }
-}
-
-class WorkHours {
-  int _durationMinutes;
-  int _minutes = 0;
-  double _hours = 0.0;
-  DateTime _date;
-
-  WorkHours(int durationMinutes, DateTime date) {
-    this._durationMinutes = durationMinutes;
-    this._date = date;
-    convertHours();
-  }
-
-  void convertHours() {
-    _minutes = _durationMinutes % 60;
-    _hours = (_durationMinutes - _minutes) / 60;
-  }
-
-  int getHours() {
-    return _hours.toInt();
-  }
-
-  int getMinutes() {
-    return _minutes;
-  }
-
-  int getDurationMinutes() {
-    return _durationMinutes;
-  }
-
-  String getDateFormatted() {
-    return "${_date.day}-${_date.month}-${_date.year}";
   }
 }

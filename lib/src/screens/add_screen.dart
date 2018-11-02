@@ -1,3 +1,6 @@
+import 'package:duration/duration.dart';
+import 'package:ems_app/src/models/workperiod.dart';
+import 'package:ems_app/src/widgets/calendar/calendar_utils.dart';
 import 'package:ems_app/src/widgets/timereg_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -17,36 +20,32 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
         duration: new Duration(milliseconds: 250), vsync: this);
     _unregHours = <TimeReg>[];
     TimeReg tr1 = new TimeReg(
-      date: new DateTime(2018, 10, 26),
       location: "Netto Spot",
-      start: new TimeOfDay(hour: 09, minute: 00),
-      stop: new TimeOfDay(hour: 17, minute: 00),
-      pause: 30,
+      start: new DateTime(2018, 10, 26, 09, 00),
+      stop: new DateTime(2018, 10, 26, 17, 00),
+      pause: new Duration(minutes: 30),
       animationController: _animationController,
     );
 
     TimeReg tr2 = new TimeReg(
-        date: new DateTime(2018, 10, 27),
         location: "H&M Incoming",
-        start: new TimeOfDay(hour: 08, minute: 30),
-        stop: new TimeOfDay(hour: 16, minute: 30),
-        pause: 30,
+        start: new DateTime(2018, 10, 26, 08, 30),
+        stop: new DateTime(2018, 10, 26, 16, 30),
+        pause: new Duration(minutes: 30),
         animationController: _animationController);
 
     TimeReg tr3 = new TimeReg(
-        date: new DateTime(2018, 10, 28),
         location: "L'oréal CPD Standard",
-        start: new TimeOfDay(hour: 06, minute: 00),
-        stop: new TimeOfDay(hour: 14, minute: 30),
-        pause: 30,
+        start: new DateTime(2018, 10, 26, 06, 00),
+        stop: new DateTime(2018, 10, 26, 14, 30),
+        pause: new Duration(minutes: 30),
         animationController: _animationController);
 
     TimeReg tr4 = new TimeReg(
-        date: new DateTime(2018, 10, 29),
         location: "Netto Kolonial",
-        start: new TimeOfDay(hour: 07, minute: 30),
-        stop: new TimeOfDay(hour: 15, minute: 30),
-        pause: 30,
+        start: new DateTime(2018, 10, 26, 07, 30),
+        stop: new DateTime(2018, 10, 26, 15, 30),
+        pause: new Duration(minutes: 30),
         animationController: _animationController);
 
     _unregHours.insert(_unregHours.length, tr1);
@@ -70,26 +69,21 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
 
   void _regTime(BuildContext context, int index) {
     TimeReg tr = _unregHours.removeAt(index);
-    DateTime start = new DateTime(tr.date.year, tr.date.month, tr.date.day,
-        tr.start.hour, tr.start.minute);
-    DateTime stop = new DateTime(
-        tr.date.year, tr.date.month, tr.date.day, tr.stop.hour, tr.stop.minute);
-    if (stop.hour < start.hour) {
-      debugPrint("Stops next day");
-      debugPrint("Stop before adding day: ${stop.toString()}");
+    // if (tr.stop.hour < tr.start.hour) {
+    //   debugPrint("Stops next day");
+    //   debugPrint("Stop before adding day: ${stop.toString()}");
 
-      stop = stop.add(new Duration(days: 1));
-      debugPrint("Start DateTime: ${start.toString()}");
-      debugPrint("Stop DateTime: ${stop.toString()}");
-    }
-    stop = stop.subtract(new Duration(minutes: tr.pause));
-    WorkHours wh = new WorkHours(stop.difference(start).inMinutes, tr.date);
-    debugPrint("Registered: ${wh.getHours()}h ${wh.getMinutes()}m");
-    _showUndoSnackBar(context, wh, tr, index);
+    //   stop = stop.add(new Duration(days: 1));
+    //   debugPrint("Start DateTime: ${start.toString()}");
+    //   debugPrint("Stop DateTime: ${stop.toString()}");
+    // }
+    // stop = stop.subtract(new Duration(minutes: tr.pause));
+    WorkPeriod workPeriod = new WorkPeriod(tr.start, tr.stop, tr.pause);
+    _showUndoSnackBar(context, workPeriod, tr, index);
   }
 
   void _showUndoSnackBar(
-      BuildContext context, WorkHours wh, TimeReg tr, int index) {
+      BuildContext context, WorkPeriod workPeriod, TimeReg tr, int index) {
     final snackBar = new SnackBar(
       action: new SnackBarAction(
           label: "Undo",
@@ -101,13 +95,13 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
           }),
       duration: new Duration(seconds: 5),
       content: Container(
-        height: 40.0,
+        height: 65.0,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            new Text("${tr.location} on ${wh.getDateFormatted()}"),
             new Text(
-                "Registered ${wh.getHours()}h ${wh.getMinutes()}m work, ${tr.pause}m break"),
+                "${tr.location} on ${Utils.fullDayFormat(workPeriod.start)}"),
+            new Text(workPeriod.registeredMessage),
           ],
         ),
       ),
@@ -117,7 +111,6 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
 
   Widget _buildItem(BuildContext context, int index) {
     return TimeReg(
-        date: _unregHours[index].date,
         location: _unregHours[index].location,
         start: _unregHours[index].start,
         stop: _unregHours[index].stop,
