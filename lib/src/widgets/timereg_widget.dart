@@ -139,13 +139,12 @@ class _TimeRegState extends State<TimeReg> {
                   new ListTile(
                       leading:
                           const Text("Start", style: TextStyle(fontSize: 16.0)),
-                      title:
-                          new Text(Utils.asTimeOfDay(_start).format(context)),
+                      title: new Text(_startTime.format(context)),
                       onTap: () => _selectStart(context)),
                   new ListTile(
                       leading:
                           const Text("Stop", style: TextStyle(fontSize: 16.0)),
-                      title: new Text(Utils.asTimeOfDay(_stop).format(context)),
+                      title: new Text(_stopTime.format(context)),
                       onTap: () => _selectStop(context)),
                   new ListTile(
                       leading:
