@@ -69,17 +69,33 @@ class Appointment {
 class AppointmentWidget extends StatelessWidget {
   final Appointment appointment;
   final DateTime currentDatetime;
+  final bool tempSelected = true;
+
+  final TextStyle selectedStyle =
+      TextStyle(fontWeight: FontWeight.w500, color: Colors.white);
 
   AppointmentWidget(this.appointment, this.currentDatetime);
 
   @override
   Widget build(BuildContext context) {
     print("Building appointment listTile");
-    return ListTile(
-        trailing: new Text(Utils.fullDayFormat(appointment.date)),
-        leading: new Text(
-            "${appointment.start.format(context)}-${appointment.stop.format(context)}"),
-        title: new Text(appointment.location),
-        selected: Utils.isSameDay(currentDatetime, appointment.date));
+    return Container(
+      margin: const EdgeInsets.all(2.0),
+      decoration: new BoxDecoration(
+          color: Colors.blueAccent,
+          borderRadius: BorderRadius.all(Radius.circular(6.0)),
+          border: tempSelected
+              ? new Border.all(color: Colors.blueAccent, width: 2.0)
+              : null),
+      child: ListTile(
+          trailing: new Text(Utils.fullDayFormat(appointment.date),
+              style: tempSelected ? selectedStyle : null),
+          leading: new Text(
+              "${appointment.start.format(context)}-${appointment.stop.format(context)}",
+              style: tempSelected ? selectedStyle : null),
+          title: new Text(appointment.location,
+              style: tempSelected ? selectedStyle : null),
+          selected: Utils.isSameDay(currentDatetime, appointment.date)),
+    );
   }
 }

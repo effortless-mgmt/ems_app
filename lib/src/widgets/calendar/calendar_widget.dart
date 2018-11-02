@@ -45,6 +45,7 @@ class _CalendarState extends State<Calendar> {
   String displayMonth;
   Appointment appointment;
   bool selectedHasAppointment = false;
+  int appointmentCount = 0;
   DateTime get selectedDate => _selectedDate;
 
   void initState() {
@@ -218,7 +219,7 @@ class _CalendarState extends State<Calendar> {
         child: new Center(
           child: selectedHasAppointment
               ? new Text(
-                  "${Utils.fullDayFormat(appointment.date)} at ${appointment.location}")
+                  "$appointmentCount appointment at ${appointment.location}")
               : new Text(
                   "No appointments on " + Utils.fullDayFormat(selectedDate)),
           // new IconButton(
@@ -455,10 +456,12 @@ class _CalendarState extends State<Calendar> {
     var firstDayOfCurrentWeek = Utils.firstDayOfWeek(day);
     var lastDayOfCurrentWeek = Utils.lastDayOfWeek(day);
     selectedHasAppointment = false;
+    appointmentCount = 0;
     for (Appointment a in _appointments) {
       if (Utils.isSameDay(a.date, day)) {
         appointment = a;
         selectedHasAppointment = true;
+        appointmentCount++;
       }
     }
     setState(() {
