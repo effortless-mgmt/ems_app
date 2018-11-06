@@ -3,10 +3,7 @@ import 'package:ems_app/util/date_utils.dart';
 import 'package:flutter/material.dart';
 
 // TODO
-// 1. MERGE APPOINTMENT AND WORKPERIOD
-// 1. IMPLEMENT BLOC
-// 2. REMOVE ITEM WITH ANIMATION ON ACCEPT
-// 3. CUPERTINO TIME PICKERS
+// 1. CUPERTINO TIME PICKERS
 
 class TimeReg extends StatelessWidget {
   final Appointment appointment;
@@ -43,6 +40,7 @@ class TimeReg extends StatelessWidget {
                       title: new Text(appointment.location),
                       subtitle:
                           new Text(DateUtils.fullDayFormat(appointment.start))),
+                  new Divider(),
                   new ListTile(
                       leading:
                           const Text("Start", style: TextStyle(fontSize: 16.0)),

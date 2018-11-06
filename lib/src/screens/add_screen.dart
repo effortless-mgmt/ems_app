@@ -43,15 +43,18 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
             });
           }),
       duration: new Duration(seconds: 5),
-      content: Container(
-        height: 65.0,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            new Text("$location on $date"),
-            new Text(appointment.registeredMessage),
-          ],
-        ),
+      content: Wrap(
+        children: <Widget>[
+          Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text("$location on $date"),
+                new Text(appointment.registeredMessage),
+              ],
+            ),
+          ),
+        ],
       ),
     );
     Scaffold.of(context).showSnackBar(snackBar);
@@ -63,6 +66,7 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
         animationController: _animationController,
         onAccepted: (app) {
           setState(() {
+            _animationController.reverse();
             app.approved = true;
             _handleSubmission(context, app);
           });
