@@ -10,6 +10,7 @@ class CalendarTile extends StatelessWidget {
   final bool isSelected;
   final bool hasAppointment;
   final bool appointmentIsOld;
+  final bool appointmentIsApproved;
   final TextStyle dayOfWeekStyles;
   final TextStyle dateStyles;
   final Widget child;
@@ -24,7 +25,8 @@ class CalendarTile extends StatelessWidget {
       this.isDayOfWeek: false,
       this.isSelected: false,
       this.hasAppointment,
-      this.appointmentIsOld});
+      this.appointmentIsOld,
+      this.appointmentIsApproved});
 
   Widget renderDateOrDayOfWeek(BuildContext context) {
     bool notNull(Object o) => o != null;
@@ -69,8 +71,11 @@ class CalendarTile extends StatelessWidget {
               Container(height: 5.0),
               hasAppointment
                   ? appointmentIsOld
-                      ? new CircleAvatar(
-                          backgroundColor: Colors.grey, radius: 3.0)
+                      ? appointmentIsApproved
+                          ? new CircleAvatar(
+                              backgroundColor: Colors.grey, radius: 3.0)
+                          : new CircleAvatar(
+                              backgroundColor: Colors.orange, radius: 3.0)
                       : new CircleAvatar(
                           backgroundColor: Colors.blueAccent, radius: 3.0)
                   : null,

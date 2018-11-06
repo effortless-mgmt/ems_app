@@ -9,6 +9,7 @@ import 'package:tuple/tuple.dart';
 typedef DayBuilder(BuildContext context, DateTime day);
 
 class Calendar extends StatefulWidget {
+  final DateTime selectedDate;
   final ValueChanged<DateTime> onDateSelected;
   final ValueChanged<Tuple2<DateTime, DateTime>> onSelectedRangeChange;
   final bool isExpandable;
@@ -20,7 +21,8 @@ class Calendar extends StatefulWidget {
   final List<Appointment> appointments;
 
   Calendar(
-      {this.onDateSelected,
+      {this.selectedDate,
+      this.onDateSelected,
       this.onSelectedRangeChange,
       this.isExpandable: true,
       this.dayBuilder,
@@ -46,12 +48,12 @@ class _CalendarState extends State<Calendar> {
   bool selectedHasAppointment = false;
   bool selectedAppointmentIsOld = false;
   int appointmentCount = 0;
-  DateTime get selectedDate => _selectedDate;
+  // DateTime get selectedDate => _selectedDate;
 
   void initState() {
     super.initState();
     _appointments = widget.appointments;
-    _selectedDate = new DateTime.now();
+    _selectedDate = widget.selectedDate;
     if (widget.initialCalendarDateOverride != null)
       _selectedDate = widget.initialCalendarDateOverride;
     selectedMonthsDays = DateUtils.daysInMonth(_selectedDate);
@@ -163,12 +165,16 @@ class _CalendarState extends State<Calendar> {
       (day) {
         bool hasAppointment = false;
         bool appointmentIsOld = false;
+        bool appointmentIsApproved = false;
 
         for (Appointment a in _appointments) {
           if (DateUtils.isSameDay(a.start, day)) {
             hasAppointment = true;
             if (a.stop.isBefore(DateTime.now())) {
               appointmentIsOld = true;
+              if (a.approved) {
+                appointmentIsApproved = true;
+              }
             }
           }
         }
@@ -188,6 +194,7 @@ class _CalendarState extends State<Calendar> {
               date: day,
               hasAppointment: hasAppointment,
               appointmentIsOld: appointmentIsOld,
+              appointmentIsApproved: appointmentIsApproved,
               onDateSelected: () => handleSelectedDateAndUserCallback(day),
             ),
           );
@@ -199,7 +206,8 @@ class _CalendarState extends State<Calendar> {
               dateStyles: configureDateStyle(monthStarted, monthEnded, day),
               hasAppointment: hasAppointment,
               appointmentIsOld: appointmentIsOld,
-              isSelected: DateUtils.isSameDay(selectedDate, day),
+              appointmentIsApproved: appointmentIsApproved,
+              isSelected: DateUtils.isSameDay(_selectedDate, day),
             ),
           );
         }
@@ -239,15 +247,15 @@ class _CalendarState extends State<Calendar> {
               ? selectedAppointmentIsOld
                   ? new Text(
                       "$appointmentCount old appointment at ${appointment.location}")
-                  : DateUtils.isSameDay(selectedDate, DateTime.now())
+                  : DateUtils.isSameDay(_selectedDate, DateTime.now())
                       ? Text(
                           "$appointmentCount appointment today at ${appointment.location}")
                       : Text(
                           "$appointmentCount upcoming appointment at ${appointment.location}")
-              : DateUtils.isSameDay(selectedDate, DateTime.now())
+              : DateUtils.isSameDay(_selectedDate, DateTime.now())
                   ? new Text("No appointments today")
                   : new Text("No appointments on " +
-                      DateUtils.fullDayFormat(selectedDate)),
+                      DateUtils.fullDayFormat(_selectedDate)),
           // new IconButton(
           //   iconSize: 20.0,
           //   padding: new EdgeInsets.all(0.0),

@@ -9,7 +9,13 @@ class CalenderScreen extends StatefulWidget {
 }
 
 class _CalenderScreenState extends State<CalenderScreen> {
-  DateTime selected = DateTime.now();
+  DateTime selected;
+
+  @override
+  void initState() {
+    super.initState();
+    selected = DateTime.now();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +23,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
       body: new Column(
         children: <Widget>[
           new Calendar(
+              selectedDate: selected,
               appointments: Appointment.demodata,
               onDateSelected: (date) => setState(() => selected = date)),
           new Expanded(
@@ -31,9 +38,13 @@ class _CalenderScreenState extends State<CalenderScreen> {
 
   Widget _appointmentBuilder(BuildContext context, int index) {
     bool isOldAppointment =
-        Appointment.demodata[index].start.isBefore(DateTime.now());
+        Appointment.demodata[index].stop.isBefore(DateTime.now());
     return isOldAppointment
         ? Container(height: 0.0, width: 0.0)
-        : AppointmentWidget(Appointment.demodata[index], selected);
+        : AppointmentWidget(
+            appointment: Appointment.demodata[index],
+            currentDateTime: selected,
+            onAppointmentSelected: (app) =>
+                setState(() => selected = app.start));
   }
 }
