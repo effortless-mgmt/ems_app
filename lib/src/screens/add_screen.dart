@@ -20,7 +20,6 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
     subDemo = new Substitute(Appointment.demodata);
     _animationController = new AnimationController(
         duration: new Duration(milliseconds: 250), vsync: this);
@@ -63,7 +62,6 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
         appointment: subDemo.unapprovedAppointments[index],
         animationController: _animationController,
         onAccepted: (app) {
-          print("lort");
           setState(() {
             app.approved = true;
             _handleSubmission(context, app);
