@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/widgets/calendar/calendar_tile.dart';
-import 'package:ems_app/src/widgets/calendar/calendar_utils.dart';
+import 'package:ems_app/util/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
@@ -35,7 +35,7 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
-  final calendarUtils = new Utils();
+  final calendarUtils = new DateUtils();
   List<DateTime> selectedMonthsDays;
   Iterable<DateTime> selectedWeeksDays;
   DateTime _selectedDate = new DateTime.now();
@@ -54,14 +54,14 @@ class _CalendarState extends State<Calendar> {
     _appointments = widget.appointments;
     if (widget.initialCalendarDateOverride != null)
       _selectedDate = widget.initialCalendarDateOverride;
-    selectedMonthsDays = Utils.daysInMonth(_selectedDate);
-    var firstDayOfCurrentWeek = Utils.firstDayOfWeek(_selectedDate);
-    var lastDayOfCurrentWeek = Utils.lastDayOfWeek(_selectedDate);
+    selectedMonthsDays = DateUtils.daysInMonth(_selectedDate);
+    var firstDayOfCurrentWeek = DateUtils.firstDayOfWeek(_selectedDate);
+    var lastDayOfCurrentWeek = DateUtils.lastDayOfWeek(_selectedDate);
     selectedWeeksDays =
-        Utils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
+        DateUtils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
             .toList()
             .sublist(0, 7);
-    displayMonth = Utils.formatMonth(_selectedDate);
+    displayMonth = DateUtils.formatMonth(_selectedDate);
   }
 
   Widget get nameAndIconRow {
@@ -143,7 +143,7 @@ class _CalendarState extends State<Calendar> {
     List<DateTime> calendarDays =
         isExpanded ? selectedMonthsDays : selectedWeeksDays;
 
-    Utils.weekdays.forEach(
+    DateUtils.weekdays.forEach(
       (day) {
         dayWidgets.add(
           new CalendarTile(
@@ -163,7 +163,7 @@ class _CalendarState extends State<Calendar> {
         bool appointmentIsOld = false;
 
         for (Appointment a in _appointments) {
-          if (Utils.isSameDay(a.date, day)) {
+          if (DateUtils.isSameDay(a.start, day)) {
             hasAppointment = true;
             if (day.isBefore(DateTime.now())) {
               appointmentIsOld = true;
@@ -175,7 +175,7 @@ class _CalendarState extends State<Calendar> {
           monthEnded = true;
         }
 
-        if (Utils.isFirstDayOfMonth(day)) {
+        if (DateUtils.isFirstDayOfMonth(day)) {
           monthStarted = true;
         }
 
@@ -197,7 +197,7 @@ class _CalendarState extends State<Calendar> {
               dateStyles: configureDateStyle(monthStarted, monthEnded, day),
               hasAppointment: hasAppointment,
               appointmentIsOld: appointmentIsOld,
-              isSelected: Utils.isSameDay(selectedDate, day),
+              isSelected: DateUtils.isSameDay(selectedDate, day),
             ),
           );
         }
@@ -208,7 +208,7 @@ class _CalendarState extends State<Calendar> {
 
   TextStyle configureDateStyle(monthStarted, monthEnded, day) {
     TextStyle dateStyles;
-    bool isToday = Utils.isSameDay(day, DateTime.now());
+    bool isToday = DateUtils.isSameDay(day, DateTime.now());
     if (isExpanded) {
       dateStyles = monthStarted && !monthEnded
           ? isToday
@@ -237,15 +237,15 @@ class _CalendarState extends State<Calendar> {
               ? selectedAppointmentIsOld
                   ? new Text(
                       "$appointmentCount old appointment at ${appointment.location}")
-                  : Utils.isSameDay(selectedDate, DateTime.now())
+                  : DateUtils.isSameDay(selectedDate, DateTime.now())
                       ? Text(
                           "$appointmentCount appointment today at ${appointment.location}")
                       : Text(
                           "$appointmentCount upcoming appointment at ${appointment.location}")
-              : Utils.isSameDay(selectedDate, DateTime.now())
+              : DateUtils.isSameDay(selectedDate, DateTime.now())
                   ? new Text("No appointments today")
                   : new Text("No appointments on " +
-                      Utils.fullDayFormat(selectedDate)),
+                      DateUtils.fullDayFormat(selectedDate)),
           // new IconButton(
           //   iconSize: 20.0,
           //   padding: new EdgeInsets.all(0.0),
@@ -282,14 +282,14 @@ class _CalendarState extends State<Calendar> {
 
   void resetToToday() {
     _selectedDate = new DateTime.now();
-    var firstDayOfCurrentWeek = Utils.firstDayOfWeek(_selectedDate);
-    var lastDayOfCurrentWeek = Utils.lastDayOfWeek(_selectedDate);
+    var firstDayOfCurrentWeek = DateUtils.firstDayOfWeek(_selectedDate);
+    var lastDayOfCurrentWeek = DateUtils.lastDayOfWeek(_selectedDate);
 
     setState(() {
       selectedWeeksDays =
-          Utils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
+          DateUtils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
               .toList();
-      displayMonth = Utils.formatMonth(_selectedDate);
+      displayMonth = DateUtils.formatMonth(_selectedDate);
     });
 
     _launchDateSelectionCallback(_selectedDate);
@@ -297,52 +297,52 @@ class _CalendarState extends State<Calendar> {
 
   void nextMonth() {
     setState(() {
-      _selectedDate = Utils.nextMonth(_selectedDate);
-      var firstDateOfNewMonth = Utils.firstDayOfMonth(_selectedDate);
-      var lastDateOfNewMonth = Utils.lastDayOfMonth(_selectedDate);
+      _selectedDate = DateUtils.nextMonth(_selectedDate);
+      var firstDateOfNewMonth = DateUtils.firstDayOfMonth(_selectedDate);
+      var lastDateOfNewMonth = DateUtils.lastDayOfMonth(_selectedDate);
       updateSelectedRange(firstDateOfNewMonth, lastDateOfNewMonth);
-      selectedMonthsDays = Utils.daysInMonth(_selectedDate);
-      displayMonth = Utils.formatMonth(_selectedDate);
+      selectedMonthsDays = DateUtils.daysInMonth(_selectedDate);
+      displayMonth = DateUtils.formatMonth(_selectedDate);
     });
   }
 
   void previousMonth() {
     setState(() {
-      _selectedDate = Utils.previousMonth(_selectedDate);
-      var firstDateOfNewMonth = Utils.firstDayOfMonth(_selectedDate);
-      var lastDateOfNewMonth = Utils.lastDayOfMonth(_selectedDate);
+      _selectedDate = DateUtils.previousMonth(_selectedDate);
+      var firstDateOfNewMonth = DateUtils.firstDayOfMonth(_selectedDate);
+      var lastDateOfNewMonth = DateUtils.lastDayOfMonth(_selectedDate);
       updateSelectedRange(firstDateOfNewMonth, lastDateOfNewMonth);
-      selectedMonthsDays = Utils.daysInMonth(_selectedDate);
-      displayMonth = Utils.formatMonth(_selectedDate);
+      selectedMonthsDays = DateUtils.daysInMonth(_selectedDate);
+      displayMonth = DateUtils.formatMonth(_selectedDate);
     });
   }
 
   void nextWeek() {
     setState(() {
-      _selectedDate = Utils.nextWeek(_selectedDate);
-      var firstDayOfCurrentWeek = Utils.firstDayOfWeek(_selectedDate);
-      var lastDayOfCurrentWeek = Utils.lastDayOfWeek(_selectedDate);
+      _selectedDate = DateUtils.nextWeek(_selectedDate);
+      var firstDayOfCurrentWeek = DateUtils.firstDayOfWeek(_selectedDate);
+      var lastDayOfCurrentWeek = DateUtils.lastDayOfWeek(_selectedDate);
       updateSelectedRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek);
       selectedWeeksDays =
-          Utils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
+          DateUtils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
               .toList()
               .sublist(0, 7);
-      displayMonth = Utils.formatMonth(_selectedDate);
+      displayMonth = DateUtils.formatMonth(_selectedDate);
     });
     _launchDateSelectionCallback(_selectedDate);
   }
 
   void previousWeek() {
     setState(() {
-      _selectedDate = Utils.previousWeek(_selectedDate);
-      var firstDayOfCurrentWeek = Utils.firstDayOfWeek(_selectedDate);
-      var lastDayOfCurrentWeek = Utils.lastDayOfWeek(_selectedDate);
+      _selectedDate = DateUtils.previousWeek(_selectedDate);
+      var firstDayOfCurrentWeek = DateUtils.firstDayOfWeek(_selectedDate);
+      var lastDayOfCurrentWeek = DateUtils.lastDayOfWeek(_selectedDate);
       updateSelectedRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek);
       selectedWeeksDays =
-          Utils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
+          DateUtils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
               .toList()
               .sublist(0, 7);
-      displayMonth = Utils.formatMonth(_selectedDate);
+      displayMonth = DateUtils.formatMonth(_selectedDate);
     });
     _launchDateSelectionCallback(_selectedDate);
   }
@@ -363,16 +363,16 @@ class _CalendarState extends State<Calendar> {
     );
 
     if (selected != null) {
-      var firstDayOfCurrentWeek = Utils.firstDayOfWeek(selected);
-      var lastDayOfCurrentWeek = Utils.lastDayOfWeek(selected);
+      var firstDayOfCurrentWeek = DateUtils.firstDayOfWeek(selected);
+      var lastDayOfCurrentWeek = DateUtils.lastDayOfWeek(selected);
 
       setState(() {
         _selectedDate = selected;
         selectedWeeksDays =
-            Utils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
+            DateUtils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
                 .toList();
-        selectedMonthsDays = Utils.daysInMonth(selected);
-        displayMonth = Utils.formatMonth(selected);
+        selectedMonthsDays = DateUtils.daysInMonth(selected);
+        displayMonth = DateUtils.formatMonth(selected);
       });
       // updating selected date range based on selected week
       updateSelectedRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek);
@@ -477,13 +477,13 @@ class _CalendarState extends State<Calendar> {
   }
 
   void handleSelectedDateAndUserCallback(DateTime day) {
-    var firstDayOfCurrentWeek = Utils.firstDayOfWeek(day);
-    var lastDayOfCurrentWeek = Utils.lastDayOfWeek(day);
+    var firstDayOfCurrentWeek = DateUtils.firstDayOfWeek(day);
+    var lastDayOfCurrentWeek = DateUtils.lastDayOfWeek(day);
     selectedHasAppointment = false;
     selectedAppointmentIsOld = false;
     appointmentCount = 0;
     for (Appointment a in _appointments) {
-      if (Utils.isSameDay(a.date, day)) {
+      if (DateUtils.isSameDay(a.start, day)) {
         appointment = a;
         selectedHasAppointment = true;
         appointmentCount++;
@@ -495,10 +495,10 @@ class _CalendarState extends State<Calendar> {
     setState(() {
       _selectedDate = day;
       selectedWeeksDays =
-          Utils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
+          DateUtils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
               .toList();
-      selectedMonthsDays = Utils.daysInMonth(day);
-      displayMonth = Utils.formatMonth(day);
+      selectedMonthsDays = DateUtils.daysInMonth(day);
+      displayMonth = DateUtils.formatMonth(day);
     });
     _launchDateSelectionCallback(day);
   }

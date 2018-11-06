@@ -1,4 +1,4 @@
-import 'package:ems_app/src/widgets/calendar/calendar_utils.dart';
+import 'package:ems_app/util/date_utils.dart';
 import 'package:flutter/material.dart';
 // import 'package:widgets/calendar/calendar_tile.dart';
 
@@ -56,9 +56,9 @@ class CalendarTile extends StatelessWidget {
               Container(
                 margin: hasAppointment ? const EdgeInsets.only(top: 5.0) : null,
                 child: new Text(
-                  Utils.formatDay(date).toString(),
+                  DateUtils.formatDay(date).toString(),
                   style: isSelected
-                      ? Utils.isSameDay(date, DateTime.now())
+                      ? DateUtils.isSameDay(date, DateTime.now())
                           ? new TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold)
                           : new TextStyle(color: Colors.white)

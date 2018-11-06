@@ -1,100 +1,93 @@
-import 'package:ems_app/src/widgets/calendar/calendar_utils.dart';
+import 'package:duration/duration.dart';
+import 'package:ems_app/util/date_utils.dart';
 import 'package:flutter/material.dart';
 
 class Appointment {
-  Appointment([this.date, this.location, this.start, this.stop]);
+  Appointment([this.location, this._start, this._stop, this._pause]);
 
-  DateTime date;
-  TimeOfDay start, stop;
+  DateTime _start, _stop;
+  Duration _pause;
   String location;
+  bool _approved = false;
+
+  void record(DateTime start, DateTime stop, Duration pause, bool app) {
+    _start = start;
+    _stop = stop;
+    _pause = pause;
+    _approved = app;
+  }
+
+  DateTime get start => _start;
+  DateTime get stop => _stop;
+  Duration get pause => _pause;
+  Duration get duration => _stop.subtract(_pause).difference(_start);
+  String get durationFormatted =>
+      printDuration(this.duration, abbreviated: true);
+  String get pauseFormatted => printDuration(this.pause, abbreviated: true);
+  String get totalFormatted =>
+      printDuration(this.duration + this.pause, abbreviated: true);
+  String get registeredMessage =>
+      "Worked: ${this.durationFormatted} \nBreak: ${this.pauseFormatted} \nTotal: ${this.totalFormatted}";
+  bool get approved => _approved;
+  set start(start) => _start = start;
+  set stop(stop) => _stop = stop;
+  set pause(pause) => _pause = pause;
+  set approved(app) => _approved = app;
+
   static List<Appointment> appointments = <Appointment>[
-    new Appointment(
-        new DateTime(2018, 10, 29),
-        "Netto Spot",
-        new TimeOfDay(hour: 07, minute: 30),
-        new TimeOfDay(hour: 15, minute: 30)),
-    new Appointment(
-        new DateTime(2018, 10, 30),
-        "L'oréal CPD",
-        new TimeOfDay(hour: 09, minute: 00),
-        new TimeOfDay(hour: 19, minute: 00)),
-    new Appointment(
-        new DateTime(2018, 11, 03),
-        "H&M Incoming",
-        new TimeOfDay(hour: 04, minute: 30),
-        new TimeOfDay(hour: 13, minute: 00)),
-    new Appointment(
-        new DateTime(2018, 11, 04),
-        "Netto Kolonial",
-        new TimeOfDay(hour: 07, minute: 00),
-        new TimeOfDay(hour: 15, minute: 00)),
+    new Appointment("Netto Spot", new DateTime(2018, 10, 29, 07, 30),
+        new DateTime(2018, 10, 29, 15, 30), new Duration(minutes: 30)),
+    new Appointment("L'oréal CPD", new DateTime(2018, 10, 30, 09, 00),
+        new DateTime(2018, 10, 30, 19, 00), new Duration(minutes: 30)),
+    new Appointment("H&M Incoming", new DateTime(2018, 11, 03, 04, 30),
+        new DateTime(2018, 11, 03, 13, 00), new Duration(minutes: 30)),
+    new Appointment("Netto Kolonial", new DateTime(2018, 11, 04, 07, 00),
+        new DateTime(2018, 11, 04, 15, 00), new Duration(minutes: 30)),
+    new Appointment("Nilfisk Truck", new DateTime(2018, 11, 06, 06, 00),
+        new DateTime(2018, 11, 06, 14, 00), new Duration(minutes: 30)),
+    new Appointment("Nilfisk Truck", new DateTime(2018, 11, 07, 06, 00),
+        new DateTime(2018, 11, 07, 14, 00), new Duration(minutes: 30)),
+    new Appointment("Fiskars Gaveudpakning", new DateTime(2018, 11, 10, 08, 00),
+        new DateTime(2018, 11, 10, 16, 00), new Duration(minutes: 30)),
+    new Appointment("Fiskars Gaveudpakning", new DateTime(2018, 11, 11, 08, 00),
+        new DateTime(2018, 11, 11, 16, 00), new Duration(minutes: 30)),
+    new Appointment("Netto Kolonial Nat", new DateTime(2018, 11, 11, 23, 00),
+        new DateTime(2018, 11, 11, 07, 00), new Duration(minutes: 30)),
   ];
 
   static List<Appointment> get demodata => appointments;
 }
 
-// class AppointmentWidget extends StatefulWidget {
-//   // final ValueChanged<bool> isSelectedUpdate;
-//   final Appointment appointment;
-//   final bool isSelected;
-
-//   AppointmentWidget(this.appointment, this.isSelected);
-
-//   @override
-//   State<StatefulWidget> createState() => _AppointmentWidgetState();
-// }
-
-// class _AppointmentWidgetState extends State<AppointmentWidget> {
-//   Appointment appointment;
-//   bool isSelected;
-
-//   @override
-//   initState() {
-//     super.initState();
-//     appointment = widget.appointment;
-//     isSelected = widget.isSelected;
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListTile(
-//         trailing: new Text(Utils.fullDayFormat(appointment.date)),
-//         leading: new Text(
-//             "${appointment.start.format(context)}-${appointment.stop.format(context)}"),
-//         title: new Text(appointment.location),
-//         selected: isSelected);
-//   }
-// }
-
 class AppointmentWidget extends StatelessWidget {
   final Appointment appointment;
   final DateTime currentDatetime;
-  final bool tempSelected = true;
 
-  final TextStyle selectedStyle =
-      TextStyle(fontWeight: FontWeight.w500, color: Colors.white);
+  final TextStyle selectedStyle = TextStyle(color: Colors.white);
   AppointmentWidget(this.appointment, this.currentDatetime);
 
   @override
   Widget build(BuildContext context) {
-    print("Building appointment listTile");
+    final String startFormatted =
+        DateUtils.asTimeOfDay(appointment.start).format(context);
+    final String stopFormatted =
+        DateUtils.asTimeOfDay(appointment.stop).format(context);
+    final bool selected =
+        DateUtils.isSameDay(currentDatetime, appointment.start);
     return Container(
-      margin: const EdgeInsets.all(2.0),
-      decoration: new BoxDecoration(
-          color: Colors.blueAccent,
-          borderRadius: BorderRadius.all(Radius.circular(6.0)),
-          border: tempSelected
-              ? new Border.all(color: Colors.blueAccent, width: 2.0)
-              : null),
-      child: ListTile(
-          trailing: new Text(Utils.fullDayFormat(appointment.date),
-              style: tempSelected ? selectedStyle : null),
-          leading: new Text(
-              "${appointment.start.format(context)}-${appointment.stop.format(context)}",
-              style: tempSelected ? selectedStyle : null),
+        margin: const EdgeInsets.all(2.0),
+        decoration: selected
+            ? new BoxDecoration(
+                color: Colors.blueAccent[200],
+                borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                border: new Border.all(color: Colors.blueAccent, width: 0.0))
+            : null,
+        child: ListTile(
+          trailing: new Text(DateUtils.fullDayFormat(appointment.start),
+              style: selected ? selectedStyle : null),
+          leading: new Text("$startFormatted-$stopFormatted",
+              style: selected ? selectedStyle : null),
           title: new Text(appointment.location,
-              style: tempSelected ? selectedStyle : null),
-          selected: Utils.isSameDay(currentDatetime, appointment.date)),
-    );
+              style: selected ? selectedStyle : null),
+        ));
   }
 }
