@@ -13,7 +13,7 @@ class Substitute {
   List<Appointment> get unapprovedAppointments {
     List<Appointment> unregistered = <Appointment>[];
     for (Appointment e in _appointments) {
-      if (!e.approved && e.start.isBefore(DateTime.now())) {
+      if (!e.approved && e.stop.isBefore(DateTime.now())) {
         unregistered.add(e);
       }
     }

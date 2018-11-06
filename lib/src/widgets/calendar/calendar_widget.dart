@@ -35,10 +35,9 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
-  final calendarUtils = new DateUtils();
   List<DateTime> selectedMonthsDays;
   Iterable<DateTime> selectedWeeksDays;
-  DateTime _selectedDate = new DateTime.now();
+  DateTime _selectedDate;
   List<Appointment> _appointments;
   String currentMonth;
   bool isExpanded = true;
@@ -52,6 +51,7 @@ class _CalendarState extends State<Calendar> {
   void initState() {
     super.initState();
     _appointments = widget.appointments;
+    _selectedDate = new DateTime.now();
     if (widget.initialCalendarDateOverride != null)
       _selectedDate = widget.initialCalendarDateOverride;
     selectedMonthsDays = DateUtils.daysInMonth(_selectedDate);
@@ -62,6 +62,8 @@ class _CalendarState extends State<Calendar> {
             .toList()
             .sublist(0, 7);
     displayMonth = DateUtils.formatMonth(_selectedDate);
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => handleSelectedDateAndUserCallback(_selectedDate));
   }
 
   Widget get nameAndIconRow {
@@ -165,7 +167,7 @@ class _CalendarState extends State<Calendar> {
         for (Appointment a in _appointments) {
           if (DateUtils.isSameDay(a.start, day)) {
             hasAppointment = true;
-            if (day.isBefore(DateTime.now())) {
+            if (a.stop.isBefore(DateTime.now())) {
               appointmentIsOld = true;
             }
           }
@@ -292,8 +294,7 @@ class _CalendarState extends State<Calendar> {
       selectedMonthsDays = DateUtils.daysInMonth(_selectedDate);
       displayMonth = DateUtils.formatMonth(_selectedDate);
     });
-
-    _launchDateSelectionCallback(_selectedDate);
+    handleSelectedDateAndUserCallback(_selectedDate);
   }
 
   void nextMonth() {
@@ -488,7 +489,7 @@ class _CalendarState extends State<Calendar> {
         appointment = a;
         selectedHasAppointment = true;
         appointmentCount++;
-        if (day.isBefore(DateTime.now())) {
+        if (a.stop.isBefore(DateTime.now())) {
           selectedAppointmentIsOld = true;
         }
       }

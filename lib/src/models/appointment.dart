@@ -42,7 +42,7 @@ class Appointment {
     new Appointment("Netto Kolonial", new DateTime(2018, 11, 04, 07, 00),
         new DateTime(2018, 11, 04, 15, 00), new Duration(minutes: 30)),
     new Appointment("Nilfisk Truck", new DateTime(2018, 11, 06, 06, 00),
-        new DateTime(2018, 11, 06, 14, 00), new Duration(minutes: 30)),
+        new DateTime(2018, 11, 06, 22, 00), new Duration(minutes: 30)),
     new Appointment("Nilfisk Truck", new DateTime(2018, 11, 07, 06, 00),
         new DateTime(2018, 11, 07, 14, 00), new Duration(minutes: 30)),
     new Appointment("Fiskars Gaveudpakning", new DateTime(2018, 11, 10, 08, 00),
