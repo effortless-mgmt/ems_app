@@ -32,35 +32,41 @@ class TimeReg extends StatelessWidget {
         child: Card(
           elevation: 4.0,
           child: Container(
-            margin: new EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
+            margin: new EdgeInsets.only(
+                top: 12.0, left: 12.0, right: 12.0, bottom: 12.0),
             child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   new ListTile(
                       title: new Text(appointment.location),
                       subtitle:
                           new Text(DateUtils.fullDayFormat(appointment.start))),
-                  new Divider(),
+                  new Divider(height: 0.0),
                   new ListTile(
                       leading:
                           const Text("Start", style: TextStyle(fontSize: 16.0)),
-                      title: new Text(DateUtils.asTimeOfDay(appointment.start)
-                          .format(context)),
+                      trailing: new Text(
+                          DateUtils.asTimeOfDay(appointment.start)
+                              .format(context)),
                       onTap: () => onStartChanged(appointment)),
+                  new Divider(height: 0.0),
                   new ListTile(
                       leading:
                           const Text("Stop", style: TextStyle(fontSize: 16.0)),
-                      title: new Text(DateUtils.asTimeOfDay(appointment.stop)
+                      trailing: new Text(DateUtils.asTimeOfDay(appointment.stop)
                           .format(context)),
                       onTap: () => onStopChanged(appointment)),
+                  new Divider(height: 0.0),
                   new ListTile(
                       leading:
                           const Text("Break", style: TextStyle(fontSize: 16.0)),
-                      title: new Text("${appointment.pause.inMinutes} min"),
+                      trailing: new Text("${appointment.pause.inMinutes} min"),
                       onTap: () => onPauseChanged(appointment)),
+                  new Divider(height: 0.0),
                   new Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
+                      new Container(width: 100.0),
                       new MaterialButton(
                           child: new Text("Accept",
                               style: new TextStyle(color: Colors.blueAccent)),
