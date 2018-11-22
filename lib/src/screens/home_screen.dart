@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
       return Column(children: [
         ListTile(
           title: Text(
-            item.heading,
+            item._heading,
           ),
         ),
         Divider(
@@ -34,24 +34,24 @@ class HomeScreen extends StatelessWidget {
 
   _buildUpcomingShifts(BuildContext context, UpcomingShift item) {
     return ListTile(
-      leading: _buildDateIcon(context, item.shiftStart),
-      title: Text(DateFormat.Hm().format(item.shiftStart) +
+      leading: _buildDateIcon(context, item._shiftStart),
+      title: Text(DateFormat.Hm().format(item._shiftStart) +
           " - " +
-          DateFormat.Hm().format(item.shiftEnd)),
-      subtitle: Text(item.location),
-      trailing: Text(item.status),
+          DateFormat.Hm().format(item._shiftEnd)),
+      subtitle: Text(item._location),
+      trailing: Text(item._status),
     );
   }
 
   _buildAvailableShifts(BuildContext context, AvailableShift item) {
     return ListTile(
-      leading: _buildDateIcon(context, item.shiftStart),
-      title: Text(DateFormat.Hm().format(item.shiftStart) +
+      leading: _buildDateIcon(context, item._shiftStart),
+      title: Text(DateFormat.Hm().format(item._shiftStart) +
           " - " +
-          DateFormat.Hm().format(item.shiftEnd)),
-      subtitle: Text(item.location),
+          DateFormat.Hm().format(item._shiftEnd)),
+      subtitle: Text(item._location),
       trailing: Checkbox(
-        value: item.checked,
+        value: item._checked,
         onChanged: null, // TODO: add method for accepting available shift,
       ),
     );
@@ -102,43 +102,111 @@ class HomeScreen extends StatelessWidget {
 class ListItem {}
 
 class HeadingItem extends ListItem {
-  final String heading;
+  final String _heading;
 
-  HeadingItem(this.heading);
+  HeadingItem(this._heading);
 }
 
 class ShiftItem extends ListItem {
-  // DateTime shiftStart;
-  // DateTime shiftEnd;
-  // String location;
+  final DateTime _shiftStart;
+  final DateTime _shiftEnd;
+  final String _location;
+
+  ShiftItem.protected(this._shiftStart, this._shiftEnd, this._location);
+
+  factory ShiftItem.fromJson(Map<dynamic, dynamic> json) {
+    if (json["type"] == "available") {
+      return AvailableShift(
+        shiftStart: DateTime.parse(json["shiftStart"]),
+        shiftEnd: DateTime.parse(json["shiftEnd"]),
+        location: json["location"],
+      );
+    } else if (json["type"] == "upcoming") {
+      return UpcomingShift(
+        status: json["status"],
+        shiftStart: DateTime.parse(json["shiftStart"]),
+        shiftEnd: DateTime.parse(json["shiftEnd"]),
+        location: json["location"],
+      );
+    } else {
+      return null;
+    }
+  }
 }
 
-class AvailableShift implements ShiftItem {
-  final DateTime shiftStart;
-  final DateTime shiftEnd;
-  final String location;
-  bool checked = false;
-
-  AvailableShift(this.shiftStart, this.shiftEnd, this.location, this.checked);
+class AvailableShift extends ShiftItem {
+  bool _checked = false;
+  AvailableShift({@required shiftStart, @required shiftEnd, @required location})
+      : super.protected(shiftStart, shiftEnd, location);
 }
 
-class UpcomingShift implements ShiftItem {
-  final DateTime shiftStart;
-  final DateTime shiftEnd;
-  final String location;
-  final String status;
-
-  UpcomingShift(this.shiftStart, this.shiftEnd, this.location, this.status);
+class UpcomingShift extends ShiftItem {
+  String _status = "new";
+  UpcomingShift(
+      {@required shiftStart,
+      @required shiftEnd,
+      @required location,
+      @required status})
+      : this._status = status,
+        super.protected(shiftStart, shiftEnd, location);
 }
 
-final exampleList = new List<ListItem>.generate(
-    16,
-    (i) => i % 4 == 0 && i < 5
-        ? (i < 4
-            ? HeadingItem("Upcoming Shifts")
-            : HeadingItem("Available Shifts"))
-        : ((i >= 4)
-            ? AvailableShift(DateTime(2017, 11, i, 12, 30),
-                DateTime(2017, 11, i, 18, 30), "Netto koel", false)
-            : UpcomingShift(DateTime(2017, 6, i, 12, 30),
-                DateTime(2017, 6, i, 18, 30), "Netto koel", "Ny")));
+final shiftItem1 = ShiftItem.fromJson({
+  "type": "upcoming",
+  "shiftStart": "2018-11-15T15:30:00",
+  "shiftEnd": "2018-11-15T15:30:00",
+  "location": "Netto koel",
+  "status": "Today",
+});
+
+final shiftItem2 = ShiftItem.fromJson({
+  "type": "upcoming",
+  "shiftStart": "2018-11-15T15:30:00",
+  "shiftEnd": "2018-11-15T15:30:00",
+  "location": "Rema1000 koel",
+  "status": "New",
+});
+
+final shiftItem3 = ShiftItem.fromJson({
+  "type": "upcoming",
+  "shiftStart": "2018-11-15T15:30:00",
+  "shiftEnd": "2018-11-15T15:30:00",
+  "location": "Fakta koel",
+  "status": "New",
+});
+
+final shiftItem4 = ShiftItem.fromJson({
+  "type": "available",
+  "shiftStart": "2018-11-15T15:30:00",
+  "shiftEnd": "2018-11-15T15:30:00",
+  "location": "Fakta koel",
+});
+
+final shiftItem5 = ShiftItem.fromJson({
+  "type": "available",
+  "shiftStart": "2018-11-15T15:30:00",
+  "shiftEnd": "2018-11-15T15:30:00",
+  "location": "Fakta koel",
+});
+
+final shiftItem6 = ShiftItem.fromJson({
+  "type": "available",
+  "shiftStart": "2018-11-15T15:30:00",
+  "shiftEnd": "2018-11-15T15:30:00",
+  "location": "Fakta koel",
+});
+
+final head1 = HeadingItem("Upcoming Shifts");
+
+final head2 = HeadingItem("Available Shifts");
+
+final exampleList = [
+  head1,
+  shiftItem1,
+  shiftItem2,
+  shiftItem3,
+  head2,
+  shiftItem4,
+  shiftItem5,
+  shiftItem6
+];
