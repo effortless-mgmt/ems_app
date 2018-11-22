@@ -1,5 +1,5 @@
 # For deployment
-.jks
+*.jks
 key.properties
 
 # Miscellaneous
