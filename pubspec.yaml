@@ -13,10 +13,10 @@ environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
 
 dependencies:
+  intl: ^0.15.7
   flutter:
     sdk: flutter
   flutter_duration_picker: "^1.0.0"
-  intl: ^0.15.7
   tuple: ^1.0.2
   duration: ^2.0.0
 
