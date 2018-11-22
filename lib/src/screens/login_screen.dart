@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
   VoidCallback _onLogin;
-
   LoginScreen(this._onLogin);
 
   @override

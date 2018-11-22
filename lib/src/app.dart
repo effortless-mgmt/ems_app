@@ -13,6 +13,9 @@ class App extends StatelessWidget {
 
   build(context) {
     return MaterialApp(
+      builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child),
       title: 'Log Me In',
       theme: defaultTargetPlatform == TargetPlatform.android
           ? _androidTheme

@@ -35,7 +35,7 @@ final sampleUser1 = new User(
     company: "Real Good Raughs ltd.",
     description: "Does the Raughing",
     imgURL: "https://i.imgur.com/pQFvMMU.jpg",
-    phoneNumber: 12345678);
+    phoneNumber: 11111111);
 final sampleUser2 = new User(
     firstName: "Ötzi",
     lastName: "Thall",
@@ -43,7 +43,7 @@ final sampleUser2 = new User(
     company: "Djent memes are still relevant inc.",
     description: "Knows his 0001-01-000-110-10-01",
     imgURL: "https://i.imgur.com/pNpQRtB.jpg",
-    phoneNumber: 12345678);
+    phoneNumber: 22222222);
 final sampleUser3 = new User(
     firstName: "Bat",
     lastName: "Man",
@@ -51,7 +51,7 @@ final sampleUser3 = new User(
     company: "Wayne Corp.",
     description: "Fights crime and stuff",
     imgURL: "https://i.imgur.com/0sLF0e4.jpg",
-    phoneNumber: 12345678);
+    phoneNumber: 33333333);
 final sampleUser4 = new User(
     firstName: "Arse",
     lastName: "Biscuité",
@@ -59,4 +59,4 @@ final sampleUser4 = new User(
     company: "Army",
     description: "Generally an arse",
     imgURL: "https://i.imgur.com/RrQ0jpl.jpg",
-    phoneNumber: 12345678);
+    phoneNumber: 44444444);
