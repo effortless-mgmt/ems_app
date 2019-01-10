@@ -15,8 +15,8 @@ class Navbar extends StatefulWidget {
 }
 
 class _NavbarState extends State<Navbar> {
+  static bool loggedIn = false;
   int _currentIndex = 0;
-  bool _loggedIn = false;
 
   final List<Widget> _screens = [
     HomeScreen(),
@@ -28,8 +28,8 @@ class _NavbarState extends State<Navbar> {
   List<Widget> appBarIcons = [];
 
   void login() {
+    setState(() => loggedIn = true);
     print("Logging in...");
-    setState(() => _loggedIn = true);
   }
 
   @override
@@ -44,8 +44,7 @@ class _NavbarState extends State<Navbar> {
       bottomNavigationBar: customNavbar(),
     ));
     var loginScreen = new LoginScreen(login);
-
-    return _loggedIn ? mainApp : loginScreen;
+    return loggedIn ? mainApp : loginScreen;
   }
 
   void onTabTapped(int index) {

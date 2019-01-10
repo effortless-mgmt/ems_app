@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
+  static const loginButtonKey = Key('loginButton');
   VoidCallback _onLogin;
   LoginScreen(this._onLogin);
 
@@ -45,6 +46,7 @@ class LoginScreen extends StatelessWidget {
             child: new ButtonBar(
           children: <Widget>[
             new RaisedButton(
+              key: loginButtonKey,
               child: new Text("LOGIN"),
               onPressed: _onLogin,
             )
