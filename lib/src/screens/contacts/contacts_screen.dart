@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 // import '../../../util/thirdParty/page_transformer.dart';
-import '../../../util/user_list.dart';
+import '../../util/user_list.dart';
 import 'contacts_card.dart';
 
 class ContactsCardScreen extends StatelessWidget {

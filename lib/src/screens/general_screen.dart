@@ -1,13 +1,12 @@
 import 'package:ems_app/src/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../blocs/provider.dart';
-
-import '../widgets/custom_nav_bar.dart';
+import 'package:ems_app/src/blocs/nav/bloc_provider.dart';
+import 'package:ems_app/src/widgets/custom_nav_bar.dart';
 
 class GeneralScreen extends StatelessWidget {
   Widget build(context) {
-    final bloc = Provider.of(context);
+    final bloc = BlocProvider.of(context);
     return StreamBuilder(
       stream: bloc.appBarIcons,
       builder: (context, snapshot) {
@@ -24,6 +23,7 @@ class GeneralScreen extends StatelessWidget {
               if (snapshot.hasData) {
                 return snapshot.data;
               } else {
+                print("no data in snapshot" + snapshot.error);
                 return HomeScreen();
               }
             },

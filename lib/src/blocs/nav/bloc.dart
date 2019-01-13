@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'transformer.dart';
 import 'package:rxdart/rxdart.dart';
+
+import 'transformer.dart';
+// import 'validator.dart';
 
 class Bloc extends Object with Transformer {
   final _pageController = BehaviorSubject<int>();
@@ -12,7 +14,7 @@ class Bloc extends Object with Transformer {
   Stream<Widget> get appBarIcons =>
       _appBarIconsController.stream.transform(stringToAppBar);
 
-//Change data
+// Change data
   Function(int) get changePage => _pageController.sink.add;
   Function(int) get changeAppBar => _appBarIconsController.sink.add;
 

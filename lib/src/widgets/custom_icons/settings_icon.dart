@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../blocs/provider.dart';
+import 'package:ems_app/src/blocs/nav/bloc_provider.dart';
 
 class SettingsIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of(context);
+    final bloc = BlocProvider.of(context);
     // TODO: implement build
 
     return IconButton(

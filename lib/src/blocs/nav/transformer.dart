@@ -1,13 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import '../widgets/custom_icons/settings_icon.dart';
-import '../screens/add_screen.dart';
-import '../screens/calender_screen.dart';
-import '../screens/home_screen.dart';
-import '../screens/contacts/contacts_screen.dart';
-import '../screens/profile_screen.dart';
-import '../screens/settings_screen.dart';
+import 'package:ems_app/src/widgets/custom_icons/settings_icon.dart';
+import 'package:ems_app/src/screens/nav_bar_screens.dart';
 
 class Transformer {
   final intToPage = StreamTransformer<int, Widget>.fromHandlers(
