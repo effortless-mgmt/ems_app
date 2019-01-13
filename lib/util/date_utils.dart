@@ -9,12 +9,15 @@ class DateUtils {
   static final DateFormat _firstDayFormat = new DateFormat("MMM dd");
   static final DateFormat _fullDayFormat = new DateFormat("EEE MMM dd, yyyy");
   static final DateFormat _apiDayFormat = new DateFormat("yyyy-MM-dd");
+  static final DateFormat _scheduleTimeFormat = new DateFormat("Hm");
 
   static String formatMonth(DateTime d) => _monthFormat.format(d);
   static String formatDay(DateTime d) => _dayFormat.format(d);
   static String formatFirstDay(DateTime d) => _firstDayFormat.format(d);
   static String fullDayFormat(DateTime d) => _fullDayFormat.format(d);
   static String apiDayFormat(DateTime d) => _apiDayFormat.format(d);
+  static String scheduleTimeFormat(DateTime start, DateTime stop) =>
+      "${_scheduleTimeFormat.format(start)}-${_scheduleTimeFormat.format(stop)}";
 
   static const List<String> weekdays = const [
     "Sun",
@@ -182,6 +185,21 @@ class DateUtils {
   }
 
   static String timeIntervalToString(DateTime start, DateTime stop) {
+    String _startMinute;
+    String _stopMinute;
+
+    if (start.minute == 0) {
+      _startMinute = "00";
+    } else {
+      _startMinute = start.minute.toString();
+    }
+
+    if (start.minute == 0) {
+      _startMinute = "00";
+    } else {
+      _startMinute = start.minute.toString();
+    }
+
     return "${start.hour}:${start.minute} - ${stop.hour}:${stop.minute}";
   }
 }

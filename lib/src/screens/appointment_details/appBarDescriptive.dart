@@ -31,7 +31,7 @@ class AppBarDescriptive extends SliverAppBar {
                   children: <Widget>[
                     Text("${appointment.department}", style: titleTextStyle),
                     Text(
-                        "${DateUtils.dateToString(appointment.start)}\n${DateUtils.timeIntervalToString(appointment.start, appointment.stop)}",
+                        "${DateUtils.dateToString(appointment.start)}\n${DateUtils.scheduleTimeFormat(appointment.start, appointment.stop)}",
                         style: subTitleTextStyle),
                     Padding(padding: const EdgeInsets.symmetric(vertical: 8.0)),
                     Text("${appointment.description}", style: bodyTextStyle),
