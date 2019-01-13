@@ -17,7 +17,6 @@ class AppBarDescriptive extends SliverAppBar {
           expandedHeight: 200.0,
           pinned: true,
           title: title,
-          forceElevated: true, // Make so that it is elevated when scrolled
           flexibleSpace: FlexibleSpaceBar(
             background: Padding(
               padding: const EdgeInsets.only(top: 60),
