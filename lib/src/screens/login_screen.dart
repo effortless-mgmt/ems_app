@@ -13,10 +13,10 @@ class LoginScreen extends StatefulWidget {
       : assert(authApiProvider != null),
         super(key: key);
 
-  State<LoginScreen> createState() => LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   LoginBloc _loginBloc;
 
   @override
@@ -70,14 +70,26 @@ class LoginForm extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<LoginForm> createState() => LoginFormState();
+  State<LoginForm> createState() => _LoginFormState();
 }
 
-class LoginFormState extends State<LoginForm> {
-  final _usernameController = TextEditingController();
+class _LoginFormState extends State<LoginForm> {
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+
   bool _passwordVisible = false;
+
+  @override
+    void dispose() {
+      _emailController.dispose();
+      _passwordController.dispose();
+      _emailFocusNode.dispose();
+      _passwordFocusNode.dispose();
+      super.dispose();
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +139,8 @@ class LoginFormState extends State<LoginForm> {
 
   Widget _emailField() {
     return TextFormField(
-      controller: _usernameController,
+      focusNode: _emailFocusNode,
+      controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
         labelText: "Email Address",
@@ -139,6 +152,7 @@ class LoginFormState extends State<LoginForm> {
 
   Widget _passwordField() {
     return TextFormField(
+      focusNode: _passwordFocusNode,
       controller: _passwordController,
       obscureText: !_passwordVisible,
       decoration: InputDecoration(
@@ -171,7 +185,7 @@ class LoginFormState extends State<LoginForm> {
 
   void _onLoginButtonPressed() {
     widget.loginBloc.dispatch(LoginButtonPressed(
-      username: _usernameController.text,
+      username: _emailController.text,
       password: _passwordController.text,
     ));
   }

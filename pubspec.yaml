@@ -23,7 +23,7 @@ dependencies:
   flutter_crashlytics: ^0.2.0
   rxdart: ^0.20.0
   bloc: ^0.8.0
-  flutter_bloc: ^0.5.0
+  flutter_bloc: ^0.5.1
   equatable: ^0.1.5
   meta: ^1.1.6
   http: ^0.12.0
