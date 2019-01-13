@@ -183,23 +183,4 @@ class DateUtils {
   static String dateToString(DateTime d) {
     return "${weekdaysFull[d.weekday]}, ${apiDayFormat(d)}";
   }
-
-  static String timeIntervalToString(DateTime start, DateTime stop) {
-    String _startMinute;
-    String _stopMinute;
-
-    if (start.minute == 0) {
-      _startMinute = "00";
-    } else {
-      _startMinute = start.minute.toString();
-    }
-
-    if (start.minute == 0) {
-      _startMinute = "00";
-    } else {
-      _startMinute = start.minute.toString();
-    }
-
-    return "${start.hour}:${start.minute} - ${stop.hour}:${stop.minute}";
-  }
 }
