@@ -1,3 +1,4 @@
+import 'package:ems_app/src/screens/appointment_details/appointment_details_screen.dart';
 import 'package:ems_app/src/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../screens/add_screen.dart';
@@ -22,7 +23,8 @@ class _NavbarState extends State<Navbar> {
     HomeScreen(),
     CalenderScreen(),
     AddScreen(),
-    ContactsCardScreen(),
+    AppointmentDetailsScreen(),
+    // ContactsCardScreen(),
     ProfileScreen(),
   ];
   List<Widget> appBarIcons = [];
@@ -36,10 +38,10 @@ class _NavbarState extends State<Navbar> {
   Widget build(BuildContext context) {
     var mainApp = new Material(
         child: Scaffold(
-      appBar: AppBar(
-        title: Text("EMS"),
-        actions: appBarIcons,
-      ),
+      // appBar: AppBar(
+      //   title: Text("EMS"),
+      //   actions: appBarIcons,
+      // ),
       body: _screens[_currentIndex], // new
       bottomNavigationBar: customNavbar(),
     ));

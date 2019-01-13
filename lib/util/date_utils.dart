@@ -26,6 +26,16 @@ class DateUtils {
     "Sat"
   ];
 
+  static const List<String> weekdaysFull = const [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ];
+
   /// The list of days in a given month
   static List<DateTime> daysInMonth(DateTime month) {
     var first = firstDayOfMonth(month);
@@ -165,5 +175,13 @@ class DateUtils {
 
   static DateTime nextWeek(DateTime w) {
     return w.add(new Duration(days: 7));
+  }
+
+  static String dateToString(DateTime d) {
+    return "${weekdaysFull[d.weekday]}, ${apiDayFormat(d)}";
+  }
+
+  static String timeIntervalToString(DateTime start, DateTime stop) {
+    return "${start.hour}:${start.minute} - ${stop.hour}:${stop.minute}";
   }
 }
