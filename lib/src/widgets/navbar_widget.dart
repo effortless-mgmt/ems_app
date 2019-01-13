@@ -23,7 +23,7 @@ class _NavbarState extends State<Navbar> {
     HomeScreen(),
     CalenderScreen(),
     AddScreen(),
-    AppointmentDetailsScreen(),
+    AppointmentDetailsScreen(isJobOffer: false),
     // ContactsCardScreen(),
     ProfileScreen(),
   ];
