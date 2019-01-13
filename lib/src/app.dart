@@ -51,6 +51,10 @@ class AppState extends State<App> {
     return BlocProvider<AuthenticationBloc>(
       bloc: _authenticationBloc,
       child: MaterialApp(
+          builder: (context, child) => MediaQuery(
+              data:
+                  MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+              child: child),
           theme: defaultTargetPlatform == TargetPlatform.android
               ? _androidTheme
               : _iosTheme,

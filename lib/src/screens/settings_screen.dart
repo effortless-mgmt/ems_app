@@ -29,7 +29,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             trailing: Switch(
               value: clockConvention,
               onChanged: (value) {
-                print('${value}');
+                print('$value');
                 setState(() {
                   if (clockConvention == true) {
                     clockConvention = false;
@@ -53,7 +53,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             trailing: Switch(
               value: notificationOn,
               onChanged: (value) {
-                print('${value}');
+                print('$value');
                 setState(() {
                   if (notificationOn == true) {
                     notificationOn = false;
@@ -70,7 +70,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             trailing: Switch(
               value: notificationSound,
               onChanged: (value) {
-                print('${value}');
+                print('$value');
                 setState(() {
                   if (notificationSound == true) {
                     notificationSound = false;

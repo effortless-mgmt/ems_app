@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import '../../util/user.dart';
 import '../messenger_screen.dart';
 // import 'package:ems_app/util/thirdParty/page-transformer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactsCard extends StatelessWidget {
   ContactsCard({
@@ -18,18 +19,18 @@ class ContactsCard extends StatelessWidget {
     // padding around the card
     return Card(
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            _buildAvatar(context),
-            _buildTextContainer(context),
-            _buildIconButtons(context)
-          ],
-        ),
-        margin: EdgeInsets.symmetric(
-          vertical: 8.0,
-          horizontal: 8.0,
-        ),
-        elevation: 3.0,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          _buildAvatar(context),
+          _buildTextContainer(context),
+          _buildIconButtons(context)
+        ],
+      ),
+      margin: EdgeInsets.symmetric(
+        vertical: 8.0,
+        horizontal: 8.0,
+      ),
+      elevation: 3.0,
     );
   }
 
@@ -86,7 +87,7 @@ class ContactsCard extends StatelessWidget {
     var phoneIconButton = IconButton(
       icon: Icon(Icons.call),
       onPressed: () {
-        // go to call screen
+        launch("tel://${user.phoneNumber}");
       },
     );
     // TODO: figure out how to put a "new message"-thingie on the icon
@@ -95,11 +96,11 @@ class ContactsCard extends StatelessWidget {
       onPressed: () {
         // go to chat screen
         Navigator.push(
-              context,
-              new MaterialPageRoute(
-                builder: (context) => MessengerScreen(),
-              ),
-            );
+          context,
+          new MaterialPageRoute(
+            builder: (context) => MessengerScreen(),
+          ),
+        );
       },
     );
     return Row(
