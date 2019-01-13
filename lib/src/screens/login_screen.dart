@@ -77,6 +77,8 @@ class LoginFormState extends State<LoginForm> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  bool _passwordVisible = false;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginEvent, LoginState>(
@@ -138,12 +140,19 @@ class LoginFormState extends State<LoginForm> {
   Widget _passwordField() {
     return TextFormField(
       controller: _passwordController,
-      obscureText: true,
+      obscureText: !_passwordVisible,
       decoration: InputDecoration(
-        labelText: "Password",
-        hintText: "yourS3cur3P4ssw0rd",
-        // errorText: "Incorrect Password!",
-      ),
+          labelText: "Password",
+          hintText: "yourS3cur3P4ssw0rd",
+          // errorText: "Incorrect Password!",
+          suffixIcon: GestureDetector(
+            onTap: _togglePasswordVisibility,
+            child: Icon(
+              Icons.visibility,
+              size: 15.0,
+              color: Colors.black,
+            ),
+          )),
     );
   }
 
@@ -157,18 +166,18 @@ class LoginFormState extends State<LoginForm> {
   bool _loginSucceeded(LoginState state) => state.token.isNotEmpty;
   bool _loginFailed(LoginState state) => state.error.isNotEmpty;
 
-  void _onWidgetDidBuild(Function callback) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      callback();
-    });
-  }
+  void _onWidgetDidBuild(Function callback) =>
+      WidgetsBinding.instance.addPostFrameCallback((_) => callback());
 
-  _onLoginButtonPressed() {
+  void _onLoginButtonPressed() {
     widget.loginBloc.dispatch(LoginButtonPressed(
       username: _usernameController.text,
       password: _passwordController.text,
     ));
   }
+
+  void _togglePasswordVisibility() =>
+      setState(() => _passwordVisible = !_passwordVisible);
 }
 
 class FormElement extends StatelessWidget {
