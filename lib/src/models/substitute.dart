@@ -2,7 +2,8 @@ import 'package:ems_app/src/models/appointment.dart';
 
 /// A user with appointments
 class Substitute {
-  List<Appointment> _appointments = Appointment.demodata;
+  List<Appointment> _appointments;
+  List<Appointment> _unregistered = <Appointment>[];
 
   Substitute([this._appointments]);
 
@@ -12,12 +13,13 @@ class Substitute {
   }
 
   List<Appointment> get unapprovedAppointments {
-    List<Appointment> unregistered = <Appointment>[];
+    _unregistered = <Appointment>[];
+
     for (Appointment e in _appointments) {
       if (!e.approved && e.stop.isBefore(DateTime.now())) {
-        unregistered.add(e);
+        _unregistered.add(e);
       }
     }
-    return unregistered;
+    return _unregistered;
   }
 }

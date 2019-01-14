@@ -14,12 +14,14 @@ class AddScreen extends StatefulWidget {
 /// The state for the add screen
 class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
   Substitute subDemo;
+  List<Appointment> unApprovedAppointments;
   AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
     subDemo = new Substitute(Appointment.demodata);
+    unApprovedAppointments = subDemo.unapprovedAppointments;
     _animationController = new AnimationController(
         duration: new Duration(milliseconds: 250), vsync: this);
   }
@@ -30,38 +32,9 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
     _animationController.dispose();
   }
 
-  void _handleSubmission(BuildContext context, Appointment appointment) {
-    final String location = appointment.location;
-    final String date = DateUtils.fullDayFormat(appointment.start);
-    final snackBar = new SnackBar(
-      action: new SnackBarAction(
-          label: "Undo",
-          onPressed: () {
-            setState(() {
-              appointment.approved = false;
-            });
-          }),
-      duration: new Duration(seconds: 5),
-      content: Wrap(
-        children: <Widget>[
-          Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new Text("$location on $date"),
-                new Text(appointment.registeredMessage),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-    Scaffold.of(context).showSnackBar(snackBar);
-  }
-
   var appointmentNo = 3;
   Widget _buildItem(BuildContext context, int index) {
-    final currentAppointment = this.subDemo.unapprovedAppointments[index];
+    final currentAppointment = unApprovedAppointments[index];
 
     var addTime = AddTimeWidget(
       currentAppointment,
@@ -73,8 +46,12 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
 
     return Dismissible(
       child: addTime,
-      key: Key(index.toString()),
-      onDismissed: (_) => setState(() => _acceptAppointment(currentAppointment)),
+      key: UniqueKey(),
+      background: Container(
+          color: Colors.lightGreen,
+          child: ListTile(trailing: Icon(Icons.check, color: Colors.white))),
+      onDismissed: (_) =>
+          setState(() => _acceptAppointment(currentAppointment)),
     );
     // Normal list tile
     // TimeReg tr = TimeReg(
@@ -121,24 +98,50 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
       children: <Widget>[
         new Container(
             child: new Text(
-                "You have ${subDemo.unapprovedAppointments.length} missing registrations",
+                "You have ${unApprovedAppointments.length} missing registrations",
                 style:
                     new TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500)),
             margin: const EdgeInsets.only(top: 20.0, left: 16.0, bottom: 10.0)),
         new Flexible(
           child: new ListView.builder(
               itemBuilder: _buildItem,
-              itemCount: subDemo.unapprovedAppointments.length),
+              itemCount: unApprovedAppointments.length),
         ),
       ],
     ));
   }
 
   _acceptAppointment(Appointment appointment) {
+    final String location = appointment.location;
+    final String date = DateUtils.fullDayFormat(appointment.start);
+    final snackBar = new SnackBar(
+      action: new SnackBarAction(
+          label: "Undo",
+          onPressed: () {
+            setState(() {
+              appointment.approved = false;
+            });
+          }),
+      duration: new Duration(seconds: 2),
+      content: Wrap(
+        children: <Widget>[
+          Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text("$location on $date"),
+                new Text(appointment.registeredMessage),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
     setState(() {
       _animationController.reverse();
       appointment.approved = true;
-      _handleSubmission(context, appointment);
+      unApprovedAppointments.remove(appointment);
+      Scaffold.of(context).showSnackBar(snackBar);
     });
   }
 
