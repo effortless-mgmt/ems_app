@@ -86,8 +86,6 @@ class TimeReg extends StatelessWidget {
   final ValueChanged<Appointment> onStartChanged;
   final ValueChanged<Appointment> onStopChanged;
   final ValueChanged<Appointment> onPauseChanged;
-  
-  var isExpanded = false;
 
   TimeReg(
       {Key key,
@@ -97,16 +95,6 @@ class TimeReg extends StatelessWidget {
       this.onStartChanged,
       this.onStopChanged,
       this.onPauseChanged});
-
-  accept() {
-    _onExpansionchaged(false);
-  }
-  
-  _onExpansionchaged(bool val) {
-    setState(() {
-      isExpanded = val;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,19 +133,13 @@ class TimeReg extends StatelessWidget {
           // Card(
           //   child:
           ExpansionTile(
-            onExpansionChanged: _onExpansionchaged,
-            trailing: Switch(
-              value: isExpanded,
-              onChanged: (_) {}
-            ),
         title: Column(children: <Widget>[
           ListTile(
             leading: SizedBox(
               width: 64,
               child: Text(
-                // this.appointment.durationFormatted,
-                "24h 00m"
-              ),
+                  // this.appointment.durationFormatted,
+                  "24h 00m"),
             ),
             title: Text(this.appointment.location),
             subtitle: Text(this.appointment.startDateIso),
