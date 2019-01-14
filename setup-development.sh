@@ -84,7 +84,6 @@ if [ ! -z "$KEYSTORECREATE" ]; then
 fi
 
 if [ ! -f "./android/key.properties" ]; then
-    echo "key.properties does not exist"
     if [ -z "$KEYSTORELOCATION" ]; then
         echo "Since android/key.properties does not exist, --keystore is required."
         echo "Usage: $0 --gmaps-api-key <Google Maps API Key>"
