@@ -22,7 +22,6 @@ dependencies:
   duration: ^2.0.0
   google_maps_flutter: ^0.0.3+3
   geolocator: ^2.1.1
-  
   flutter_crashlytics: ^0.2.0
   rxdart: ^0.20.0
   bloc: ^0.8.0

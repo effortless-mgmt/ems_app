@@ -101,18 +101,19 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = navBlocProvider.BlocProvider.of(context);
-    return StreamBuilder(
-      stream: bloc.appBarIcons,
-      builder: (context, snapshot) {
+    // return StreamBuilder(
+      // stream: bloc.appBarIcons,
+      // builder: (context, snapshot) {
         return Scaffold(
           bottomNavigationBar: CustomNavBar(),
-          appBar: snapshot.hasData
-              ? snapshot.data
-              : AppBar(
-                  title: Text('EMS'),
-                ),
+          // appBar: snapshot.hasData
+          //     ? snapshot.data
+          //     : AppBar(
+          //         title: Text('EMS'),
+          //       ),
           body: StreamBuilder(
             stream: bloc.page,
+            initialData: HomeScreen(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return snapshot.data;
@@ -123,7 +124,7 @@ class MainApp extends StatelessWidget {
             },
           ),
         );
-      },
-    );
+      // },
+    // );
   }
 }

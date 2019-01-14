@@ -82,6 +82,9 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Add appointments'),
+      ),
         body: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

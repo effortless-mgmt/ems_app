@@ -25,19 +25,19 @@ class CustomNavBar extends StatelessWidget {
       title: Container(height: 0.0),
     )
   ];
+
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of(context);
-
     return StreamBuilder(
       stream: bloc.page,
       builder: (sink, snapshot) {
         return BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          currentIndex: bloc.giveInt(),
+          currentIndex: bloc.currentPageIndex(),
           onTap: (index) {
             bloc.changePage(index);
-            bloc.changeAppBar(index);
+            // bloc.changeNavBarIcons(index);
           },
           items: navIcons,
         );

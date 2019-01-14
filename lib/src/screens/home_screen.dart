@@ -5,10 +5,13 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text('Home'),
+        ),
         body: ListView.builder(
-      itemCount: exampleList.length,
-      itemBuilder: _buildListTile,
-    ));
+          itemCount: exampleList.length,
+          itemBuilder: _buildListTile,
+        ));
   }
 
   Widget _buildListTile(BuildContext context, int index) {
