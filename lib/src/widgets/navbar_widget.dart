@@ -97,9 +97,10 @@ class _NavbarState extends State<Navbar> {
     return Theme(
       data: Theme.of(context).copyWith(
           // sets the background color of the `BottomNavigationBar`
-          canvasColor: Colors.blue,
+          // canvasColor: Colors.blue,
+          canvasColor: Theme.of(context).primaryColor,
           // sets the active color of the `BottomNavigationBar` if `Brightness` is light
-          primaryColor: Colors.red,
+          primaryColor: Theme.of(context).accentColor,
           textTheme: Theme.of(context)
               .textTheme
               .copyWith(caption: new TextStyle(color: Colors.white))),

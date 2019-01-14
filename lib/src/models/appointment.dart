@@ -1,4 +1,5 @@
 import 'package:duration/duration.dart';
+import 'package:intl/intl.dart';
 
 class Appointment {
   Appointment([this.location, this._start, this._stop, this._pause]);
@@ -15,17 +16,29 @@ class Appointment {
     _approved = app;
   }
 
+  /// Returns a string date ISO formatted, i.e. "2019-12-24"
+  String get startDateIso => new DateFormat('yyyy-MM-dd').format(_start);
   DateTime get start => _start;
+  String get startTimeFormatted => new DateFormat('HH:mm').format(_start);
   DateTime get stop => _stop;
+  String get stopTimeFormatted => new DateFormat('HH:mm').format(_stop);
   Duration get pause => _pause;
   Duration get duration => _stop.subtract(_pause).difference(_start);
-  String get durationFormatted =>
-      printDuration(this.duration, abbreviated: true);
-  String get pauseFormatted => printDuration(this.pause, abbreviated: true);
+  // int get durationHour => duration.inHours;
+  // //((450/60)-7)*60
+  // // int get durationMinute => (((duration.inMinutes / 60) - duration.inHours) * 60).floor();
+  // int get durationMinute => duration.inMinutes % 60;
+  String get durationHours => "${duration.inHours.toString()}h";
+  String get durationMinutes => "${(duration.inMinutes % 60).toString()}m";
+  // String get durationFormatted => "${durationHours} ${durationMinutes}";
+  String get durationFormatted => printDuration(this.duration + this.pause, abbreviated: true, delimiter: "");
+  // String get durationFormatted =>
+  //     printDuration(this.duration, abbreviated: true);
+  String get pauseTimeFormatted => printDuration(this.pause, abbreviated: true);
   String get totalFormatted =>
       printDuration(this.duration + this.pause, abbreviated: true);
   String get registeredMessage =>
-      "Worked: ${this.durationFormatted} \nBreak: ${this.pauseFormatted} \nTotal: ${this.totalFormatted}";
+      "Worked: ${this.durationFormatted} \nBreak: ${this.pauseTimeFormatted} \nTotal: ${this.totalFormatted}";
   bool get approved => _approved;
   set start(start) => _start = start;
   set stop(stop) => _stop = stop;

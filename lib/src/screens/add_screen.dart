@@ -1,18 +1,17 @@
 import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/models/substitute.dart';
+import 'package:ems_app/src/widgets/add_time_widget.dart';
 import 'package:ems_app/src/widgets/timereg_widget.dart';
 import 'package:ems_app/util/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 
-// TODO
-// 1. REMOVE ITEM WITH ANIMATION ON ACCEPT
-// 2. IMPLEMENT BLOC
-
+/// The add screen widget
 class AddScreen extends StatefulWidget {
   State<StatefulWidget> createState() => AddScreenState();
 }
 
+/// The state for the add screen
 class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
   Substitute subDemo;
   AnimationController _animationController;
@@ -60,23 +59,58 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
     Scaffold.of(context).showSnackBar(snackBar);
   }
 
+  var appointmentNo = 3;
   Widget _buildItem(BuildContext context, int index) {
-    TimeReg tr = TimeReg(
-        appointment: subDemo.unapprovedAppointments[index],
-        animationController: _animationController,
-        onAccepted: (app) {
-          setState(() {
-            _animationController.reverse();
-            app.approved = true;
-            _handleSubmission(context, app);
-          });
-        },
-        onStartChanged: (app) => _selectStart(context, app),
-        onStopChanged: (app) => _selectStop(context, app),
-        onPauseChanged: (app) => _selectPause(context, app));
+    final currentAppointment = this.subDemo.unapprovedAppointments[index];
 
-    tr.animationController.forward();
-    return tr;
+    var addTime = AddTimeWidget(
+      currentAppointment,
+      onAccepted: (appointment) => _acceptAppointment(appointment),
+      changeStartTime: (appointment) => _selectStart(context, appointment),
+      changeStopTime: (appointment) => _selectStop(context, appointment),
+      changePauseTime: (appointment) => _selectPause(context, appointment),
+    );
+
+    return Dismissible(
+      child: addTime,
+      key: Key(index.toString()),
+      onDismissed: (_) => setState(() => _acceptAppointment(currentAppointment)),
+    );
+    // Normal list tile
+    // TimeReg tr = TimeReg(
+    //     appointment: currentAppointment,
+    //     animationController: _animationController,
+    //     onAccepted: (app) {
+    //       setState(() {
+    //         _animationController.reverse();
+    //         app.approved = true;
+    //         _handleSubmission(context, app);
+    //       });
+    //     },
+    //     onStartChanged: (app) => _selectStart(context, app),
+    //     onStopChanged: (app) => _selectStop(context, app),
+    //     onPauseChanged: (app) => _selectPause(context, app));
+
+    // tr.animationController.forward();
+
+    // var tr2 = Dismissible(
+    //   child: tr,
+    //   background: Container(
+    //     color: Colors.lightGreen,
+    //     child: ListTile(trailing: Icon(Icons.check, color: Colors.white,),),
+    //   ),
+    //   key: Key(index.toString()),
+    //   onDismissed: (_) {
+    //     setState(() {
+    //       _animationController.reverse();
+    //       currentAppointment.approved = true;
+    //       _handleSubmission(context, currentAppointment);
+
+    //     });
+    //   },
+    // );
+
+    // return tr2;
   }
 
   @override
@@ -100,6 +134,15 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
     ));
   }
 
+  _acceptAppointment(Appointment appointment) {
+    setState(() {
+      _animationController.reverse();
+      appointment.approved = true;
+      _handleSubmission(context, appointment);
+    });
+  }
+
+  /// Edit staqrt time of the appointment
   Future<Null> _selectStart(
       BuildContext context, Appointment appointment) async {
     TimeOfDay startTime = DateUtils.asTimeOfDay(appointment.start);
@@ -114,6 +157,7 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
     }
   }
 
+  /// Edit stop trime of the appointment
   Future<Null> _selectStop(
       BuildContext context, Appointment appointment) async {
     TimeOfDay stopTime = DateUtils.asTimeOfDay(appointment.start);
@@ -128,6 +172,7 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
     }
   }
 
+  /// Edit pause time of the appointment
   Future<Null> _selectPause(
       BuildContext context, Appointment appointment) async {
     Duration pause = appointment.pause;

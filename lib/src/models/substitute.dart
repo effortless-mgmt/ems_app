@@ -1,5 +1,6 @@
 import 'package:ems_app/src/models/appointment.dart';
 
+/// A user with appointments
 class Substitute {
   List<Appointment> _appointments = Appointment.demodata;
 
