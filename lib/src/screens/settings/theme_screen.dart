@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ThemeScreen extends StatelessWidget {
+class ThemeSettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

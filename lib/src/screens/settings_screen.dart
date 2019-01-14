@@ -1,3 +1,4 @@
+import 'package:ems_app/src/screens/settings/calendar_screen.dart';
 import 'package:ems_app/src/screens/settings/theme_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,7 +30,12 @@ class SettingsScreenState extends State<SettingsScreen> {
             ),
             ListTile(
               onTap: () {
-                print("YOLO");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ThemeSettingScreen(),
+                  ),
+                );
               },
               title: Text('Change password'),
             ),
@@ -50,14 +56,20 @@ class SettingsScreenState extends State<SettingsScreen> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ThemeScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => ThemeSettingScreen(),
+                  ),
                 );
               },
             ),
             ListTile(
               title: Text('Calendar'),
               onTap: () {
-                print("YOLO");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CalendarSettingScreen()),
+                );
               },
             ),
             Divider(),
@@ -137,6 +149,7 @@ class SettingsScreenState extends State<SettingsScreen> {
   // user defined function
   void _showDialog() {
     // flutter defined function
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -154,12 +167,14 @@ class SettingsScreenState extends State<SettingsScreen> {
               ),
               onPressed: () {
                 Navigator.of(context).pop();
+                print("You pressed log out");
               },
             ),
             new FlatButton(
               child: new Text("CANCEL"),
               onPressed: () {
                 Navigator.of(context).pop();
+                print("You pressed cancel");
               },
             ),
           ],
