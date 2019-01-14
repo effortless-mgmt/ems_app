@@ -1,3 +1,4 @@
+import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/screens/appointment_details/appointment_details_screen.dart';
 import 'package:ems_app/src/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,8 @@ class _NavbarState extends State<Navbar> {
     HomeScreen(),
     CalenderScreen(),
     AddScreen(),
-    AppointmentDetailsScreen(isJobOffer: false),
+    AppointmentDetailsScreen(
+        isJobOffer: true, appointment: Appointment.demodata[0]),
     // ContactsCardScreen(),
     ProfileScreen(),
   ];

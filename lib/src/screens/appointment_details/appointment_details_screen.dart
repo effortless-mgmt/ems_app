@@ -7,8 +7,10 @@ import 'package:flutter/material.dart';
 
 class AppointmentDetailsScreen extends StatefulWidget {
   final bool isJobOffer;
+  final Appointment appointment;
 
-  AppointmentDetailsScreen({@required this.isJobOffer});
+  AppointmentDetailsScreen(
+      {@required this.isJobOffer, @required this.appointment});
 
   @override
   State<StatefulWidget> createState() => new _AppointmentDetailsState();
@@ -16,7 +18,7 @@ class AppointmentDetailsScreen extends StatefulWidget {
 
 // SLIVER APP BAR
 class _AppointmentDetailsState extends State<AppointmentDetailsScreen> {
-  Appointment _appointment = Appointment.demodata[1];
+  bool notNull(Object o) => o != null;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,29 +27,54 @@ class _AppointmentDetailsState extends State<AppointmentDetailsScreen> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               AppBarDescriptive(
-                  title: Text("Next Appointment"), appointment: _appointment)
+                  title: widget.isJobOffer
+                      ? Text("Job Offer")
+                      : Text("Next Appointment"),
+                  appointment: widget.appointment)
             ];
           },
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Maps(address: _appointment.address),
+              Maps(address: widget.appointment.address),
               Container(
                   padding: const EdgeInsets.only(left: 16.0, top: 10.0),
-                  child: Text("${_appointment.address}")),
-              Flexible(
-                child: ListView.builder(
-                    primary: true,
-                    itemBuilder: _listBuilder,
-                    itemCount: sampleUserList.userList.length),
-              )
-            ],
+                  child: Text("${widget.appointment.address}")),
+              widget.isJobOffer
+                  ? _doNotDisplayContacts()
+                  : Flexible(
+                      child: ListView.builder(
+                          primary: true,
+                          itemBuilder: _listBuilder,
+                          itemCount: sampleUserList.userList.length),
+                    ),
+              widget.isJobOffer ? _declineOffer() : null,
+            ].where(notNull).toList(),
           )),
     );
   }
 
+  Widget _doNotDisplayContacts() {
+    return Container(
+        padding: const EdgeInsets.all(16),
+        child: Text("No job contacts displayed yet.",
+            style: TextStyle(fontSize: 16.0)));
+  }
+
   Widget _listBuilder(BuildContext context, int index) {
     return ContactListTile(user: sampleUserList.userList[index]);
+  }
+
+  Widget _declineOffer() {
+    return Center(
+      child: FlatButton(
+          child: Text("Decline job offer",
+              style: TextStyle(
+                  color: Colors.redAccent,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 12.0)),
+          onPressed: () => debugPrint("Pressed")),
+    );
   }
 }
 /*########################################### 
