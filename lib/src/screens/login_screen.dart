@@ -17,6 +17,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final asset = AssetImage("assets/logo-bw.png");
   LoginBloc _loginBloc;
 
   @override
@@ -33,28 +34,39 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var asset = AssetImage("assets/logo-bw.png");
     return Scaffold(
+      resizeToAvoidBottomPadding: true,
       appBar: AppBar(
         title: Text('Login'),
       ),
-      body: Column(
-        children: <Widget>[
-          Card(
-            margin: EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
-            child: LoginForm(
-              authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-              loginBloc: _loginBloc,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 64.0, bottom: 72.0),
-            child: Image(
-              image: asset,
-            ),
-          ),
-        ],
-      ),
+      body: GestureDetector(
+        // Enables user to tap anywhere above the soft keyboard  to dismiss it
+        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+        // Needs to be inside a scrollableview for automatic displacement
+        // to work when soft keyboard is shown
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(top: 32.0, bottom: 24.0),
+                child: Image(
+                  image: asset,
+                ),
+              ),
+              Card(
+                elevation: 12,
+                margin:
+                    EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
+                child: LoginForm(
+                  authenticationBloc:
+                      BlocProvider.of<AuthenticationBloc>(context),
+                  loginBloc: _loginBloc,
+                ),
+              ),
+            ],
+          )
+        )
+      )
     );
   }
 }
@@ -80,16 +92,22 @@ class _LoginFormState extends State<LoginForm> {
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
 
-  bool _passwordVisible = false;
+  bool _passwordVisible;
 
   @override
-    void dispose() {
-      _emailController.dispose();
-      _passwordController.dispose();
-      _emailFocusNode.dispose();
-      _passwordFocusNode.dispose();
-      super.dispose();
-    }
+  void initState() {
+    super.initState();
+    _passwordVisible = false;
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,9 +161,11 @@ class _LoginFormState extends State<LoginForm> {
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(),
         labelText: "Email Address",
         hintText: "me@example.com",
-        // errorText: "No account  exists for this email address",
+        // errorText: "No account exists for this email address",
       ),
     );
   }
@@ -156,15 +176,17 @@ class _LoginFormState extends State<LoginForm> {
       controller: _passwordController,
       obscureText: !_passwordVisible,
       decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(),
           labelText: "Password",
           hintText: "yourS3cur3P4ssw0rd",
           // errorText: "Incorrect Password!",
-          suffixIcon: GestureDetector(
+          suffixIcon: InkWell(
             onTap: _togglePasswordVisibility,
+            customBorder: CircleBorder(),
             child: Icon(
-              Icons.visibility,
+              (_passwordVisible ? Icons.visibility : Icons.visibility_off),
               size: 15.0,
-              color: Colors.black,
             ),
           )),
     );
@@ -201,7 +223,7 @@ class FormElement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       child: this.child,
     );
   }
