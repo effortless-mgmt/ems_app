@@ -1,7 +1,6 @@
 import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/models/substitute.dart';
 import 'package:ems_app/src/widgets/add_time_widget.dart';
-import 'package:ems_app/src/widgets/timereg_widget.dart';
 import 'package:ems_app/util/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
@@ -13,32 +12,32 @@ class AddScreen extends StatefulWidget {
 
 /// The state for the add screen
 class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+
   Substitute subDemo;
   List<Appointment> unApprovedAppointments;
-  AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
     subDemo = new Substitute(Appointment.demodata);
     unApprovedAppointments = subDemo.unapprovedAppointments;
-    _animationController = new AnimationController(
-        duration: new Duration(milliseconds: 250), vsync: this);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _animationController.dispose();
   }
 
   var appointmentNo = 3;
-  Widget _buildItem(BuildContext context, int index) {
+  Widget _buildItem(
+      BuildContext context, int index, Animation<double> animation) {
     final currentAppointment = unApprovedAppointments[index];
 
     var addTime = AddTimeWidget(
       currentAppointment,
-      onAccepted: (appointment) => _acceptAppointment(appointment),
+      onAccepted: (appointment) =>
+          _acceptAppointment(appointment, index, animation, dismissed: false),
       changeStartTime: (appointment) => _selectStart(context, appointment),
       changeStopTime: (appointment) => _selectStop(context, appointment),
       changePauseTime: (appointment) => _selectPause(context, appointment),
@@ -49,45 +48,11 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
       key: UniqueKey(),
       background: Container(
           color: Colors.lightGreen,
-          child: ListTile(trailing: Icon(Icons.check, color: Colors.white))),
-      onDismissed: (_) =>
-          setState(() => _acceptAppointment(currentAppointment)),
+          child: ListTile(trailing: Icon(Icons.check, color: Colors.red))),
+      onDismissed: (_) => _acceptAppointment(
+          currentAppointment, index, animation,
+          dismissed: true),
     );
-    // Normal list tile
-    // TimeReg tr = TimeReg(
-    //     appointment: currentAppointment,
-    //     animationController: _animationController,
-    //     onAccepted: (app) {
-    //       setState(() {
-    //         _animationController.reverse();
-    //         app.approved = true;
-    //         _handleSubmission(context, app);
-    //       });
-    //     },
-    //     onStartChanged: (app) => _selectStart(context, app),
-    //     onStopChanged: (app) => _selectStop(context, app),
-    //     onPauseChanged: (app) => _selectPause(context, app));
-
-    // tr.animationController.forward();
-
-    // var tr2 = Dismissible(
-    //   child: tr,
-    //   background: Container(
-    //     color: Colors.lightGreen,
-    //     child: ListTile(trailing: Icon(Icons.check, color: Colors.white,),),
-    //   ),
-    //   key: Key(index.toString()),
-    //   onDismissed: (_) {
-    //     setState(() {
-    //       _animationController.reverse();
-    //       currentAppointment.approved = true;
-    //       _handleSubmission(context, currentAppointment);
-
-    //     });
-    //   },
-    // );
-
-    // return tr2;
   }
 
   @override
@@ -103,15 +68,26 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
                     new TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500)),
             margin: const EdgeInsets.only(top: 20.0, left: 16.0, bottom: 10.0)),
         new Flexible(
-          child: new ListView.builder(
-              itemBuilder: _buildItem,
-              itemCount: unApprovedAppointments.length),
+          child: AnimatedList(
+              key: _listKey,
+              initialItemCount: unApprovedAppointments.length,
+              itemBuilder:
+                  (BuildContext context, int index, Animation animation) {
+                return SizeTransition(
+                    sizeFactor: animation,
+                    child: _buildItem(context, index, animation));
+              }),
+          //  new ListView.builder(
+          //     itemBuilder: _buildItem,
+          //     itemCount: unApprovedAppointments.length),
         ),
       ],
     ));
   }
 
-  _acceptAppointment(Appointment appointment) {
+  _acceptAppointment(
+      Appointment appointment, int index, Animation<double> animation,
+      {bool dismissed}) {
     final String location = appointment.location;
     final String date = DateUtils.fullDayFormat(appointment.start);
     final snackBar = new SnackBar(
@@ -120,6 +96,9 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
           onPressed: () {
             setState(() {
               appointment.approved = false;
+              unApprovedAppointments.insert(index, appointment);
+              _listKey.currentState
+                  .insertItem(index, duration: Duration(milliseconds: 300));
             });
           }),
       duration: new Duration(seconds: 2),
@@ -137,8 +116,11 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
         ],
       ),
     );
+
+    removeAppointment(index, dismissed);
+
     setState(() {
-      _animationController.reverse();
+      // _animationController.reverse();
       appointment.approved = true;
       unApprovedAppointments.remove(appointment);
       Scaffold.of(context).showSnackBar(snackBar);
@@ -189,5 +171,23 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
         appointment.pause = picked;
       });
     }
+  }
+
+  void removeAppointment(int index, bool dismissed) {
+    dismissed
+        ? _listKey.currentState.removeItem(index,
+            (BuildContext context, Animation<double> animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: _buildItem(context, index, animation),
+            );
+          }, duration: Duration(milliseconds: 0))
+        : _listKey.currentState.removeItem(index,
+            (BuildContext context, Animation<double> animation) {
+            return ScaleTransition(
+              scale: animation,
+              child: _buildItem(context, index, animation),
+            );
+          });
   }
 }
