@@ -38,7 +38,7 @@ fi
 
 os="$(uname)"
 
-if [ ! -z "$KEYSTORECREATE " ]; then
+if [ ! -z "$KEYSTORECREATE" ]; then
     echo "Creating a new keystore"
 
     if [ -f "./android/key.properties" ]; then
@@ -138,7 +138,10 @@ flutter packages get > /dev/null 2>&1 && echo "OK" || echo "Failed!"
 
 if [[ "$os" == "Darwin" ]]; then
     echo -n "Running pod install... "
-    pod install --project-directory=./ios > /dev/null 2>&1 && echo "OK" || echo "Failed!"
+    # pod install --project-directory=./ios > /dev/null 2>&1 && echo "OK" || echo "Failed!"
+    cd ios
+    pod install > /dev/null 2>&1 && echo "OK" || echo "Failed!"
+    cd -
 fi
 
 echo "Project has been fully configured."
