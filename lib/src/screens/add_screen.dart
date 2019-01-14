@@ -11,7 +11,7 @@ class AddScreen extends StatefulWidget {
 }
 
 /// The state for the add screen
-class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
+class AddScreenState extends State<AddScreen> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 
   Substitute subDemo;
@@ -77,9 +77,6 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
                     sizeFactor: animation,
                     child: _buildItem(context, index, animation));
               }),
-          //  new ListView.builder(
-          //     itemBuilder: _buildItem,
-          //     itemCount: unApprovedAppointments.length),
         ),
       ],
     ));
@@ -120,14 +117,13 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
     removeAppointment(index, dismissed);
 
     setState(() {
-      // _animationController.reverse();
       appointment.approved = true;
       unApprovedAppointments.remove(appointment);
       Scaffold.of(context).showSnackBar(snackBar);
     });
   }
 
-  /// Edit staqrt time of the appointment
+  /// Edit start time of the appointment
   Future<Null> _selectStart(
       BuildContext context, Appointment appointment) async {
     TimeOfDay startTime = DateUtils.asTimeOfDay(appointment.start);
@@ -142,7 +138,7 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
     }
   }
 
-  /// Edit stop trime of the appointment
+  /// Edit stop time of the appointment
   Future<Null> _selectStop(
       BuildContext context, Appointment appointment) async {
     TimeOfDay stopTime = DateUtils.asTimeOfDay(appointment.start);
