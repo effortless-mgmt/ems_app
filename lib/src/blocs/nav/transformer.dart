@@ -30,7 +30,7 @@ class Transformer {
         sink.add(new AddScreen());
         break;
       case 3:
-        sink.add(new ContactsCardScreen());
+        sink.add(new AppointmentDetailsScreen(isJobOffer: false));
         break;
       case 4:
         sink.add(new ProfileScreen());

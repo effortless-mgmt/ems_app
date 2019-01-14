@@ -172,7 +172,7 @@ class _CalendarState extends State<Calendar> {
             hasAppointment = true;
             if (a.stop.isBefore(DateTime.now())) {
               appointmentIsOld = true;
-              if (a.approved) {
+              if (a.approvedByOwner) {
                 appointmentIsApproved = true;
               }
             }
@@ -246,12 +246,12 @@ class _CalendarState extends State<Calendar> {
           child: selectedHasAppointment
               ? selectedAppointmentIsOld
                   ? new Text(
-                      "$appointmentCount old appointment at ${appointment.location}")
+                      "$appointmentCount old appointment at ${appointment.department}")
                   : DateUtils.isSameDay(_selectedDate, DateTime.now())
                       ? Text(
-                          "$appointmentCount appointment today at ${appointment.location}")
+                          "$appointmentCount appointment today at ${appointment.department}")
                       : Text(
-                          "$appointmentCount upcoming appointment at ${appointment.location}")
+                          "$appointmentCount upcoming appointment at ${appointment.department}")
               : DateUtils.isSameDay(_selectedDate, DateTime.now())
                   ? new Text("No appointments today")
                   : new Text("No appointments on " +

@@ -32,14 +32,14 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
   }
 
   void _handleSubmission(BuildContext context, Appointment appointment) {
-    final String location = appointment.location;
+    final String department = appointment.department;
     final String date = DateUtils.fullDayFormat(appointment.start);
     final snackBar = new SnackBar(
       action: new SnackBarAction(
           label: "Undo",
           onPressed: () {
             setState(() {
-              appointment.approved = false;
+              appointment.approvedByOwner = false;
             });
           }),
       duration: new Duration(seconds: 5),
@@ -49,7 +49,7 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Text("$location on $date"),
+                new Text("$department on $date"),
                 new Text(appointment.registeredMessage),
               ],
             ),
@@ -67,7 +67,7 @@ class AddScreenState extends State<AddScreen> with TickerProviderStateMixin {
         onAccepted: (app) {
           setState(() {
             _animationController.reverse();
-            app.approved = true;
+            app.approvedByOwner = true;
             _handleSubmission(context, app);
           });
         },
