@@ -35,7 +35,7 @@ class AppointmentWidget extends StatelessWidget {
                 style: selected ? selectedStyle : null),
             leading: new Text("$startFormatted-$stopFormatted",
                 style: selected ? selectedStyle : null),
-            title: new Text(appointment.location,
+            title: new Text(appointment.department,
                 style: selected ? selectedStyle : null),
             onTap: () => onAppointmentSelected(appointment)));
   }

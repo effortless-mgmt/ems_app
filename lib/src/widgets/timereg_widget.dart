@@ -38,7 +38,7 @@ class TimeReg extends StatelessWidget {
                 // crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   new ListTile(
-                      title: new Text(appointment.location),
+                      title: new Text(appointment.department),
                       subtitle:
                           new Text(DateUtils.fullDayFormat(appointment.start))),
                   new Divider(height: 0.0),
