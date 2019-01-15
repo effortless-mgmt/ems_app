@@ -1,4 +1,5 @@
 import 'package:ems_app/src/screens/settings/calendar_screen.dart';
+import 'package:ems_app/src/screens/settings/change_password_screen.dart';
 import 'package:ems_app/src/screens/settings/theme_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -33,7 +34,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ThemeSettingScreen(),
+                    builder: (context) => ChangePasswordSettingScreen(),
                   ),
                 );
               },
