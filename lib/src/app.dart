@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'providers/auth_api_provider.dart';
-import 'blocs/auth/auth_utils.dart';
-import 'blocs/nav/new/navbar_utils.dart';
+import 'bloc/auth/auth.dart';
+import 'bloc/nav/navbar.dart';
 
 import 'screens/home_screen.dart';
 import 'screens/splash_screen.dart';

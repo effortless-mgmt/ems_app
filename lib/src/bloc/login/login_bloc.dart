@@ -3,8 +3,9 @@ import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
 import 'package:ems_app/src/providers/auth_api_provider.dart';
-import 'package:ems_app/src/blocs/auth/auth_utils.dart';
-import 'package:ems_app/src/blocs/login/login_utils.dart';
+import 'package:ems_app/src/bloc/auth/auth.dart';
+import 'login_state.dart';
+import 'login_event.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthApiProvider authApiProvider;

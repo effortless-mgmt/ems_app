@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:ems_app/src/blocs/nav/new/navbar_utils.dart';
+import 'package:ems_app/src/bloc/nav/navbar.dart';
 
 class CustomNavBar extends StatelessWidget {
   final List<BottomNavigationBarItem> navIcons = [
