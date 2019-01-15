@@ -3,15 +3,18 @@ import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
 import 'package:ems_app/src/providers/auth_api_provider.dart';
+import 'package:ems_app/src/blocs/auth/auth_utils.dart';
 import 'package:ems_app/src/blocs/login/login_utils.dart';
-
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthApiProvider authApiProvider;
+  final AuthenticationBloc authenticationBloc;
 
-  LoginBloc({@required this.authApiProvider}) : assert(authApiProvider != null);
+  LoginBloc({@required this.authApiProvider, @required this.authenticationBloc})
+      : assert(authApiProvider != null),
+        assert(authenticationBloc != null);
 
-  LoginState get initialState => LoginState.initial();
+  LoginState get initialState => LoginInitial();
 
   @override
   Stream<LoginState> mapEventToState(
@@ -19,7 +22,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginEvent event,
   ) async* {
     if (event is LoginButtonPressed) {
-      yield LoginState.loading();
+      yield LoginLoading();
 
       try {
         final token = await authApiProvider.authenticate(
@@ -27,14 +30,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           password: event.password,
         );
 
-        yield LoginState.success(token);
+        // change authentication state to authenticated.
+        authenticationBloc.dispatch(Login(token: token));
+        yield LoginInitial();
       } catch (error) {
-        yield LoginState.failure(error.toString());
+        yield LoginFailure(error: error.toString());
       }
-    }
-
-    if (event is LoggedIn) {
-      yield LoginState.initial();
     }
   }
 }

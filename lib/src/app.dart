@@ -60,28 +60,19 @@ class AppState extends State<App> {
               : _iosTheme,
           home: BlocBuilder<AuthenticationEvent, AuthenticationState>(
             bloc: _authenticationBloc,
-            builder: (BuildContext context, AuthenticationState state) {
-              List<Widget> widgets = [];
-
-              if (state is AuthenticationUninitialized) {
-                widgets.add(SplashScreen());
+            builder: (BuildContext context, AuthenticationState authenticationState) {
+              if (authenticationState is AuthenticationUninitialized) {
+                return SplashScreen();
               }
-              if (state is AuthenticationInitialized) {
-                if (state.isAuthenticated) {
-                  widgets.add(MainAppWrapper());
-                } else {
-                  widgets.add(LoginScreen(
-                    authApiProvider: _authApiProvider,
-                  ));
-                }
-                if (state.isLoading) {
-                  widgets.add(LoadingIndicator());
-                }
+              if (authenticationState is AuthenticationAuthenticated) {
+                return MainAppWrapper();
               }
-
-              return Stack(
-                children: widgets,
-              );
+              if (authenticationState is AuthenticationUnauthenticated) {
+                return LoginScreen(authApiProvider: _authApiProvider);
+              }
+              if (authenticationState is AuthenticationLoading) {
+                return LoadingIndicator();
+              }
             },
           )),
     );

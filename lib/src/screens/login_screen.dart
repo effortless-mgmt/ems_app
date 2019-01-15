@@ -13,16 +13,20 @@ class LoginScreen extends StatefulWidget {
       : assert(authApiProvider != null),
         super(key: key);
 
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginScreen> createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> {
   final asset = AssetImage("assets/logo-bw.png");
   LoginBloc _loginBloc;
+  AuthenticationBloc _authenticationBloc;
 
   @override
   void initState() {
-    _loginBloc = LoginBloc(authApiProvider: widget.authApiProvider);
+    _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
+    _loginBloc = LoginBloc(
+        authApiProvider: widget.authApiProvider,
+        authenticationBloc: _authenticationBloc);
     super.initState();
   }
 
@@ -35,39 +39,35 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: true,
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
-      body: GestureDetector(
-        // Enables user to tap anywhere above the soft keyboard  to dismiss it
-        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
-        // Needs to be inside a scrollableview for automatic displacement
-        // to work when soft keyboard is shown
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(top: 32.0, bottom: 24.0),
-                child: Image(
-                  image: asset,
+        resizeToAvoidBottomPadding: true,
+        appBar: AppBar(
+          title: Text('Login'),
+        ),
+        body: GestureDetector(
+            // Enables user to tap anywhere above the soft keyboard  to dismiss it
+            onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+            // Needs to be inside a scrollableview for automatic displacement
+            // to work when soft keyboard is shown
+            child: SingleChildScrollView(
+                child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(top: 32.0, bottom: 24.0),
+                  child: Image(
+                    image: asset,
+                  ),
                 ),
-              ),
-              Card(
-                elevation: 12,
-                margin:
-                    EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
-                child: LoginForm(
-                  authenticationBloc:
-                      BlocProvider.of<AuthenticationBloc>(context),
-                  loginBloc: _loginBloc,
+                Card(
+                  elevation: 12,
+                  margin:
+                      EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
+                  child: LoginForm(
+                    authenticationBloc: _authenticationBloc,
+                    loginBloc: _loginBloc,
+                  ),
                 ),
-              ),
-            ],
-          )
-        )
-      )
-    );
+              ],
+            ))));
   }
 }
 
@@ -82,10 +82,10 @@ class LoginForm extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  State<LoginForm> createState() => LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class LoginFormState extends State<LoginForm> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -117,12 +117,7 @@ class _LoginFormState extends State<LoginForm> {
         BuildContext context,
         LoginState loginState,
       ) {
-        if (_loginSucceeded(loginState)) {
-          widget.authenticationBloc.dispatch(Login(token: loginState.token));
-          widget.loginBloc.dispatch(LoggedIn());
-        }
-
-        if (_loginFailed(loginState)) {
+        if (loginState is LoginFailure) {
           _onWidgetDidBuild(() {
             Scaffold.of(context).showSnackBar(
               SnackBar(
@@ -195,12 +190,9 @@ class _LoginFormState extends State<LoginForm> {
   Widget _loginButton(LoginState loginState) {
     return RaisedButton(
       child: Text("Login"),
-      onPressed: loginState.isLoginButtonEnabled ? _onLoginButtonPressed : null,
+      onPressed: loginState is! LoginLoading ? _onLoginButtonPressed : null,
     );
   }
-
-  bool _loginSucceeded(LoginState state) => state.token.isNotEmpty;
-  bool _loginFailed(LoginState state) => state.error.isNotEmpty;
 
   void _onWidgetDidBuild(Function callback) =>
       WidgetsBinding.instance.addPostFrameCallback((_) => callback());
