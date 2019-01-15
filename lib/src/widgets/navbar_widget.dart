@@ -1,7 +1,7 @@
 import 'package:ems_app/src/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../screens/add_screen.dart';
-import '../screens/calender_screen.dart';
+import '../screens/calendar_screen.dart';
 import '../screens/contacts/contacts_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/profile_screen.dart';
@@ -20,12 +20,11 @@ class _NavbarState extends State<Navbar> {
 
   final List<Widget> _screens = [
     HomeScreen(),
-    CalenderScreen(),
+    CalendarScreen(),
     AddScreen(),
     ContactsCardScreen(),
     ProfileScreen(),
   ];
-  List<Widget> appBarIcons = [];
 
   void login() {
     print("Logging in...");
@@ -36,10 +35,6 @@ class _NavbarState extends State<Navbar> {
   Widget build(BuildContext context) {
     var mainApp = new Material(
         child: Scaffold(
-      appBar: AppBar(
-        title: Text("EMS"),
-        actions: appBarIcons,
-      ),
       body: _screens[_currentIndex], // new
       bottomNavigationBar: customNavbar(),
     ));
@@ -52,23 +47,6 @@ class _NavbarState extends State<Navbar> {
     setState(() {
       _currentIndex = index;
     });
-    if (index == 4) {
-      appBarIcons = [
-        IconButton(
-          icon: Icon(Icons.settings),
-          onPressed: () {
-            Navigator.push(
-              context,
-              new MaterialPageRoute(
-                builder: (context) => SettingsScreen(),
-              ),
-            );
-          },
-        )
-      ];
-    } else {
-      appBarIcons = [];
-    }
   }
 
   Widget customNavbar() {

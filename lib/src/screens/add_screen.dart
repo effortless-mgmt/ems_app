@@ -1,9 +1,10 @@
 import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/models/substitute.dart';
-import 'package:ems_app/src/widgets/add_time_widget.dart';
+import 'package:ems_app/src/widgets/add_time_widget_test.dart';
 import 'package:ems_app/util/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
+import 'package:intl/intl.dart';
 
 /// The add screen widget
 class AddScreen extends StatefulWidget {
@@ -14,14 +15,18 @@ class AddScreen extends StatefulWidget {
 class AddScreenState extends State<AddScreen> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 
-  Substitute subDemo;
-  List<Appointment> unApprovedAppointments;
+  Substitute _subDemo;
+  List<Appointment> _unApprovedAppointments;
+  num _month;
+  Color _calendarIconColor;
 
   @override
   void initState() {
     super.initState();
-    subDemo = new Substitute(Appointment.demodata);
-    unApprovedAppointments = subDemo.unapprovedAppointments;
+    _subDemo = new Substitute(Appointment.demodata);
+    _unApprovedAppointments = _subDemo.unapprovedAppointments;
+    _calendarIconColor = Colors.grey;
+    _month = -1;
   }
 
   @override
@@ -29,57 +34,58 @@ class AddScreenState extends State<AddScreen> {
     super.dispose();
   }
 
-  var appointmentNo = 3;
+  // var appointmentNo = 3;
   Widget _buildItem(
       BuildContext context, int index, Animation<double> animation) {
-    final currentAppointment = unApprovedAppointments[index];
+    print("MONTH IS: $_month");
+    MonthlySeparator separator;
+    final currentAppointment = _unApprovedAppointments[index];
+    if (_month != currentAppointment.start.month) {
+      _month = currentAppointment.start.month;
+      separator = new MonthlySeparator(date: currentAppointment.start);
+    }
 
     var addTime = AddTimeWidget(
-      currentAppointment,
-      onAccepted: (appointment) =>
-          _acceptAppointment(appointment, index, animation, dismissed: false),
+      appointment: currentAppointment,
+      color: _calendarIconColor,
+      onAccepted: (_) => _acceptAppointment(
+          currentAppointment, index, animation,
+          dismissed: false),
       changeStartTime: (appointment) => _selectStart(context, appointment),
       changeStopTime: (appointment) => _selectStop(context, appointment),
       changePauseTime: (appointment) => _selectPause(context, appointment),
     );
 
-    return Dismissible(
+    var addTimeTile = Dismissible(
       child: addTime,
       key: UniqueKey(),
       background: Container(
           color: Colors.lightGreen,
-          child: ListTile(trailing: Icon(Icons.check, color: Colors.red))),
+          child: ListTile(trailing: Icon(Icons.check, color: Colors.white))),
       onDismissed: (_) => _acceptAppointment(
           currentAppointment, index, animation,
           dismissed: true),
     );
+
+    return ListTileWithSeparator(separator: separator, child: addTimeTile);
   }
 
   @override
   Widget build(BuildContext context) {
+    _month = -1;
+    debugPrint(
+        "You have ${_unApprovedAppointments.length} missing registrations");
     return Scaffold(
-        body: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        new Container(
-            child: new Text(
-                "You have ${unApprovedAppointments.length} missing registrations",
-                style:
-                    new TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500)),
-            margin: const EdgeInsets.only(top: 20.0, left: 16.0, bottom: 10.0)),
-        new Flexible(
-          child: AnimatedList(
-              key: _listKey,
-              initialItemCount: unApprovedAppointments.length,
-              itemBuilder:
-                  (BuildContext context, int index, Animation animation) {
-                return SizeTransition(
-                    sizeFactor: animation,
-                    child: _buildItem(context, index, animation));
-              }),
-        ),
-      ],
-    ));
+        appBar: AppBar(title: Text("Pending registrations")),
+        body: AnimatedList(
+            key: _listKey,
+            initialItemCount: _unApprovedAppointments.length,
+            itemBuilder:
+                (BuildContext context, int index, Animation animation) {
+              return SizeTransition(
+                  sizeFactor: animation,
+                  child: _buildItem(context, index, animation));
+            }));
   }
 
   _acceptAppointment(
@@ -92,8 +98,9 @@ class AddScreenState extends State<AddScreen> {
           label: "Undo",
           onPressed: () {
             setState(() {
+              // _month = -1;
               appointment.approved = false;
-              unApprovedAppointments.insert(index, appointment);
+              _unApprovedAppointments.insert(index, appointment);
               _listKey.currentState
                   .insertItem(index, duration: Duration(milliseconds: 300));
             });
@@ -114,12 +121,12 @@ class AddScreenState extends State<AddScreen> {
       ),
     );
 
-    removeAppointment(index, dismissed);
-
     setState(() {
+      _unApprovedAppointments.remove(appointment);
       appointment.approved = true;
-      unApprovedAppointments.remove(appointment);
       Scaffold.of(context).showSnackBar(snackBar);
+      removeAppointment(index, dismissed);
+      // _month = -1;
     });
   }
 
@@ -185,5 +192,43 @@ class AddScreenState extends State<AddScreen> {
               child: _buildItem(context, index, animation),
             );
           });
+  }
+}
+
+class MonthlySeparator extends StatelessWidget {
+  final DateTime date;
+
+  MonthlySeparator({@required this.date});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(left: 16.0, top: 32),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(DateFormat.MMMM().format(date)),
+          Divider(height: 16),
+        ],
+      ),
+    );
+  }
+}
+
+class ListTileWithSeparator extends StatelessWidget {
+  final MonthlySeparator separator;
+  final Widget child;
+
+  ListTileWithSeparator({@required this.separator, @required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    if (separator == null) {
+      return this.child;
+    } else {
+      return Column(
+        children: <Widget>[separator, child],
+      );
+    }
   }
 }
