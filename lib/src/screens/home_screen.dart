@@ -1,6 +1,5 @@
 import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/screens/appointment_details/appointment_details_screen.dart';
-import 'package:ems_app/src/screens/appointment_details/next_appointment_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -49,7 +48,7 @@ class HomeScreen extends StatelessWidget {
         trailing: Text(item._status),
         onTap: () {
           Navigator.of(context).push(
-            new MaterialPageRoute<Null>(
+            new SlidePageRoute<Null>(
               builder: (BuildContext context) => AppointmentDetailsScreen(
                   appointment: item.appointment, isJobOffer: false),
               fullscreenDialog: true,
@@ -67,7 +66,7 @@ class HomeScreen extends StatelessWidget {
         subtitle: Text(item.appointment.department),
         onTap: () {
           Navigator.of(context).push(
-            new MaterialPageRoute<Null>(
+            new SlidePageRoute<Null>(
               builder: (BuildContext context) => AppointmentDetailsScreen(
                   appointment: item.appointment,
                   scaffoldKey: scaffoldKey,
@@ -258,3 +257,29 @@ final exampleList = [
   shiftItem5,
   shiftItem6
 ];
+
+class SlidePageRoute<T> extends MaterialPageRoute<T> {
+  SlidePageRoute(
+      {WidgetBuilder builder, RouteSettings settings, bool fullscreenDialog})
+      : super(
+            builder: builder,
+            settings: settings,
+            fullscreenDialog: fullscreenDialog);
+  @override
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
+    if (settings.isInitialRoute) return child;
+    Animatable<Offset> _drawerDetailsTween = Tween<Offset>(
+      begin: const Offset(0.0, 1.0),
+      end: Offset.zero,
+    ).chain(CurveTween(
+      curve: Curves.fastOutSlowIn,
+    ));
+
+    return SlideTransition(
+        position: animation.drive(_drawerDetailsTween),
+        child: ScaleTransition(
+            scale: animation,
+            child: FadeTransition(opacity: animation, child: child)));
+  }
+}
