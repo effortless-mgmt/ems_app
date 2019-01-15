@@ -1,4 +1,5 @@
 import 'package:duration/duration.dart';
+import 'package:intl/intl.dart';
 
 class Appointment {
   Appointment(
@@ -22,9 +23,14 @@ class Appointment {
   //Should only be used until we can access API. Will only fetch unapproved appointmens for registration anyway.
   bool _approvedByOwner = false;
 
+  /// Returns a string date ISO formatted, i.e. "2019-12-24"
+  String get startDateIso => new DateFormat('yyyy-MM-dd').format(_start);
   DateTime get start => _start;
+  String get startTimeFormatted => new DateFormat('HH:mm').format(_start);
   DateTime get stop => _stop;
+  String get stopTimeFormatted => new DateFormat('HH:mm').format(_stop);
   Duration get pause => _pause;
+  String get pauseTimeFormatted => printDuration(this.pause, abbreviated: true);
   Duration get duration => _stop.subtract(_pause).difference(_start);
   String get department => _department;
   String get address => _address;
@@ -33,11 +39,10 @@ class Appointment {
 
   String get durationFormatted =>
       printDuration(this.duration, abbreviated: true);
-  String get pauseFormatted => printDuration(this.pause, abbreviated: true);
   String get totalFormatted =>
       printDuration(this.duration + this.pause, abbreviated: true);
   String get registeredMessage =>
-      "Worked: ${this.durationFormatted} \nBreak: ${this.pauseFormatted} \nTotal: ${this.totalFormatted}";
+      "Worked: ${this.durationFormatted} \nBreak: ${this.pauseTimeFormatted} \nTotal: ${this.totalFormatted}";
   bool get approvedByOwner => _approvedByOwner;
   set start(start) => _start = start;
   set stop(stop) => _stop = stop;

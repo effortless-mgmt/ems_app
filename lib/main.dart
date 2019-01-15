@@ -13,7 +13,6 @@ void main() async {
     } else {
       Zone.current.handleUncaughtError(details.exception, details.stack);
     }
-
   };
 
   await FlutterCrashlytics().initialize();
@@ -21,7 +20,7 @@ void main() async {
   runZoned<Future<Null>>(() async {
     runApp(App());
   }, onError: (error, stackTrace) async {
-    await FlutterCrashlytics().reportCrash(error, stackTrace, forceCrash: false);
+    await FlutterCrashlytics()
+        .reportCrash(error, stackTrace, forceCrash: false);
   });
-
 }

@@ -3,7 +3,7 @@ import 'package:ems_app/src/screens/appointment_details/appointment_details_scre
 import 'package:ems_app/src/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../screens/add_screen.dart';
-import '../screens/calender_screen.dart';
+import '../screens/calendar_screen.dart';
 import '../screens/contacts/contacts_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/profile_screen.dart';
@@ -22,14 +22,13 @@ class _NavbarState extends State<Navbar> {
 
   final List<Widget> _screens = [
     HomeScreen(),
-    CalenderScreen(),
+    CalendarScreen(),
     AddScreen(),
     AppointmentDetailsScreen(
         isJobOffer: true, appointment: Appointment.demodata[0]),
     // ContactsCardScreen(),
     ProfileScreen(),
   ];
-  List<Widget> appBarIcons = [];
 
   void login() {
     print("Logging in...");
@@ -40,10 +39,6 @@ class _NavbarState extends State<Navbar> {
   Widget build(BuildContext context) {
     var mainApp = new Material(
         child: Scaffold(
-      // appBar: AppBar(
-      //   title: Text("EMS"),
-      //   actions: appBarIcons,
-      // ),
       body: _screens[_currentIndex], // new
       bottomNavigationBar: customNavbar(),
     ));
@@ -56,23 +51,6 @@ class _NavbarState extends State<Navbar> {
     setState(() {
       _currentIndex = index;
     });
-    if (index == 4) {
-      appBarIcons = [
-        IconButton(
-          icon: Icon(Icons.settings),
-          onPressed: () {
-            Navigator.push(
-              context,
-              new MaterialPageRoute(
-                builder: (context) => SettingsScreen(),
-              ),
-            );
-          },
-        )
-      ];
-    } else {
-      appBarIcons = [];
-    }
   }
 
   Widget customNavbar() {
@@ -101,9 +79,10 @@ class _NavbarState extends State<Navbar> {
     return Theme(
       data: Theme.of(context).copyWith(
           // sets the background color of the `BottomNavigationBar`
-          canvasColor: Colors.blue,
+          // canvasColor: Colors.blue,
+          canvasColor: Theme.of(context).primaryColor,
           // sets the active color of the `BottomNavigationBar` if `Brightness` is light
-          primaryColor: Colors.red,
+          primaryColor: Theme.of(context).accentColor,
           textTheme: Theme.of(context)
               .textTheme
               .copyWith(caption: new TextStyle(color: Colors.white))),
