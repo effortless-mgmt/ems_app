@@ -36,6 +36,7 @@ class ChangePasswordSettingScreen extends StatelessWidget {
                 ),
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   FlatButton(
                     child: Text("Cancel"),
@@ -43,7 +44,6 @@ class ChangePasswordSettingScreen extends StatelessWidget {
                       Text("Fuck off");
                     },
                   ),
-                  SizedBox(width: 115.0),
                   FlatButton(
                     child: Text("Save changes"),
                     onPressed: () {
