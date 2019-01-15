@@ -9,12 +9,15 @@ class DateUtils {
   static final DateFormat _firstDayFormat = new DateFormat("MMM dd");
   static final DateFormat _fullDayFormat = new DateFormat("EEE MMM dd, yyyy");
   static final DateFormat _apiDayFormat = new DateFormat("yyyy-MM-dd");
+  static final DateFormat _scheduleTimeFormat = new DateFormat("Hm");
 
   static String formatMonth(DateTime d) => _monthFormat.format(d);
   static String formatDay(DateTime d) => _dayFormat.format(d);
   static String formatFirstDay(DateTime d) => _firstDayFormat.format(d);
   static String fullDayFormat(DateTime d) => _fullDayFormat.format(d);
   static String apiDayFormat(DateTime d) => _apiDayFormat.format(d);
+  static String scheduleTimeFormat(DateTime start, DateTime stop) =>
+      "${_scheduleTimeFormat.format(start)}-${_scheduleTimeFormat.format(stop)}";
 
   static const List<String> weekdays = const [
     "Sun",
@@ -24,6 +27,16 @@ class DateUtils {
     "Thu",
     "Fri",
     "Sat"
+  ];
+
+  static const List<String> weekdaysFull = const [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
   ];
 
   /// The list of days in a given month
@@ -165,5 +178,9 @@ class DateUtils {
 
   static DateTime nextWeek(DateTime w) {
     return w.add(new Duration(days: 7));
+  }
+
+  static String dateToString(DateTime d) {
+    return "${weekdaysFull[d.weekday]}, ${apiDayFormat(d)}";
   }
 }
