@@ -15,8 +15,8 @@ class AuthApiProvider {
     @required String password,
   }) async {
     final response = await client.post("$_baseUrl/api/auth/login",
-    headers: { "Content-Type": "application/json" },
-    body: "{ \"username\": \"$username\", \"password\": \"$password\" }");
+        headers: {"Content-Type": "application/json"},
+        body: "{ \"username\": \"$username\", \"password\": \"$password\" }");
     if (response.statusCode == 200) {
       // If the call to the server was successful, parse the JSON
       dynamic responsejson = json.decode(response.body);

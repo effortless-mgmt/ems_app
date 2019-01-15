@@ -41,7 +41,7 @@ class NavBarBloc extends Bloc<NavBarEvent, NavBarState> {
       case 0:
         return HomeScreen();
       case 1:
-        return CalenderScreen();
+        return CalendarScreen();
       case 2:
         return AddScreen();
       case 3:

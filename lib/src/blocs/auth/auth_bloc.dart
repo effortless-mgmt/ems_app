@@ -1,7 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
-
 import 'auth_state.dart';
 import 'auth_event.dart';
 import '../../providers/auth_api_provider.dart';

@@ -1,7 +1,8 @@
-import 'package:ems_app/src/screens/messenger_screen.dart';
-import 'package:ems_app/src/util/user.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'package:ems_app/src/screens/messenger_screen.dart';
+import 'package:ems_app/src/util/user.dart';
 
 class ContactListTile extends ListTile {
   ContactListTile({User user})

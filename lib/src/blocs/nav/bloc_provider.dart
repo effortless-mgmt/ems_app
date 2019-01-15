@@ -10,7 +10,8 @@ class BlocProvider extends InheritedWidget {
   @override
   bool updateShouldNotify(_) => true;
 
-  static Bloc of( context) {
-    return (context.inheritFromWidgetOfExactType(BlocProvider) as BlocProvider).bloc;
+  static Bloc of(context) {
+    return (context.inheritFromWidgetOfExactType(BlocProvider) as BlocProvider)
+        .bloc;
   }
 }

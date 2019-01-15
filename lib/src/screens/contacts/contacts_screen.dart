@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+
 // import '../../../util/thirdParty/page_transformer.dart';
-import '../../util/user_list.dart';
+import 'package:ems_app/src/util/user_list.dart';
 import 'contacts_card.dart';
 
 class ContactsCardScreen extends StatelessWidget {
@@ -31,36 +32,36 @@ class ContactsCardScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: SizedBox.fromSize(
-          size: const Size.fromHeight(500.0),
-          child: PageView.builder(
-            controller: PageController(viewportFraction: 0.85),
-                itemCount: sampleUserList.userList.length,
-                itemBuilder: (context, index) {
-                  final user = sampleUserList.userList[index];
-                  return ContactsCard(
-                    user: user,
-                  );
-                },
-          )
-          // TODO: Incorporate some fancy animation stuff maybe?
-          // child: PageTransformer(
-          //   pageViewBuilder: (context, visibilityResolver) {
-          //     return PageView.builder(
-          //       controller: PageController(viewportFraction: 0.85),
-          //       itemCount: sampleUserList.userList.length,
-          //       itemBuilder: (context, index) {
-          //         final user = sampleUserList.userList[index];
-          //         final pageVisibility =
-          //           visibilityResolver.resolvePageVisibility(index);
-          //         return ContactsPageItem(
-          //           user: user,
-          //           pageVisibility: pageVisibility,
-          //         );
-          //       },
-          //     );
-          //   },
-          // ),
-        ),
+            size: const Size.fromHeight(500.0),
+            child: PageView.builder(
+              controller: PageController(viewportFraction: 0.85),
+              itemCount: sampleUserList.userList.length,
+              itemBuilder: (context, index) {
+                final user = sampleUserList.userList[index];
+                return ContactsCard(
+                  user: user,
+                );
+              },
+            )
+            // TODO: Incorporate some fancy animation stuff maybe?
+            // child: PageTransformer(
+            //   pageViewBuilder: (context, visibilityResolver) {
+            //     return PageView.builder(
+            //       controller: PageController(viewportFraction: 0.85),
+            //       itemCount: sampleUserList.userList.length,
+            //       itemBuilder: (context, index) {
+            //         final user = sampleUserList.userList[index];
+            //         final pageVisibility =
+            //           visibilityResolver.resolvePageVisibility(index);
+            //         return ContactsPageItem(
+            //           user: user,
+            //           pageVisibility: pageVisibility,
+            //         );
+            //       },
+            //     );
+            //   },
+            // ),
+            ),
       ),
     );
   }

@@ -12,7 +12,7 @@ class Transformer {
         sink.add(HomeScreen());
         break;
       case 1:
-        sink.add(CalenderScreen());
+        sink.add(CalendarScreen());
         break;
       case 2:
         sink.add(AddScreen());
@@ -29,7 +29,7 @@ class Transformer {
       default:
     }
   });
-  
+
   // final stringToAppBar = StreamTransformer<int, AppBar>.fromHandlers(
   //   handleData: (appBarName, sink) {
   //     if (appBarName == 4) {

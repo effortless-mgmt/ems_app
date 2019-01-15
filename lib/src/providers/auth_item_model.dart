@@ -6,5 +6,4 @@ class AuthItemModel {
   AuthItemModel.fromJson(Map<String, dynamic> json) {
     _token = json['token'];
   }
-
 }

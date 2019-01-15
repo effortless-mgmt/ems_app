@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_duration_picker/flutter_duration_picker.dart';
+
 import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/models/substitute.dart';
 import 'package:ems_app/src/widgets/add_time_widget.dart';
 import 'package:ems_app/src/util/date_utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_duration_picker/flutter_duration_picker.dart';
-import 'package:intl/intl.dart';
 
 /// The add screen widget
 class AddScreen extends StatefulWidget {
