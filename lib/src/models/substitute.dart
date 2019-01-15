@@ -16,7 +16,7 @@ class Substitute {
     _unregistered = <Appointment>[];
 
     for (Appointment e in _appointments) {
-      if (!e.approved && e.stop.isBefore(DateTime.now())) {
+      if (!e.approvedByOwner && e.stop.isBefore(DateTime.now())) {
         _unregistered.add(e);
       }
     }

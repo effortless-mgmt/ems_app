@@ -67,6 +67,7 @@ build/
 **/ios/Flutter/flutter_assets/
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/Runner/secret_keys.plist
 
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3

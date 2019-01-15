@@ -1,6 +1,6 @@
 import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/models/substitute.dart';
-import 'package:ems_app/src/widgets/add_time_widget_test.dart';
+import 'package:ems_app/src/widgets/add_time_widget.dart';
 import 'package:ems_app/util/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
@@ -34,7 +34,6 @@ class AddScreenState extends State<AddScreen> {
     super.dispose();
   }
 
-  // var appointmentNo = 3;
   Widget _buildItem(
       BuildContext context, int index, Animation<double> animation) {
     print("MONTH IS: $_month");
@@ -76,7 +75,7 @@ class AddScreenState extends State<AddScreen> {
     debugPrint(
         "You have ${_unApprovedAppointments.length} missing registrations");
     return Scaffold(
-        appBar: AppBar(title: Text("Pending registrations")),
+        appBar: AppBar(title: Text("Pending Registrations")),
         body: AnimatedList(
             key: _listKey,
             initialItemCount: _unApprovedAppointments.length,
@@ -91,7 +90,7 @@ class AddScreenState extends State<AddScreen> {
   _acceptAppointment(
       Appointment appointment, int index, Animation<double> animation,
       {bool dismissed}) {
-    final String location = appointment.location;
+    final String location = appointment.department;
     final String date = DateUtils.fullDayFormat(appointment.start);
     final snackBar = new SnackBar(
       action: new SnackBarAction(
@@ -99,7 +98,7 @@ class AddScreenState extends State<AddScreen> {
           onPressed: () {
             setState(() {
               // _month = -1;
-              appointment.approved = false;
+              appointment.approvedByOwner = false;
               _unApprovedAppointments.insert(index, appointment);
               _listKey.currentState
                   .insertItem(index, duration: Duration(milliseconds: 300));
@@ -123,7 +122,7 @@ class AddScreenState extends State<AddScreen> {
 
     setState(() {
       _unApprovedAppointments.remove(appointment);
-      appointment.approved = true;
+      appointment.approvedByOwner = true;
       Scaffold.of(context).showSnackBar(snackBar);
       removeAppointment(index, dismissed);
       // _month = -1;
