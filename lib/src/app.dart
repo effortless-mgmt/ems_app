@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'providers/auth_api_provider.dart';
 import 'blocs/auth/auth_utils.dart';
-import 'blocs/nav/bloc_provider.dart' as navBlocProvider;
+import 'blocs/nav/new/navbar_utils.dart';
 
 import 'screens/home_screen.dart';
 import 'screens/splash_screen.dart';
@@ -60,12 +60,13 @@ class AppState extends State<App> {
               : _iosTheme,
           home: BlocBuilder<AuthenticationEvent, AuthenticationState>(
             bloc: _authenticationBloc,
-            builder: (BuildContext context, AuthenticationState authenticationState) {
+            builder: (BuildContext context,
+                AuthenticationState authenticationState) {
               if (authenticationState is AuthenticationUninitialized) {
                 return SplashScreen();
               }
               if (authenticationState is AuthenticationAuthenticated) {
-                return MainAppWrapper();
+                return MainApp();
               }
               if (authenticationState is AuthenticationUnauthenticated) {
                 return LoginScreen(authApiProvider: _authApiProvider);
@@ -79,43 +80,42 @@ class AppState extends State<App> {
   }
 }
 
-class MainAppWrapper extends StatelessWidget {
+class MainApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return navBlocProvider.BlocProvider(
-      child: MainApp(),
-    );
-  }
+  State<StatefulWidget> createState() => MainAppState();
 }
 
-class MainApp extends StatelessWidget {
+class MainAppState extends State<MainApp> {
+  NavBarBloc _navBarBloc;
+
+  @override
+  void initState() {
+    _navBarBloc = NavBarBloc();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _navBarBloc.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final bloc = navBlocProvider.BlocProvider.of(context);
-    // return StreamBuilder(
-      // stream: bloc.appBarIcons,
-      // builder: (context, snapshot) {
-        return Scaffold(
+    return BlocProvider<NavBarBloc>(
+      bloc: _navBarBloc,
+      child: Scaffold(
           bottomNavigationBar: CustomNavBar(),
-          // appBar: snapshot.hasData
-          //     ? snapshot.data
-          //     : AppBar(
-          //         title: Text('EMS'),
-          //       ),
-          body: StreamBuilder(
-            stream: bloc.page,
-            initialData: HomeScreen(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return snapshot.data;
-              } else {
-                debugPrint("no data in snapshot" + snapshot.toString());
-                return HomeScreen();
-              }
-            },
-          ),
-        );
-      // },
-    // );
+          body: BlocBuilder(
+              bloc: _navBarBloc,
+              builder: (BuildContext context, NavBarState navBarState) {
+                if (navBarState is NavBarJump) {
+                  return navBarState.screen;
+                } else {
+                  // fallback (most likely not needed).
+                  return HomeScreen();
+                }
+              })),
+    );
   }
 }
