@@ -54,12 +54,6 @@ class ChangePasswordSettingScreen extends StatelessWidget {
                   ],
                 ),
               )
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: <Widget>[
-
-              //   ],
-              // )
             ],
           )),
       appBar: AppBar(

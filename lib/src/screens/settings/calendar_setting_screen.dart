@@ -61,20 +61,20 @@ class CalendarSettingScreen extends StatelessWidget {
               );
             },
           ),
-          Divider(),
-          ListTile(
-            title: Text('Use device\'s time zone'),
-            trailing: Switch(
-              value: notificationOn,
-              onChanged: (value) {
-                print("Fuck out");
-              },
-            ),
-          ),
-          ListTile(
-            title: Text("Time zone"),
-            subtitle: Text("Central European Standard Time GMT+1"),
-          ),
+          // Divider(),
+          // ListTile(
+          //   title: Text('Use device\'s time zone'),
+          //   trailing: Switch(
+          //     value: notificationOn,
+          //     onChanged: (value) {
+          //       print("Fuck out");
+          //     },
+          //   ),
+          // ),
+          // ListTile(
+          //   title: Text("Time zone"),
+          //   subtitle: Text("Central European Standard Time GMT+1"),
+          // ),
           Divider(),
           ListTile(
             title: Text('Show week number'),
