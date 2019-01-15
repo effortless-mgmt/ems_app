@@ -89,7 +89,9 @@ class SettingsScreenState extends State<SettingsScreen> {
             ),
             ListTile(
               title: Text('Troubleshooting'),
-              onTap: _showDialog,
+              onTap: () {
+                print("Cool stuff bro");
+              },
             ),
             ListTile(
               title: Text('Contact support'),
