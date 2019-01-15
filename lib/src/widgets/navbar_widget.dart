@@ -1,13 +1,11 @@
 import 'package:ems_app/src/models/appointment.dart';
-import 'package:ems_app/src/screens/appointment_details/appointment_details_screen.dart';
+import 'package:ems_app/src/screens/appointment_details/next_appointment_details_screen.dart';
 import 'package:ems_app/src/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import '../screens/add_screen.dart';
 import '../screens/calendar_screen.dart';
-import '../screens/contacts/contacts_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/profile_screen.dart';
-import '../screens/settings_screen.dart';
 
 class Navbar extends StatefulWidget {
   @override
@@ -24,8 +22,7 @@ class _NavbarState extends State<Navbar> {
     HomeScreen(),
     CalendarScreen(),
     AddScreen(),
-    AppointmentDetailsScreen(
-        isJobOffer: true, appointment: Appointment.demodata[0]),
+    NextAppointmentDetailsScreen(appointment: Appointment.demodata[0]),
     // ContactsCardScreen(),
     ProfileScreen(),
   ];

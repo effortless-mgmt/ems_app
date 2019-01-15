@@ -1,103 +1,82 @@
 import 'package:ems_app/src/models/appointment.dart';
-import 'package:ems_app/src/screens/appointment_details/contact_widget.dart';
-import 'package:ems_app/src/screens/appointment_details/maps_widget.dart';
 import 'package:ems_app/src/screens/appointment_details/appBarDescriptive.dart';
-import 'package:ems_app/util/user_list.dart';
+import 'package:ems_app/src/screens/appointment_details/maps_widget.dart';
 import 'package:flutter/material.dart';
 
-class AppointmentDetailsScreen extends StatefulWidget {
-  final bool isJobOffer;
+class AppointmentDetailsScreen extends StatelessWidget {
   final Appointment appointment;
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  final bool isJobOffer;
 
   AppointmentDetailsScreen(
-      {@required this.isJobOffer, @required this.appointment});
+      {@required this.appointment,
+      this.scaffoldKey,
+      @required this.isJobOffer});
 
-  @override
-  State<StatefulWidget> createState() => new _AppointmentDetailsState();
-}
-
-// SLIVER APP BAR
-class _AppointmentDetailsState extends State<AppointmentDetailsScreen> {
-  bool notNull(Object o) => o != null;
   @override
   Widget build(BuildContext context) {
+    bool notNull(Object o) => o != null;
+
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              AppBarDescriptive(
-                  title: widget.isJobOffer
-                      ? Text("Job Offer")
-                      : Text("Next Appointment"),
-                  appointment: widget.appointment)
-            ];
-          },
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Maps(address: widget.appointment.address),
-              Container(
-                  padding: const EdgeInsets.only(left: 16.0, top: 10.0),
-                  child: Text("${widget.appointment.address}")),
-              widget.isJobOffer
-                  ? _doNotDisplayContacts()
-                  : Flexible(
-                      child: ListView.builder(
-                          primary: true,
-                          itemBuilder: _listBuilder,
-                          itemCount: sampleUserList.userList.length),
-                    ),
-              widget.isJobOffer ? _declineOffer() : null,
-            ].where(notNull).toList(),
-          )),
-    );
-  }
-
-  Widget _doNotDisplayContacts() {
-    return Container(
-        padding: const EdgeInsets.all(16),
-        child: Text("No job contacts displayed yet.",
-            style: TextStyle(fontSize: 16.0)));
-  }
-
-  Widget _listBuilder(BuildContext context, int index) {
-    return ContactListTile(user: sampleUserList.userList[index]);
-  }
-
-  Widget _declineOffer() {
-    return Center(
-      child: FlatButton(
-          child: Text("Decline job offer",
-              style: TextStyle(
-                  color: Colors.redAccent,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 12.0)),
-          onPressed: () => debugPrint("Pressed")),
+      appBar: AppBarDescriptive(
+          title: isJobOffer ? Text("Job Offer") : Text("Appointment Details"),
+          appointment: appointment),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Maps(address: appointment.address),
+          Container(
+              padding: const EdgeInsets.only(left: 16.0, top: 10.0),
+              child: Text("${appointment.address}")),
+          Container(
+              padding: const EdgeInsets.all(16),
+              child: Text("Contacts", style: TextStyle(fontSize: 16.0))),
+          Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: isJobOffer
+                  ? Text("No job contacts displayed yet.",
+                      style: TextStyle(fontSize: 12.0))
+                  : Text(
+                      "No job contacts displayed yet. You will be able to see contacts within 16 hours of your next appointment.")),
+          Expanded(
+            child: Center(
+              child: isJobOffer
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        FlatButton(
+                            child: Text("Accept Appointment",
+                                style: TextStyle(
+                                    color: Colors.green,
+                                    // fontWeight: FontWeight.bold,
+                                    fontSize: 16.0)),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              scaffoldKey.currentState.showSnackBar(
+                                  new SnackBar(
+                                      content: new Text("Job offer accepted."),
+                                      duration: Duration(milliseconds: 1500)));
+                            }),
+                        FlatButton(
+                            child: Text("Decline Appointment",
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    // fontWeight: FontWeight.bold,
+                                    fontSize: 16.0)),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              scaffoldKey.currentState.showSnackBar(
+                                  new SnackBar(
+                                      content: new Text("Job offer declined"),
+                                      duration: Duration(milliseconds: 1500)));
+                            }),
+                      ],
+                    )
+                  : null,
+            ),
+          ),
+        ].where(notNull).toList(),
+      ),
     );
   }
 }
-/*########################################### 
-    STANDARD APP BAR IMPLEMENTATION. FUNCTIONAL 
-    ########################################### */
-
-// class _AppointmentDetailsState extends State<AppointmentDetailsScreen> {
-// Appointment _appointment = Appointment.demodata[0];
-// @override
-// Widget build(BuildContext context) {
-//   return Scaffold(
-//     appBar: AppBarDescriptive(
-//         title: Text("Next Appointment"), appointment: _appointment),
-//     body: Column(
-//       children: <Widget>[
-//         Maps(address: _appointment.address),
-//         Flexible(
-//           child: ListView.builder(
-//               itemBuilder: _listBuilder,
-//               itemCount: sampleUserList.userList.length),
-//         ),
-//         // ContactListTile(user: sampleUserList.userList[0])
-//       ],
-//     ),
-//   );
-// }

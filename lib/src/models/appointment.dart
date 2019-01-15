@@ -50,6 +50,8 @@ class Appointment {
   set approvedByOwner(app) => _approvedByOwner = app;
   set description(dscr) => _description = dscr;
   set hourlyWage(wage) => _hourlyWage = wage;
+  set department(dep) => _department = dep;
+  set address(add) => _address = add;
 
   void record(DateTime start, DateTime stop, Duration pause, bool isApproved) {
     _start = start;
