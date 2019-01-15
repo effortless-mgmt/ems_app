@@ -3,12 +3,12 @@ import 'package:ems_app/src/widgets/appointment_widget.dart';
 import 'package:ems_app/src/widgets/calendar/calendar_widget.dart';
 import 'package:flutter/material.dart';
 
-class CalenderScreen extends StatefulWidget {
+class CalendarScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _CalenderScreenState();
+  State<StatefulWidget> createState() => new _CalendarScreenState();
 }
 
-class _CalenderScreenState extends State<CalenderScreen> {
+class _CalendarScreenState extends State<CalendarScreen> {
   DateTime selected;
 
   @override
@@ -20,6 +20,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Calendar")),
       body: new Column(
         children: <Widget>[
           new Calendar(
