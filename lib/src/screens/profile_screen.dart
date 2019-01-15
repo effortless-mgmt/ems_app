@@ -1,5 +1,6 @@
-import 'package:ems_app/src/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'package:ems_app/src/widgets/custom_icons/settings_icon.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -10,19 +11,7 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text("Profile"),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                    builder: (context) => SettingsScreen(),
-                  ),
-                );
-              },
-            )
-          ],
+          actions: <Widget>[SettingsIcon()],
         ),
         body: SingleChildScrollView(
           child: Column(

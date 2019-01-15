@@ -1,10 +1,10 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:tuple/tuple.dart';
 
 import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/widgets/calendar/calendar_tile.dart';
-import 'package:ems_app/util/date_utils.dart';
-import 'package:flutter/material.dart';
-import 'package:tuple/tuple.dart';
+import 'package:ems_app/src/util/date_utils.dart';
 
 typedef DayBuilder(BuildContext context, DateTime day);
 
