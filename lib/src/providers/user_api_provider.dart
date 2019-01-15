@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../util/user_list.dart';
+
+import 'package:ems_app/src/util/user_list.dart';
 
 class UserApiProvider {
   final String api_url = "bluh";

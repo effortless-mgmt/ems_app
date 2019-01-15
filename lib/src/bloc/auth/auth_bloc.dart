@@ -3,7 +3,7 @@ import 'package:bloc/bloc.dart';
 
 import 'auth_state.dart';
 import 'auth_event.dart';
-import '../../providers/auth_api_provider.dart';
+import 'package:ems_app/src/providers/auth_api_provider.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {

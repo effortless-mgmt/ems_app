@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:ems_app/src/blocs/auth/auth_utils.dart';
-import 'package:ems_app/src/blocs/login/login_utils.dart';
+import 'package:ems_app/src/bloc/auth/auth.dart';
+import 'package:ems_app/src/bloc/login/login.dart';
 import 'package:ems_app/src/providers/auth_api_provider.dart';
 
 class LoginScreen extends StatefulWidget {
