@@ -35,23 +35,31 @@ class ChangePasswordSettingScreen extends StatelessWidget {
                       const InputDecoration(labelText: "Re-type new password"),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  FlatButton(
-                    child: Text("Cancel"),
-                    onPressed: () {
-                      Text("Fuck off");
-                    },
-                  ),
-                  FlatButton(
-                    child: Text("Save changes"),
-                    onPressed: () {
-                      print("Fuck off");
-                    },
-                  )
-                ],
+              ButtonTheme.bar(
+                child: ButtonBar(
+                  children: <Widget>[
+                    FlatButton(
+                      child: Text("Cancel"),
+                      textColor: Theme.of(context).primaryColor,
+                      onPressed: () {
+                        print("Fuck off 1");
+                      },
+                    ),
+                    RaisedButton(
+                      child: Text("Save changes"),
+                      onPressed: () {
+                        print("Fuck off2");
+                      },
+                    )
+                  ],
+                ),
               )
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: <Widget>[
+
+              //   ],
+              // )
             ],
           )),
       appBar: AppBar(

@@ -147,10 +147,7 @@ class SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  // user defined function
   void _showDialog() {
-    // flutter defined function
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -171,7 +168,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                 print("You pressed log out");
               },
             ),
-            new FlatButton(
+            new RaisedButton(
               child: new Text("CANCEL"),
               onPressed: () {
                 Navigator.of(context).pop();
