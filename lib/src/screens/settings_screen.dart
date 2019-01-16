@@ -173,7 +173,10 @@ class SettingsScreen extends StatelessWidget {
               },
             ),
             new RaisedButton(
-              child: new Text("CANCEL"),
+              child: new Text(
+                "CANCEL",
+                style: Theme.of(context).textTheme.button,
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
                 print("You pressed cancel");

@@ -31,15 +31,19 @@ class AppState extends State<App> {
       primaryColorBrightness: Brightness.dark);
   final _androidTheme = ThemeData(
     brightness: Brightness.light,
-
     primarySwatch: Colors.blue, // Background of buttons
     primaryColorLight:
         Colors.blue[200], //A lighter version of the primaryColor.
     primaryColor: Colors.blue[
         500], // The background color for major parts of the app (toolbars, tab bars, etc)
     primaryColorDark: Colors.blue[700], //
-    accentColor: Colors.black,
+    //accentColor: Colors.black,
     bottomAppBarColor: Colors.yellow, // Do not work
+    textTheme: TextTheme(
+      button: TextStyle(
+          color:
+              Colors.white), //Used for text on [RaisedButton] and [FlatButton].
+    ),
   );
 
   @override
