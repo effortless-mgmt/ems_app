@@ -15,7 +15,8 @@ class CalendarSettingScreen extends StatelessWidget {
             padding: EdgeInsets.all(15.0),
             child: Text(
               'General',
-              style: TextStyle(color: Colors.blue, fontSize: 15.0),
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor, fontSize: 15.0),
             ),
           ),
           ListTile(
@@ -31,7 +32,7 @@ class CalendarSettingScreen extends StatelessWidget {
                       RadioListTile(
                         title: Text("Saturday"),
                         value: true,
-                        activeColor: Colors.black,
+                        activeColor: Theme.of(context).primaryColorDark,
                         groupValue: true,
                         onChanged: (value) {
                           print(value);
@@ -40,7 +41,7 @@ class CalendarSettingScreen extends StatelessWidget {
                       RadioListTile(
                         title: Text("Sunday"),
                         value: true,
-                        activeColor: Colors.black,
+                        activeColor: Theme.of(context).primaryColorDark,
                         groupValue: false,
                         onChanged: (value) {
                           print(value);
@@ -49,7 +50,7 @@ class CalendarSettingScreen extends StatelessWidget {
                       RadioListTile(
                         title: Text("Monday"),
                         value: true,
-                        activeColor: Colors.black,
+                        activeColor: Theme.of(context).primaryColorDark,
                         groupValue: false,
                         onChanged: (value) {
                           print(value);
