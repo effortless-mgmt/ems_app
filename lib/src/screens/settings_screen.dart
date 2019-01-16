@@ -14,8 +14,8 @@ class SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
-        title: Text('Settings screen'),
+      appBar: AppBar(
+        title: Text('Settings'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
