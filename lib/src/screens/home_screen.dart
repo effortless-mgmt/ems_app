@@ -74,13 +74,7 @@ class HomeScreen extends StatelessWidget {
               fullscreenDialog: true,
             ),
           );
-        }
-
-        // trailing: Checkbox(
-        //   value: item._checked,
-        //   onChanged: null, // TODO: add method for accepting available shift,
-        // ),
-        );
+        });
   }
 
   _buildDateIcon(BuildContext context, DateTime dateTime) {
@@ -165,7 +159,6 @@ class ShiftItem extends ListItem {
 }
 
 class AvailableShift extends ShiftItem {
-  // bool _checked = false;
   AvailableShift({@required appointment}) : super.protected(appointment);
 }
 
