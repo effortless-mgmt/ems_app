@@ -26,7 +26,8 @@ class SettingsScreenState extends State<SettingsScreen> {
               padding: EdgeInsets.all(15.0),
               child: Text(
                 'Account',
-                style: TextStyle(color: Colors.blue, fontSize: 15.0),
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor, fontSize: 15.0),
               ),
             ),
             ListTile(
@@ -49,7 +50,8 @@ class SettingsScreenState extends State<SettingsScreen> {
               padding: EdgeInsets.all(15.0),
               child: Text(
                 'App settings',
-                style: TextStyle(color: Colors.blue, fontSize: 15.0),
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor, fontSize: 15.0),
               ),
             ),
             ListTile(
@@ -78,7 +80,8 @@ class SettingsScreenState extends State<SettingsScreen> {
               padding: EdgeInsets.all(15.0),
               child: Text(
                 'Need Help?',
-                style: TextStyle(color: Colors.blue, fontSize: 15.0),
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor, fontSize: 15.0),
               ),
             ),
             ListTile(
@@ -105,7 +108,8 @@ class SettingsScreenState extends State<SettingsScreen> {
               padding: EdgeInsets.all(15.0),
               child: Text(
                 'About',
-                style: TextStyle(color: Colors.blue, fontSize: 15.0),
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor, fontSize: 15.0),
               ),
             ),
             ListTile(
