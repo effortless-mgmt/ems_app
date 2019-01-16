@@ -15,15 +15,11 @@ class AppointmentDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool notNull(Object o) => o != null;
-
     return Scaffold(
-      appBar: AppBarDescriptive(
-          title: isJobOffer ? Text("Job Offer") : Text("Appointment Details"),
-          appointment: appointment),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+      appBar:
+          AppBarDescriptive(appointment: appointment, isJobOffer: isJobOffer),
+      body: Column(children: <Widget>[
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
           Maps(address: appointment.address),
           Container(
               padding: const EdgeInsets.only(left: 16.0, top: 10.0),
@@ -38,54 +34,41 @@ class AppointmentDetailsScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 12.0))
                   : Text(
                       "No job contacts displayed yet. You will be able to see contacts within 16 hours of your next appointment.")),
-          Expanded(
-            child: Center(
-              child: isJobOffer
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        FlatButton(
-                            child: Text("Accept Appointment",
-                                style: TextStyle(
-                                    color: Colors.green,
-                                    // fontWeight: FontWeight.bold,
-                                    fontSize: 16.0)),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              scaffoldKey.currentState.showSnackBar(
-                                  new SnackBar(
-                                      content: new Text("Job offer accepted."),
-                                      duration: Duration(milliseconds: 1500)));
-                            }),
-                        FlatButton(
-                            child: Text("Decline Appointment",
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    // fontWeight: FontWeight.bold,
-                                    fontSize: 16.0)),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              scaffoldKey.currentState.showSnackBar(
-                                  new SnackBar(
-                                      content: new Text("Job offer declined"),
-                                      duration: Duration(milliseconds: 1500)));
-                            }),
-                      ],
-                    )
-                  : null,
-            ),
-          ),
-        ].where(notNull).toList(),
-      ),
+        ]),
+        isJobOffer
+            ? Expanded(
+                child: ButtonTheme.bar(
+                  child: ButtonBar(
+                    mainAxisSize: MainAxisSize.max,
+                    alignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      FlatButton(
+                          child: Text("Decline",
+                              style: TextStyle(
+                                  color: Theme.of(context).errorColor)),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            scaffoldKey.currentState.showSnackBar(
+                              new SnackBar(
+                                content: new Text("Job offer declined"),
+                                duration: Duration(milliseconds: 1500),
+                              ),
+                            );
+                          }),
+                      OutlineButton(
+                          child: Text("Accept"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            scaffoldKey.currentState.showSnackBar(new SnackBar(
+                                content: new Text("Job offer accepted."),
+                                duration: Duration(milliseconds: 1500)));
+                          }),
+                    ],
+                  ),
+                ),
+              )
+            : Container(),
+      ]),
     );
-  }
-}
-
-class JobOfferResponseFab extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-
-    return null;
   }
 }

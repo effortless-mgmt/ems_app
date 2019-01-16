@@ -91,7 +91,7 @@ class HomeScreen extends StatelessWidget {
         children: <Widget>[
           Icon(
             Icons.calendar_today,
-            color: Colors.red.shade500,
+            color: Colors.grey,
             size: 40.0,
           ),
           Container(
@@ -104,6 +104,7 @@ class HomeScreen extends StatelessWidget {
                   day,
                   textScaleFactor: 0.75,
                   style: TextStyle(
+                    color: Colors.grey,
                     height: 0.75,
                     fontWeight: FontWeight.bold,
                   ),
@@ -112,6 +113,7 @@ class HomeScreen extends StatelessWidget {
                   month,
                   textScaleFactor: 0.75,
                   style: TextStyle(
+                    color: Colors.grey,
                     height: 0.75,
                     fontWeight: FontWeight.bold,
                   ),
