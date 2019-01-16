@@ -1,4 +1,4 @@
-package com.example.emsapp;
+package dk.effortless.ems;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

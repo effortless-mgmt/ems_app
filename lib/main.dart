@@ -1,11 +1,13 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'src/app.dart';
+import 'package:bloc/bloc.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
+
+import 'src/app.dart';
 
 void main() async {
   bool isInDebugMode = false;
+  BlocSupervisor().delegate = SimpleBlocDelegate();
 
   FlutterError.onError = (FlutterErrorDetails details) {
     if (isInDebugMode) {
@@ -23,4 +25,13 @@ void main() async {
     await FlutterCrashlytics()
         .reportCrash(error, stackTrace, forceCrash: false);
   });
+}
+
+class SimpleBlocDelegate extends BlocDelegate {
+  @override
+  void onTransition(Transition transition) {
+    // Whenever a transition occurs (state is changed) print a debug message
+    // with current state, event and next state
+    debugPrint(transition.toString());
+  }
 }
