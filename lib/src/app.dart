@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -66,6 +67,7 @@ class AppState extends State<App> {
                 return SplashScreen();
               }
               if (authenticationState is AuthenticationAuthenticated) {
+                debugPrint('app context: $context');
                 return MainApp();
               }
               if (authenticationState is AuthenticationUnauthenticated) {
@@ -81,22 +83,48 @@ class AppState extends State<App> {
 }
 
 class MainApp extends StatefulWidget {
+  final NavBarBloc navBarBloc;
+  final StreamSubscription streamSubscription;
+  final Widget body;
+
+  MainApp({this.navBarBloc, this.streamSubscription, this.body});
+
   @override
   State<StatefulWidget> createState() => MainAppState();
 }
 
 class MainAppState extends State<MainApp> {
   NavBarBloc _navBarBloc;
+  StreamSubscription _streamSubscription;
+  Widget _body;
 
   @override
   void initState() {
-    _navBarBloc = NavBarBloc();
+    _navBarBloc = widget.navBarBloc ?? NavBarBloc();
+    _streamSubscription =
+        widget.streamSubscription ?? _navBarBloc.state.listen(onData);
+    _body = widget.body ?? LoadingIndicator();
     super.initState();
+  }
+
+  void onData(NavBarState state) {
+    if (state is NavBarJump) {
+      debugPrint('I ran!: $state');
+      debugPrint('mainapp context: $context');
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => MainApp(
+                // TODO: this context becomes null. pls fix.
+                navBarBloc: _navBarBloc,
+                streamSubscription: _streamSubscription,
+                body: state.screen,
+              )));
+    }
   }
 
   @override
   void dispose() {
-    _navBarBloc.dispose();
+    // _navBarBloc.dispose();
+    debugPrint('I was disposed :(');
     super.dispose();
   }
 
@@ -105,17 +133,27 @@ class MainAppState extends State<MainApp> {
     return BlocProvider<NavBarBloc>(
       bloc: _navBarBloc,
       child: Scaffold(
-          bottomNavigationBar: CustomNavBar(),
-          body: BlocBuilder(
-              bloc: _navBarBloc,
-              builder: (BuildContext context, NavBarState navBarState) {
-                if (navBarState is NavBarJump) {
-                  return navBarState.screen;
-                } else {
-                  // fallback (most likely not needed).
-                  return HomeScreen();
-                }
-              })),
+        bottomNavigationBar: CustomNavBar(),
+        body: _body,
+      ),
     );
+    // return Container(
+    //   child: LoadingIndicator(),
+    // );
+    // return BlocProvider<NavBarBloc>(
+    //   bloc: _navBarBloc,
+    //   child: Scaffold(
+    //       bottomNavigationBar: CustomNavBar(),
+    //       body: BlocBuilder(
+    //           bloc: _navBarBloc,
+    //           builder: (BuildContext context, NavBarState navBarState) {
+    //             if (navBarState is NavBarJump) {
+    //               return navBarState.screen;
+    //             } else {
+    //               // fallback (most likely not needed).
+    //               return HomeScreen();
+    //             }
+    //           })),
+    // );
   }
 }

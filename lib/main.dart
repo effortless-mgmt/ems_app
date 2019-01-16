@@ -6,7 +6,7 @@ import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'src/app.dart';
 
 void main() async {
-  bool isInDebugMode = false;
+  bool isInDebugMode = true;
   BlocSupervisor().delegate = SimpleBlocDelegate();
 
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -17,14 +17,14 @@ void main() async {
     }
   };
 
-  await FlutterCrashlytics().initialize();
+  // await FlutterCrashlytics().initialize();
 
-  runZoned<Future<Null>>(() async {
+  // runZoned<Future<Null>>(() async {
     runApp(App());
-  }, onError: (error, stackTrace) async {
-    await FlutterCrashlytics()
-        .reportCrash(error, stackTrace, forceCrash: false);
-  });
+  // }, onError: (error, stackTrace) async {
+  //   await FlutterCrashlytics()
+  //       .reportCrash(error, stackTrace, forceCrash: false);
+  // });
 }
 
 class SimpleBlocDelegate extends BlocDelegate {
