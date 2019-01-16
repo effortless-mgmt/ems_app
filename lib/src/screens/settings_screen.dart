@@ -1,17 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:ems_app/src/screens/settings/calendar_setting_screen.dart';
 import 'package:ems_app/src/screens/settings/change_password_setting_screen.dart';
 import 'package:ems_app/src/screens/settings/theme_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:ems_app/src/bloc/auth/auth.dart';
 
-class SettingsScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return SettingsScreenState();
-  }
-}
-
-class SettingsScreenState extends State<SettingsScreen> {
+class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +38,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               title: Text('Change password'),
             ),
             ListTile(
-              onTap: _showDialog,
+              onTap: () => _showDialog(context),
               title: Text('Log out'),
             ),
             Divider(),
@@ -153,7 +149,7 @@ class SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  void _showDialog() {
+  void _showDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -170,6 +166,8 @@ class SettingsScreenState extends State<SettingsScreen> {
                 style: TextStyle(color: Colors.red),
               ),
               onPressed: () {
+                BlocProvider.of<AuthenticationBloc>(context).dispatch(Logout());
+                Navigator.of(context).pop();
                 Navigator.of(context).pop();
                 print("You pressed log out");
               },
