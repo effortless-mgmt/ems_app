@@ -80,6 +80,7 @@ class CalendarSettingScreen extends StatelessWidget {
           ListTile(
             title: Text('Show week number'),
             trailing: Switch(
+              activeColor: Theme.of(context).primaryColor,
               value: notificationOn,
               onChanged: (value) {
                 print("Fuck off");
