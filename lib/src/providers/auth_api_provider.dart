@@ -13,7 +13,6 @@ class AuthApiProvider {
 
   final String _tokenStorageKey = "token";
 
-  // TODO: implement non-mock authenticate call
   Future<String> authenticate({
     @required String username,
     @required String password,
@@ -24,11 +23,13 @@ class AuthApiProvider {
     if (response.statusCode == 200) {
       // If the call to the server was successful, parse the JSON
       dynamic responsejson = json.decode(response.body);
+      final String token = responsejson['token'].toString();
       debugPrint(responsejson['user'].toString());
-      debugPrint(responsejson['token'].toString());
+      debugPrint(token);
       // AuthItemModel authItemModel = AuthItemModel.fromJson(responsejson['token']);
       // return AuthItemModel.fromJson(json.decode(response.body));
-      return responsejson['token'].toString();
+      await _storage.write(key: _tokenStorageKey, value: token);
+      return token;
     } else {
       // If that call was not successful, throw an error.
       throw Exception('Failed to load post');
