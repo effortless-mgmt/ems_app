@@ -5,72 +5,155 @@ import 'package:intl/intl.dart';
 
 class HomeScreen extends StatelessWidget {
   final scaffoldKey = new GlobalKey<ScaffoldState>();
+  final List<Appointment> upcomingShifts = [
+    Appointment.demodata[0],
+    Appointment.demodata[1],
+    Appointment.demodata[2],
+    Appointment.demodata[3],
+  ];
+
+  final List<Appointment> availableShifts = [
+    Appointment.demodata[3],
+    Appointment.demodata[4],
+    Appointment.demodata[5]
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: scaffoldKey,
         appBar: AppBar(title: Text("Overview")),
-        body: ListView.builder(
-          itemCount: exampleList.length,
-          itemBuilder: _buildListTile,
+        body: ListView(
+          children: <Widget>[
+            _shiftCard(context, true),
+            _shiftCard(context, false)
+            // Card(
+            //   child: Column(
+            //     children: <Widget>[
+            //       HeadingTile(title: "Upcoming Shifts"),
+            //       Container(
+            //         constraints: BoxConstraints(maxHeight: 200.0),
+            //         child: ListView.builder(
+            //           physics: NeverScrollableScrollPhysics(),
+            //           itemCount: 3,
+            //           itemBuilder: _buildUpcomingShifts,
+            //         ),
+            //       ),
+            //       Container(
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.end,
+            //           children: <Widget>[
+            //             GestureDetector(
+            //               onTap: () => print("Test"),
+            //               child: Container(
+            //                 padding: const EdgeInsets.only(
+            //                     top: 16.0, bottom: 16, right: 16.0),
+            //                 child: Text(
+            //                   "Show all",
+            //                   style: TextStyle(
+            //                       color: Theme.of(context).primaryColor),
+            //                 ),
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
+          ],
         ));
   }
 
-  Widget _buildListTile(BuildContext context, int index) {
-    final item = exampleList[index];
-    if (item is HeadingItem) {
-      return Column(children: [
-        ListTile(
-          title: Text(
-            item._heading,
+  // Widget _buildListTile(BuildContext context, int index) {
+  //   final item = exampleList[index];
+  //   if (item is HeadingItem) {
+  //
+  //   } else if (item is UpcomingShift) {
+  //     return _buildUpcomingShifts(context, item);
+  //   } else if (item is AvailableShift) {
+  //     return _buildAvailableShifts(context, item);
+  //   }
+  //   return null;
+  // }
+
+  Widget _shiftCard(context, bool upcoming) {
+    final activateShowAll =
+        upcoming ? upcomingShifts.length > 3 : availableShifts.length > 3;
+
+    return Card(
+      child: Column(
+        children: <Widget>[
+          HeadingTile(title: "Available Shifts"),
+          Container(
+            constraints: BoxConstraints(maxHeight: 200.0),
+            child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: 3,
+              itemBuilder:
+                  upcoming ? _buildUpcomingShifts : _buildAvailableShifts,
+            ),
           ),
-        ),
-        Divider(
-          height: 0.0,
-        ),
-      ]);
-    } else if (item is UpcomingShift) {
-      return _buildUpcomingShifts(context, item);
-    } else if (item is AvailableShift) {
-      return _buildAvailableShifts(context, item);
-    }
-    return null;
+          activateShowAll
+              ? Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () => print("Test"),
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              top: 16.0, bottom: 16, right: 16.0),
+                          child: Text(
+                            "Show all",
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : Container(height: 16.0),
+        ],
+      ),
+    );
   }
 
-  _buildUpcomingShifts(BuildContext context, UpcomingShift item) {
+  Widget _buildUpcomingShifts(BuildContext context, int index) {
     return ListTile(
-        leading: _buildDateIcon(context, item.appointment.start),
-        title: Text(DateFormat.Hm().format(item.appointment.start) +
+        leading: _buildDateIcon(context, upcomingShifts[index].start),
+        title: Text(DateFormat.Hm().format(upcomingShifts[index].start) +
             " - " +
-            DateFormat.Hm().format(item.appointment.stop)),
-        subtitle: Text(item.appointment.department),
-        trailing: Text(item._status),
+            DateFormat.Hm().format(upcomingShifts[index].stop)),
+        subtitle: Text(upcomingShifts[index].department),
+        // trailing: Text(upcomingShifts[index]),
         onTap: () {
           Navigator.of(context).push(
             new SlidePageRoute<Null>(
               builder: (BuildContext context) => AppointmentDetailsScreen(
-                  appointment: item.appointment, isJobOffer: false),
+                  appointment: upcomingShifts[index], isJobOffer: false),
               fullscreenDialog: true,
             ),
           );
         });
   }
 
-  _buildAvailableShifts(BuildContext context, AvailableShift item) {
+  Widget _buildAvailableShifts(BuildContext context, int index) {
     return ListTile(
-        leading: _buildDateIcon(context, item.appointment.start),
-        title: Text(DateFormat.Hm().format(item.appointment.start) +
+        leading: _buildDateIcon(context, upcomingShifts[index].start),
+        title: Text(DateFormat.Hm().format(upcomingShifts[index].start) +
             " - " +
-            DateFormat.Hm().format(item.appointment.stop)),
-        subtitle: Text(item.appointment.department),
+            DateFormat.Hm().format(upcomingShifts[index].stop)),
+        subtitle: Text(upcomingShifts[index].department),
+        // trailing: Text(upcomingShifts[index]),
         onTap: () {
           Navigator.of(context).push(
             new SlidePageRoute<Null>(
               builder: (BuildContext context) => AppointmentDetailsScreen(
-                  appointment: item.appointment,
-                  scaffoldKey: scaffoldKey,
-                  isJobOffer: true),
+                  appointment: upcomingShifts[index],
+                  isJobOffer: true,
+                  scaffoldKey: scaffoldKey),
               fullscreenDialog: true,
             ),
           );
@@ -121,6 +204,24 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+class HeadingTile extends StatelessWidget {
+  final String title;
+
+  HeadingTile({this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      ListTile(
+        title: Text(title),
+      ),
+      Divider(
+        height: 0.0,
+      ),
+    ]);
+  }
+}
+
 class JobOffer {}
 
 class ListItem {}
@@ -136,27 +237,31 @@ class ShiftItem extends ListItem {
 
   ShiftItem.protected(this.appointment);
 
-  factory ShiftItem.fromJson(Map<dynamic, dynamic> json) {
-    Appointment appointment = Appointment();
-    appointment.start = DateTime.parse(json["shiftStart"]);
-    appointment.stop = DateTime.parse(json["shiftStart"]);
-    appointment.department = json["department"];
-    appointment.address = json["address"];
-    appointment.description = json["description"];
-    appointment.hourlyWage = json["salary"];
+  // factory ShiftItem.fromJson(Map<dynamic, dynamic> json) {
+  //   Appointment appointment = Appointment.demodata[1];
+  //   if(appointment.owner == null) {
+  //     return
+  //   }
+  // Appointment appointment = Appointment();
+  // appointment.start = DateTime.parse(json["shiftStart"]);
+  // appointment.stop = DateTime.parse(json["shiftStart"]);
+  // appointment.department = json["department"];
+  // appointment.address = json["address"];
+  // appointment.description = json["description"];
+  // appointment.hourlyWage = json["salary"];
 
-    if (json["type"] == "available") {
-      return AvailableShift(appointment: appointment);
-    } else if (json["type"] == "upcoming") {
-      return UpcomingShift(
-        status: json["status"],
-        appointment: appointment,
-      );
-    } else {
-      return null;
-    }
-  }
+  // if (json["type"] == "available") {
+  //   return AvailableShift(appointment: appointment);
+  // } else if (json["type"] == "upcoming") {
+  //   return UpcomingShift(
+  //     status: json["status"],
+  //     appointment: appointment,
+  //   );
+  // } else {
+  //   return null;
+  // }
 }
+// }
 
 class AvailableShift extends ShiftItem {
   AvailableShift({@required appointment}) : super.protected(appointment);
@@ -169,89 +274,20 @@ class UpcomingShift extends ShiftItem {
         super.protected(appointment);
 }
 
-final shiftItem1 = ShiftItem.fromJson({
-  "type": "upcoming",
-  "shiftStart": "2018-11-15T15:30:00",
-  "shiftEnd": "2018-11-15T15:30:00",
-  "department": "Netto koel",
-  "address": "Mimersvej 1, 4600 Køge",
-  "description":
-      "Hos Netto Køl vil du typisk stå og pakke i Nettos køleboks. Det er derfor vigtigt, at du husker varmt tøj. Husk også madpakke og sikkerhedssko.",
-  "salary": 127.36,
-  "status": "Today",
-});
+// final head1 = HeadingItem("Upcoming Appointments");
 
-final shiftItem2 = ShiftItem.fromJson({
-  "type": "upcoming",
-  "shiftStart": "2018-11-15T15:30:00",
-  "shiftEnd": "2018-11-15T15:30:00",
-  "department": "Rema1000 koel",
-  "address": "Mimersvej 1, 4600 Køge",
-  "description":
-      "Hos Netto Køl vil du typisk stå og pakke i Nettos køleboks. Det er derfor vigtigt, at du husker varmt tøj. Husk også madpakke og sikkerhedssko.",
-  "salary": 127.36,
-  "status": "New",
-});
+// final head2 = HeadingItem("Pending Job Offers");
 
-final shiftItem3 = ShiftItem.fromJson({
-  "type": "upcoming",
-  "shiftStart": "2018-11-15T15:30:00",
-  "shiftEnd": "2018-11-15T15:30:00",
-  "department": "Fakta koel",
-  "address": "Mimersvej 1, 4600 Køge",
-  "description":
-      "Hos Netto Køl vil du typisk stå og pakke i Nettos køleboks. Det er derfor vigtigt, at du husker varmt tøj. Husk også madpakke og sikkerhedssko.",
-  "salary": 127.36,
-  "status": "New",
-});
-
-final shiftItem4 = ShiftItem.fromJson({
-  "type": "available",
-  "shiftStart": "2018-11-15T15:30:00",
-  "shiftEnd": "2018-11-15T15:30:00",
-  "department": "Fakta koel",
-  "address": "Mimersvej 1, 4600 Køge",
-  "description":
-      "Hos Netto Køl vil du typisk stå og pakke i Nettos køleboks. Det er derfor vigtigt, at du husker varmt tøj. Husk også madpakke og sikkerhedssko.",
-  "salary": 127.36,
-});
-
-final shiftItem5 = ShiftItem.fromJson({
-  "type": "available",
-  "shiftStart": "2018-11-15T15:30:00",
-  "shiftEnd": "2018-11-15T15:30:00",
-  "department": "Fakta koel",
-  "address": "Mimersvej 1, 4600 Køge",
-  "description":
-      "Hos Netto Køl vil du typisk stå og pakke i Nettos køleboks. Det er derfor vigtigt, at du husker varmt tøj. Husk også madpakke og sikkerhedssko.",
-  "salary": 127.36,
-});
-
-final shiftItem6 = ShiftItem.fromJson({
-  "type": "available",
-  "shiftStart": "2018-11-15T15:30:00",
-  "shiftEnd": "2018-11-15T15:30:00",
-  "department": "Fakta koel",
-  "address": "Mimersvej 1, 4600 Køge",
-  "description":
-      "Hos Netto Køl vil du typisk stå og pakke i Nettos køleboks. Det er derfor vigtigt, at du husker varmt tøj. Husk også madpakke og sikkerhedssko.",
-  "salary": 127.36,
-});
-
-final head1 = HeadingItem("Upcoming Appointments");
-
-final head2 = HeadingItem("Pending Job Offers");
-
-final exampleList = [
-  head1,
-  shiftItem1,
-  shiftItem2,
-  shiftItem3,
-  head2,
-  shiftItem4,
-  shiftItem5,
-  shiftItem6
-];
+// final exampleList = [
+//   head1,
+//   shiftItem1,
+//   shiftItem2,
+//   shiftItem3,
+//   head2,
+//   shiftItem4,
+//   shiftItem5,
+//   shiftItem6
+// ];
 
 class SlidePageRoute<T> extends MaterialPageRoute<T> {
   SlidePageRoute(
@@ -278,3 +314,72 @@ class SlidePageRoute<T> extends MaterialPageRoute<T> {
             child: FadeTransition(opacity: animation, child: child)));
   }
 }
+
+// final shiftItem1 = ShiftItem.fromJson({
+//   "type": "upcoming",
+//   "shiftStart": "2018-11-15T15:30:00",
+//   "shiftEnd": "2018-11-15T15:30:00",
+//   "department": "Netto koel",
+//   "address": "Mimersvej 1, 4600 Køge",
+//   "description":
+//       "Hos Netto Køl vil du typisk stå og pakke i Nettos køleboks. Det er derfor vigtigt, at du husker varmt tøj. Husk også madpakke og sikkerhedssko.",
+//   "salary": 127.36,
+//   "status": "Today",
+// });
+
+// final shiftItem2 = ShiftItem.fromJson({
+//   "type": "upcoming",
+//   "shiftStart": "2018-11-15T15:30:00",
+//   "shiftEnd": "2018-11-15T15:30:00",
+//   "department": "Rema1000 koel",
+//   "address": "Mimersvej 1, 4600 Køge",
+//   "description":
+//       "Hos Netto Køl vil du typisk stå og pakke i Nettos køleboks. Det er derfor vigtigt, at du husker varmt tøj. Husk også madpakke og sikkerhedssko.",
+//   "salary": 127.36,
+//   "status": "New",
+// });
+
+// final shiftItem3 = ShiftItem.fromJson({
+//   "type": "upcoming",
+//   "shiftStart": "2018-11-15T15:30:00",
+//   "shiftEnd": "2018-11-15T15:30:00",
+//   "department": "Fakta koel",
+//   "address": "Mimersvej 1, 4600 Køge",
+//   "description":
+//       "Hos Netto Køl vil du typisk stå og pakke i Nettos køleboks. Det er derfor vigtigt, at du husker varmt tøj. Husk også madpakke og sikkerhedssko.",
+//   "salary": 127.36,
+//   "status": "New",
+// });
+
+// final shiftItem4 = ShiftItem.fromJson({
+//   "type": "available",
+//   "shiftStart": "2018-11-15T15:30:00",
+//   "shiftEnd": "2018-11-15T15:30:00",
+//   "department": "Fakta koel",
+//   "address": "Mimersvej 1, 4600 Køge",
+//   "description":
+//       "Hos Netto Køl vil du typisk stå og pakke i Nettos køleboks. Det er derfor vigtigt, at du husker varmt tøj. Husk også madpakke og sikkerhedssko.",
+//   "salary": 127.36,
+// });
+
+// final shiftItem5 = ShiftItem.fromJson({
+//   "type": "available",
+//   "shiftStart": "2018-11-15T15:30:00",
+//   "shiftEnd": "2018-11-15T15:30:00",
+//   "department": "Fakta koel",
+//   "address": "Mimersvej 1, 4600 Køge",
+//   "description":
+//       "Hos Netto Køl vil du typisk stå og pakke i Nettos køleboks. Det er derfor vigtigt, at du husker varmt tøj. Husk også madpakke og sikkerhedssko.",
+//   "salary": 127.36,
+// });
+
+// final shiftItem6 = ShiftItem.fromJson({
+//   "type": "available",
+//   "shiftStart": "2018-11-15T15:30:00",
+//   "shiftEnd": "2018-11-15T15:30:00",
+//   "department": "Fakta koel",
+//   "address": "Mimersvej 1, 4600 Køge",
+//   "description":
+//       "Hos Netto Køl vil du typisk stå og pakke i Nettos køleboks. Det er derfor vigtigt, at du husker varmt tøj. Husk også madpakke og sikkerhedssko.",
+//   "salary": 127.36,
+// });

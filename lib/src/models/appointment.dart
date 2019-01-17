@@ -1,4 +1,5 @@
 import 'package:duration/duration.dart';
+import 'package:ems_app/src/util/user.dart';
 import 'package:intl/intl.dart';
 
 class Appointment {
@@ -9,7 +10,8 @@ class Appointment {
       this._start,
       this._stop,
       this._pause,
-      this._hourlyWage]);
+      this._hourlyWage,
+      this._owner]);
 
   /* Maybe ID could come in handy? */
 
@@ -18,6 +20,7 @@ class Appointment {
   String _department;
   String _address;
   String _description;
+  User _owner;
   num _hourlyWage;
 
   //Should only be used until we can access API. Will only fetch unapproved appointmens for registration anyway.
@@ -35,6 +38,7 @@ class Appointment {
   String get department => _department;
   String get address => _address;
   String get description => _description;
+  User get owner => _owner;
   num get hourlyWage => _hourlyWage;
 
   String get durationFormatted =>
@@ -52,6 +56,7 @@ class Appointment {
   set hourlyWage(wage) => _hourlyWage = wage;
   set department(dep) => _department = dep;
   set address(add) => _address = add;
+  set owner(user) => _owner = user;
 
   void record(DateTime start, DateTime stop, Duration pause, bool isApproved) {
     _start = start;
