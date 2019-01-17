@@ -23,7 +23,8 @@ class SettingsScreen extends StatelessWidget {
               child: Text(
                 'Account',
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 15.0),
+                    color: Theme.of(context).textTheme.overline.color,
+                    fontSize: 15.0),
               ),
             ),
             ListTile(
@@ -47,7 +48,8 @@ class SettingsScreen extends StatelessWidget {
               child: Text(
                 'App settings',
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 15.0),
+                    color: Theme.of(context).textTheme.overline.color,
+                    fontSize: 15.0),
               ),
             ),
             ListTile(
@@ -77,7 +79,8 @@ class SettingsScreen extends StatelessWidget {
               child: Text(
                 'Need Help?',
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 15.0),
+                    color: Theme.of(context).textTheme.overline.color,
+                    fontSize: 15.0),
               ),
             ),
             ListTile(
@@ -105,7 +108,8 @@ class SettingsScreen extends StatelessWidget {
               child: Text(
                 'About',
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 15.0),
+                    color: Theme.of(context).textTheme.overline.color,
+                    fontSize: 15.0),
               ),
             ),
             ListTile(

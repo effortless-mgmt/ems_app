@@ -46,14 +46,16 @@ class AppState extends State<App> {
   //   ),
   // );
   final _androidTheme = ThemeData(
-    brightness: Brightness.dark,
-    primaryColorLight:
-        Colors.blue[200], //A lighter version of the primaryColor.
-    primaryColor: Colors.blue[
-        500], // The background color for major parts of the app (toolbars, tab bars, etc)
-    primaryColorDark: Colors.blue[700],
-    accentColor: Colors.blue[700],
-  );
+      brightness: Brightness.dark,
+      // primaryColorLight:
+      //     Colors.blue[200], //A lighter version of the primaryColor.
+      // primaryColor: Colors.blue[
+      //     500], // The background color for major parts of the app (toolbars, tab bars, etc)
+      // primaryColorDark: Colors.blue[700],
+      accentColor: Colors.blue[700],
+      textTheme: TextTheme(
+        overline: TextStyle(color: Colors.blue[500]),
+      ));
 
   @override
   void initState() {
