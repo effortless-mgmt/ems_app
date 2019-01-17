@@ -188,7 +188,10 @@ class LoginFormState extends State<LoginForm> {
 
   Widget _loginButton(LoginState loginState) {
     return RaisedButton(
-      child: Text("Login"),
+      child: Text(
+        "Login",
+        style: Theme.of(context).textTheme.button,
+      ),
       onPressed: loginState is! LoginLoading ? _onLoginButtonPressed : null,
     );
   }
