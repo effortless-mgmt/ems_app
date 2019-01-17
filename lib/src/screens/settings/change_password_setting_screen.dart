@@ -46,7 +46,10 @@ class ChangePasswordSettingScreen extends StatelessWidget {
                       },
                     ),
                     RaisedButton(
-                      child: Text("Save changes"),
+                      child: Text(
+                        "Save changes",
+                        style: Theme.of(context).textTheme.button,
+                      ),
                       onPressed: () {
                         print("Fuck off2");
                       },

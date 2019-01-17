@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:ems_app/src/screens/settings/calendar_setting_screen.dart';
 import 'package:ems_app/src/screens/settings/change_password_setting_screen.dart';
 import 'package:ems_app/src/screens/settings/theme_screen.dart';
 import 'package:ems_app/src/bloc/settings/settings.dart';
 import 'package:ems_app/src/screens/settings/preferences.dart';
+import 'package:ems_app/src/bloc/auth/auth.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -57,7 +59,8 @@ class SettingsScreenState extends State<SettingsScreen> {
               child: Text(
                 'Account',
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 15.0),
+                    color: Theme.of(context).textTheme.overline.color,
+                    fontSize: 15.0),
               ),
             ),
             ListTile(
@@ -72,7 +75,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               title: Text('Change password'),
             ),
             ListTile(
-              onTap: _showDialog,
+              onTap: () => _showDialog(context),
               title: Text('Log out'),
             ),
             Divider(),
@@ -81,7 +84,8 @@ class SettingsScreenState extends State<SettingsScreen> {
               child: Text(
                 'App settings',
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 15.0),
+                    color: Theme.of(context).textTheme.overline.color,
+                    fontSize: 15.0),
               ),
             ),
             ListTile(
@@ -111,7 +115,8 @@ class SettingsScreenState extends State<SettingsScreen> {
               child: Text(
                 'Need Help?',
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 15.0),
+                    color: Theme.of(context).textTheme.overline.color,
+                    fontSize: 15.0),
               ),
             ),
             ListTile(
@@ -139,7 +144,8 @@ class SettingsScreenState extends State<SettingsScreen> {
               child: Text(
                 'About',
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 15.0),
+                    color: Theme.of(context).textTheme.overline.color,
+                    fontSize: 15.0),
               ),
             ),
             ListTile(
@@ -183,7 +189,7 @@ class SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  void _showDialog() {
+  void _showDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -200,12 +206,17 @@ class SettingsScreenState extends State<SettingsScreen> {
                 style: TextStyle(color: Colors.red),
               ),
               onPressed: () {
+                BlocProvider.of<AuthenticationBloc>(context).dispatch(Logout());
+                Navigator.of(context).pop();
                 Navigator.of(context).pop();
                 print("You pressed log out");
               },
             ),
             new RaisedButton(
-              child: new Text("CANCEL"),
+              child: new Text(
+                "CANCEL",
+                style: Theme.of(context).textTheme.button,
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
                 print("You pressed cancel");
