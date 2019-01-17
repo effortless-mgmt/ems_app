@@ -28,35 +28,39 @@ class AuthApiProvider {
       debugPrint(token);
       // AuthItemModel authItemModel = AuthItemModel.fromJson(responsejson['token']);
       // return AuthItemModel.fromJson(json.decode(response.body));
-      await _storage.write(key: _tokenStorageKey, value: token);
       return token;
     } else {
       // If that call was not successful, throw an error.
       throw Exception('Failed to load post');
     }
-    // await Future.delayed(Duration(seconds: 1));
   }
 
+  // delete token from keychain
   Future<void> deleteToken() async {
-    // delete token from keychain
-    // await Future.delayed(Duration(seconds: 1));
     await _storage.delete(key: _tokenStorageKey);
     return;
   }
 
+  // write token to keychain
   Future<void> persistToken(String token) async {
-    // write token to keychain
-    // await Future.delayed(Duration(seconds: 1));
     await _storage.write(key: _tokenStorageKey, value: token);
     return;
   }
 
-  // TODO: implement non-mock hasToken call
+  // read token from keychain
+  Future<String> readToken() async {
+    dynamic result = await _storage.read(key: _tokenStorageKey);
+    if (result != null) {
+      return result;
+    } else {
+      throw Exception('No value associated with key: $_tokenStorageKey');
+    }
+  }
+
+  // check if token exists in keychain
   Future<bool> hasToken() async {
-    // // read token from keychain
-    // await Future.delayed(Duration(seconds: 1));
     dynamic result = await _storage.read(key: _tokenStorageKey);
     debugPrint('hasToken result: $result');
-    return false;
+    return (result != null);
   }
 }
