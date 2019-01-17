@@ -55,7 +55,8 @@ class MapsState extends State<Maps> {
   }
 
   Future f() {
-    return new Future.delayed(Duration(milliseconds: 600), () => isLoading = false);
+    return new Future.delayed(
+        Duration(milliseconds: 600), () => isLoading = false);
   }
 
   @override
@@ -63,19 +64,18 @@ class MapsState extends State<Maps> {
     return Column(
       children: <Widget>[
         Container(
-          width: double.infinity,
-          height: 168.0,
-          child: FutureBuilder(
-            future: f(),
-            builder: (ctx, snapshot) {
-              if (isLoading) {
-                return progressIndicator;
-              } else {
-                return map;
-              }
-            },
-          )
-        ),
+            width: double.infinity,
+            height: 168.0,
+            child: FutureBuilder(
+              future: f(),
+              builder: (ctx, snapshot) {
+                if (isLoading) {
+                  return progressIndicator;
+                } else {
+                  return map;
+                }
+              },
+            )),
       ],
     );
   }
@@ -104,7 +104,6 @@ class MapsState extends State<Maps> {
 
       mapController.addMarker(marker);
     });
-    setState((){
-    });
+    setState(() {});
   }
 }
