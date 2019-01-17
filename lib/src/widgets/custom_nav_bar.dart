@@ -12,11 +12,6 @@ class _CustomNavBarState extends State<CustomNavBar> {
   List<BottomNavigationBarItem> _navIcons;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void didChangeDependencies() {
     _navIcons = _navIcons ?? _createNavIcons(context);
     super.didChangeDependencies();
@@ -41,27 +36,26 @@ class _CustomNavBarState extends State<CustomNavBar> {
     );
   }
 
-  //######################################
-  //CHECK FOR APPOINTMENT CHANGES IN STACK
-  //######################################
+  //############################################
+  // TODO: CHECK FOR APPOINTMENT CHANGES IN BLOC
+  //############################################
   _createNavIcons(BuildContext context) {
     return [
       BottomNavigationBarItem(
-        icon: Stack(
-          children: <Widget>[
-            Icon(Icons.home),
-            Positioned(
-                top: 0.0,
-                right: 0.0,
-                child: Icon(Icons.brightness_1,
-                    size: 8.0, color: Theme.of(context).errorColor)),
-          ],
-        ),
-        title: Container(height: 0.0),
-      ),
+          icon: Stack(
+            children: <Widget>[
+              Icon(Icons.home),
+              Positioned(
+                  top: 0.0,
+                  right: 0.0,
+                  child: Icon(Icons.brightness_1,
+                      size: 8.0, color: Theme.of(context).errorColor)),
+            ],
+          ),
+          title: Text("Home")),
       BottomNavigationBarItem(
         icon: Icon(Icons.event_note),
-        title: Container(height: 0.0),
+        title: Text("Calendar"),
       ),
       BottomNavigationBarItem(
         icon: Stack(
@@ -74,15 +68,15 @@ class _CustomNavBarState extends State<CustomNavBar> {
                     size: 8.0, color: Theme.of(context).errorColor)),
           ],
         ),
-        title: Container(height: 0.0),
+        title: Text("Register"),
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.group),
-        title: Container(height: 0.0),
+        title: Text("Details"),
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.person),
-        title: Container(height: 0.0),
+        title: Text("Profile"),
       )
     ];
   }
