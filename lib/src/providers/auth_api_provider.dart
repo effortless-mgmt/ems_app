@@ -4,6 +4,8 @@ import 'package:http/http.dart' show Client;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'package:ems_app/src/util/jwt_utils.dart';
+
 // import 'auth_item_model.dart';
 
 class AuthApiProvider {
@@ -49,7 +51,7 @@ class AuthApiProvider {
 
   // read token from keychain
   Future<String> readToken() async {
-    dynamic result = await _storage.read(key: _tokenStorageKey);
+    final dynamic result = await _storage.read(key: _tokenStorageKey);
     if (result != null) {
       return result;
     } else {
@@ -57,10 +59,20 @@ class AuthApiProvider {
     }
   }
 
-  // check if token exists in keychain
+  // check if token exists in keychain and is valid
   Future<bool> hasToken() async {
-    dynamic result = await _storage.read(key: _tokenStorageKey);
+    final dynamic result = await _storage.read(key: _tokenStorageKey);
     debugPrint('hasToken result: $result');
-    return (result != null);
+    if (result != null) {
+      bool valid = JwtUtils().validate(result);
+      if (valid) {
+        return true;
+      } else {
+        debugPrint('Token expired!');
+        return false;
+      }
+    }
+    debugPrint('Token not found!');
+    return false;
   }
 }
