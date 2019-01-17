@@ -1,17 +1,47 @@
-import 'package:ems_app/src/screens/settings/calendar_setting_screen.dart';
-import 'package:ems_app/src/screens/settings/change_password_setting_screen.dart';
-import 'package:ems_app/src/screens/settings/theme_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:ems_app/src/screens/settings/calendar_setting_screen.dart';
+import 'package:ems_app/src/screens/settings/change_password_setting_screen.dart';
+import 'package:ems_app/src/screens/settings/theme_screen.dart';
+import 'package:ems_app/src/bloc/settings/settings.dart';
+import 'package:ems_app/src/screens/settings/preferences.dart';
+
 class SettingsScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return SettingsScreenState();
-  }
+  State<StatefulWidget> createState() => SettingsScreenState();
 }
 
 class SettingsScreenState extends State<SettingsScreen> {
+  SettingsBloc _settingsBloc;
+  Preferences _preferences;
+
+  @override
+  void initState() {
+    _preferences = Preferences();
+    _loadSettings();
+    super.initState();
+  }
+
+  _loadSettings() async {
+    final String startOfWeek = await _preferences.getStartOfTheWeek();
+    debugPrint('loaded startOfWeek: $startOfWeek');
+    final bool showWeekNumber = await _preferences.getWeekNumber();
+    debugPrint('loaded showWeekNumber: $showWeekNumber');
+    final SettingsState settingsState =
+        SettingsState(startOfWeek: startOfWeek, showWeekNumber: showWeekNumber);
+    debugPrint('initial settingsState created: $settingsState');
+    _settingsBloc = SettingsBloc(settingsState: settingsState, prefProvider: _preferences);
+    debugPrint('finished loading settings from storage');
+  }
+
+  @override
+    void dispose() {
+      debugPrint('Settings BLoC disposed :(');
+      _settingsBloc.dispose();
+      super.dispose();
+    }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +101,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => CalendarSettingScreen()),
+                      builder: (context) => CalendarSettingScreen(settingsBloc: _settingsBloc)),
                 );
               },
             ),

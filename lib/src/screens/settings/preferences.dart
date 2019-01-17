@@ -31,7 +31,7 @@ class Preferences {
   Future<bool> getWeekNumber() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    return prefs.getString(_kCalendarWeekNumberPrefs) ?? true;
+    return prefs.getBool(_kCalendarWeekNumberPrefs) ?? true;
   }
 
   // Method that saves weeknumbers.

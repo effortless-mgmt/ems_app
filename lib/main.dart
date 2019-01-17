@@ -6,7 +6,7 @@ import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'src/app.dart';
 
 void main() async {
-  bool isInDebugMode = false;
+  bool isInDebugMode = true;
   BlocSupervisor().delegate = SimpleBlocDelegate();
 
   FlutterError.onError = (FlutterErrorDetails details) {
