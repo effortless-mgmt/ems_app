@@ -32,33 +32,6 @@ void main() {
     _loginBloc.dispose();
   });
 
-  // group('LoginButtonPressed', () {
-  //   test('emits token on success', () {
-  //     final expectedResponse = [
-  //       LoginInitial(),
-  //       LoginLoading(),
-  //       LoginInitial(),
-  //     ];
-
-  //     when(_authApiProvider.authenticate(
-  //       username: 'valid.username',
-  //       password: 'valid.password',
-  //     )).thenAnswer((_) => Future.value('token'));
-
-  //     expectLater(
-  //       _loginBloc.state,
-  //       emitsInOrder(expectedResponse),
-  //     ).then((_) {
-  //       verify(_authBloc.dispatch(Login(token: 'token'))).called(1);
-  //     });
-
-  //     _loginBloc.dispatch(LoginButtonPressed(
-  //       username: 'valid.username',
-  //       password: 'valid.password',
-  //     ));
-  //   });
-  // });
-
   group('LoginButtonPressed', () {
     test('emits token on success', () {
       final expectedResponse = [
