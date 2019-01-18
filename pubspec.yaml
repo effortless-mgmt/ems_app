@@ -33,6 +33,7 @@ dependencies:
   flutter_secure_storage: ^3.1.2
   shared_preferences: ^0.4.3
   mockito: ^4.0.0
+  test: ^1.4.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -40,6 +41,8 @@ dependencies:
 
 dev_dependencies:
   flutter_test:
+    sdk: flutter
+  flutter_driver:
     sdk: flutter
 
 # For information on the generic Dart part of this file, see the
