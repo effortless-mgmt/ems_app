@@ -71,9 +71,10 @@ class AppBarDescriptive extends AppBar {
   static TextStyle bodyTextStyle =
       TextStyle(color: Colors.white, fontSize: 12.0);
 
-  AppBarDescriptive({Appointment appointment, bool isJobOffer})
+  AppBarDescriptive({Appointment appointment, bool upcoming})
       : super(
-          title: isJobOffer ? Text("Job Offer") : Text("Appointment Details"),
+          title:
+              upcoming ? Text("Appointment Details") : Text("Available Shift"),
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(168.0),
             child: Container(
