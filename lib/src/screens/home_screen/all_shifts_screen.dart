@@ -10,7 +10,7 @@ class AllShiftsScreen extends StatefulWidget {
 }
 
 class _AllShiftsScreenState extends State<AllShiftsScreen> {
-  var scaffoldKey = new GlobalKey<ScaffoldState>();
+  final scaffoldKey = new GlobalKey<ScaffoldState>();
   bool upcoming;
   bool buildComplete;
   @override
@@ -27,13 +27,14 @@ class _AllShiftsScreenState extends State<AllShiftsScreen> {
     return Hero(
         tag: upcoming ? "seeAllUpcoming" : "seeAllAvailable",
         child: Scaffold(
-          // key: scaffoldKey,
+          key: scaffoldKey,
           appBar: AppBar(
               title: upcoming
                   ? Text("Upcoming Appointments")
                   : Text("Available Appointments")),
           body: buildComplete
-              ? new AppointmentList(upcoming: upcoming, showAll: true)
+              ? new AppointmentList(
+                  upcoming: upcoming, showAll: true, scaffoldKey: scaffoldKey)
               : Container(),
         ));
   }
