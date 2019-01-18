@@ -32,6 +32,33 @@ void main() {
     _loginBloc.dispose();
   });
 
+  // group('LoginButtonPressed', () {
+  //   test('emits token on success', () {
+  //     final expectedResponse = [
+  //       LoginInitial(),
+  //       LoginLoading(),
+  //       LoginInitial(),
+  //     ];
+
+  //     when(_authApiProvider.authenticate(
+  //       username: 'valid.username',
+  //       password: 'valid.password',
+  //     )).thenAnswer((_) => Future.value('token'));
+
+  //     expectLater(
+  //       _loginBloc.state,
+  //       emitsInOrder(expectedResponse),
+  //     ).then((_) {
+  //       verify(_authBloc.dispatch(Login(token: 'token'))).called(1);
+  //     });
+
+  //     _loginBloc.dispatch(LoginButtonPressed(
+  //       username: 'valid.username',
+  //       password: 'valid.password',
+  //     ));
+  //   });
+  // });
+
   group('LoginButtonPressed', () {
     test('emits token on success', () {
       final expectedResponse = [
@@ -57,20 +84,18 @@ void main() {
         password: 'valid.password',
       ));
     });
-  });
-
-  group('LoginButtonPressed error', () {
     test('emits token on error', () {
+      final exception = Exception('error');
       final expectedResponse = [
         LoginInitial(),
         LoginLoading(),
-        LoginFailure(error: 'error'),
+        LoginFailure(error: exception.toString()),
       ];
 
       when(_authApiProvider.authenticate(
         username: 'invalid.username',
         password: 'invalid.password',
-      )).thenAnswer((_) => Future.error("error"));
+      )).thenThrow(exception);
 
       expectLater(
         _loginBloc.state,

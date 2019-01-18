@@ -45,6 +45,22 @@ void main() {
 
       _authBloc.dispatch(AppStart());
     });
+
+    test('emits [uninitialized, authenticated] for valid token', () {
+      final expectedResponse = [
+        AuthenticationUninitialized(),
+        AuthenticationAuthenticated()
+      ];
+
+      when(_authApiProvider.hasToken()).thenAnswer((_) => Future.value(true));
+
+      expectLater(
+        _authBloc.state,
+        emitsInOrder(expectedResponse),
+      );
+
+      _authBloc.dispatch(AppStart());
+    });
   });
 
   group('Login', () {
@@ -56,6 +72,9 @@ void main() {
         AuthenticationLoading(),
         AuthenticationAuthenticated(),
       ];
+
+      when(_authApiProvider.persistToken("token"))
+          .thenAnswer((_) => Future<void>.value());
 
       expectLater(
         _authBloc.state,
@@ -77,6 +96,9 @@ void main() {
         AuthenticationLoading(),
         AuthenticationUnauthenticated(),
       ];
+
+      when(_authApiProvider.deleteToken())
+          .thenAnswer((_) => Future<void>.value());
 
       expectLater(
         _authBloc.state,
