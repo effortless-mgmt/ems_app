@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // import '../../../util/thirdParty/page_transformer.dart';
-import 'package:ems_app/src/util/user_list.dart';
+import 'package:ems_app/src/models/DEMO/user_list.dart';
 import 'contacts_card.dart';
 
 class ContactsCardScreen extends StatelessWidget {

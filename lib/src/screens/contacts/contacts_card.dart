@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:ems_app/src/util/user.dart';
+import 'package:ems_app/src/models/DEMO/user.dart';
 import 'package:ems_app/src/screens/messenger_screen.dart';
 // import 'package:ems_app/util/thirdParty/page-transformer.dart';
 
@@ -12,7 +12,7 @@ class ContactsCard extends StatelessWidget {
     // @required this.pageVisibility,
   });
 
-  final User user;
+  final User_DEMO user;
   // final PageVisibility pageVisibility;
 
   @override
