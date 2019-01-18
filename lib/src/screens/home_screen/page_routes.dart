@@ -12,7 +12,7 @@ class SlowMaterialPageRoute<T> extends MaterialPageRoute<T> {
             fullscreenDialog: fullscreenDialog);
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 750);
+  Duration get transitionDuration => const Duration(milliseconds: 300);
 }
 
 class SlidePageRoute<T> extends MaterialPageRoute<T> {

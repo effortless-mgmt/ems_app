@@ -26,7 +26,7 @@ class AppointmentList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int count = upcoming ? upcomingShifts.length : availableShifts.length;
+    final int count = upcoming ? upcomingShifts.length : availableShifts.length;
     print("COUNT: $count");
     return showAll
         ? ListView.builder(
@@ -52,11 +52,12 @@ class AppointmentList extends StatelessWidget {
             type: MaterialType.transparency,
             child: InkWell(
               onTap: () async {
-                await Future.delayed(Duration(milliseconds: 300));
+                await Future.delayed(Duration(milliseconds: 350));
                 Navigator.push(
                   context,
                   SlowMaterialPageRoute(
                     builder: (context) {
+                      print("INDEX: $index");
                       return AppointmentDetailsScreen(
                           appointment: currentAppointment,
                           upcoming: upcoming,

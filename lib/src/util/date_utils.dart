@@ -20,23 +20,23 @@ class DateUtils {
       "${_scheduleTimeFormat.format(start)}-${_scheduleTimeFormat.format(stop)}";
 
   static const List<String> weekdays = const [
-    "Sun",
     "Mon",
     "Tue",
     "Wed",
     "Thu",
     "Fri",
-    "Sat"
+    "Sat",
+    "Sun"
   ];
 
   static const List<String> weekdaysFull = const [
-    "Sunday",
     "Monday",
     "Tuesday",
     "Wednesday",
     "Thursday",
     "Friday",
-    "Saturday"
+    "Saturday",
+    "Sunday"
   ];
 
   /// The list of days in a given month
@@ -181,6 +181,6 @@ class DateUtils {
   }
 
   static String dateToString(DateTime d) {
-    return "${weekdaysFull[d.weekday]}, ${apiDayFormat(d)}";
+    return "${weekdaysFull[d.weekday - 1]}, ${apiDayFormat(d)}";
   }
 }

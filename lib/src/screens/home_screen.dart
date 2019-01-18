@@ -1,9 +1,16 @@
 import 'package:ems_app/src/models/appointment.dart';
+import 'package:ems_app/src/screens/home_screen/all_shifts_screen.dart';
 import 'package:ems_app/src/screens/home_screen/appointment_list.dart';
+import 'package:ems_app/src/screens/home_screen/page_routes.dart';
 import 'package:ems_app/src/screens/home_screen/show_all_button.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final scaffoldKey = new GlobalKey<ScaffoldState>();
   final List<Appointment> upcomingShifts = [
     Appointment.demodata[0],
@@ -13,11 +20,19 @@ class HomeScreen extends StatelessWidget {
   ];
 
   final List<Appointment> availableShifts = [
+    Appointment.demodata[3],
     Appointment.demodata[4],
     Appointment.demodata[5],
-    Appointment.demodata[6],
-    Appointment.demodata[7]
+    Appointment.demodata[6]
   ];
+
+  bool tapped;
+
+  @override
+  void initState() {
+    super.initState();
+    tapped = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +66,25 @@ class HomeScreen extends StatelessWidget {
                     scaffoldKey: scaffoldKey,
                     showAll: false),
                 activateShowAll
-                    ? ShowAllButton(upcoming: upcoming)
+                    ? ShowAllButton(
+                        tapped: tapped,
+                        upcoming: upcoming,
+                        onTap: () async {
+                          setState(() {
+                            tapped = true;
+                          });
+                          await Future.delayed(Duration(milliseconds: 200));
+                          Navigator.push(
+                            context,
+                            SlowMaterialPageRoute(
+                              builder: (context) =>
+                                  AllShiftsScreen(upcoming: upcoming),
+                              fullscreenDialog: false,
+                            ),
+                          ).then((value) {
+                            tapped = false;
+                          });
+                        })
                     : Container(height: 16.0),
               ],
             ),
@@ -61,6 +94,10 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+//########################################
+//#####Sebastian wanted to keep this######
+//########################################
 
 // class ShiftItem extends ListItem {
 //   final Appointment appointment;

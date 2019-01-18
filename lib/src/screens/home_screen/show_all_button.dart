@@ -2,10 +2,24 @@ import 'package:ems_app/src/screens/home_screen/all_shifts_screen.dart';
 import 'package:ems_app/src/screens/home_screen/page_routes.dart';
 import 'package:flutter/material.dart';
 
-class ShowAllButton extends StatelessWidget {
+class ShowAllButton extends StatefulWidget {
   final bool upcoming;
+  final bool tapped;
+  final VoidCallback onTap;
+  ShowAllButton({this.upcoming, this.tapped, this.onTap});
+  @override
+  State<StatefulWidget> createState() => _ShowAllButtonState();
+}
 
-  ShowAllButton({this.upcoming});
+class _ShowAllButtonState extends State<ShowAllButton> {
+  bool upcoming;
+  bool tapped;
+  @override
+  void initState() {
+    super.initState();
+    upcoming = widget.upcoming;
+    tapped = widget.tapped;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,18 +46,7 @@ class ShowAllButton extends StatelessWidget {
                 child: Material(
                   type: MaterialType.transparency,
                   child: InkWell(
-                    onTap: () async {
-                      await Future.delayed(Duration(milliseconds: 200));
-                      Navigator.push(
-                        context,
-                        SlowMaterialPageRoute(
-                          builder: (context) {
-                            return AllShiftsScreen(upcoming: upcoming);
-                          },
-                          fullscreenDialog: false,
-                        ),
-                      );
-                    },
+                    onTap: tapped ? () {} : widget.onTap,
                   ),
                 ),
               ),
