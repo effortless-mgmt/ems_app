@@ -54,13 +54,13 @@ class _CustomNavBarState extends State<CustomNavBar> {
           ),
           title: Text("Home")),
       BottomNavigationBarItem(
-        icon: Icon(Icons.event_note),
-        title: Text("Calendar"),
+        icon: Icon(Icons.view_list),
+        title: Text("Overview"),
       ),
       BottomNavigationBarItem(
         icon: Stack(
           children: <Widget>[
-            Icon(Icons.add_box),
+            Icon(Icons.event_available),
             Positioned(
                 top: 0.0,
                 right: 0.0,
@@ -71,8 +71,8 @@ class _CustomNavBarState extends State<CustomNavBar> {
         title: Text("Register"),
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.group),
-        title: Text("Details"),
+        icon: Icon(Icons.event_note),
+        title: Text("Calendar"),
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.person),

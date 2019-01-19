@@ -46,7 +46,7 @@ class AppState extends State<App> {
   //   ),
   // );
   final _androidTheme = ThemeData(
-      brightness: Brightness.dark,
+      // brightness: Brightness.dark,
       // primaryColorLight:
       //     Colors.blue[200], //A lighter version of the primaryColor.
       // primaryColor: Colors.blue[
