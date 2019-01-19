@@ -19,7 +19,14 @@ class JwtUtils {
   }
 
   Map<dynamic, dynamic> decodePayload(String token) {
-    final String payload = token.split('.')[1];
+    String payload = token.split('.')[1];
+    // We use JWS tokens in the backend, these do not adhere to the 'length is a multiple of 4'-rule of base64.
+    final int missingChars = payload.length % 4;
+    debugPrint('missingchars: $missingChars');
+    if (missingChars != 0) {
+      payload = payload.padRight(payload.length + (4 - missingChars), '=');
+      debugPrint('payload: $payload');
+    }
     final String decodedPayload = Utf8Decoder().convert(base64Decode(payload));
     return JsonDecoder().convert(decodedPayload);
   }
