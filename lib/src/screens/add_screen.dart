@@ -15,19 +15,25 @@ class AddScreen extends StatefulWidget {
 /// The state for the add screen
 class AddScreenState extends State<AddScreen> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-
   Substitute _subDemo;
+  int _autoExpandedIndex;
   List<Appointment> _unApprovedAppointments;
   num _month;
-  Color _calendarIconColor;
+  // Color _calendarIconColor;
 
   @override
   void initState() {
     super.initState();
+    _autoExpandedIndex = -1;
     _subDemo = new Substitute(Appointment.demodata);
     _unApprovedAppointments = _subDemo.unapprovedAppointments;
-    _calendarIconColor = Colors.grey;
     _month = -1;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // _calendarIconColor = Theme.of(context).iconTheme.color;
   }
 
   @override
@@ -39,6 +45,7 @@ class AddScreenState extends State<AddScreen> {
       BuildContext context, int index, Animation<double> animation) {
     print("MONTH IS: $_month");
     MonthlySeparator separator;
+    bool expanded = _autoExpandedIndex == index;
     final currentAppointment = _unApprovedAppointments[index];
     if (_month != currentAppointment.start.month) {
       _month = currentAppointment.start.month;
@@ -46,22 +53,32 @@ class AddScreenState extends State<AddScreen> {
     }
 
     var addTime = AddTimeWidget(
+      onExpansionChanged: (exp) => exp
+          ? () {
+              setState(() {
+                _autoExpandedIndex = index;
+              });
+            }
+          : null,
+      expanded: expanded,
       appointment: currentAppointment,
-      color: _calendarIconColor,
+      // color: _calendarIconColor,
       onAccepted: (_) => _acceptAppointment(
           currentAppointment, index, animation,
           dismissed: false),
-      changeStartTime: (appointment) => _selectStart(context, appointment),
-      changeStopTime: (appointment) => _selectStop(context, appointment),
-      changePauseTime: (appointment) => _selectPause(context, appointment),
+      changeStartTime: (appointment) =>
+          _selectStart(context, appointment, index),
+      changeStopTime: (appointment) => _selectStop(context, appointment, index),
+      changePauseTime: (appointment) =>
+          _selectPause(context, appointment, index),
     );
+
+    // _autoExpandedIndex = -1;
 
     var addTimeTile = Dismissible(
       child: addTime,
       key: UniqueKey(),
-      background: Container(
-          color: Colors.lightGreen,
-          child: ListTile(trailing: Icon(Icons.check, color: Colors.white))),
+      background: ListTile(trailing: Icon(Icons.check, color: Colors.white)),
       onDismissed: (_) => _acceptAppointment(
           currentAppointment, index, animation,
           dismissed: true),
@@ -132,7 +149,8 @@ class AddScreenState extends State<AddScreen> {
 
   /// Edit start time of the appointment
   Future<Null> _selectStart(
-      BuildContext context, Appointment appointment) async {
+      BuildContext context, Appointment appointment, int index) async {
+    _autoExpandedIndex = index;
     TimeOfDay startTime = DateUtils.asTimeOfDay(appointment.start);
     final TimeOfDay picked =
         await showTimePicker(context: context, initialTime: startTime);
@@ -147,8 +165,9 @@ class AddScreenState extends State<AddScreen> {
 
   /// Edit stop time of the appointment
   Future<Null> _selectStop(
-      BuildContext context, Appointment appointment) async {
-    TimeOfDay stopTime = DateUtils.asTimeOfDay(appointment.start);
+      BuildContext context, Appointment appointment, int index) async {
+    _autoExpandedIndex = index;
+    TimeOfDay stopTime = DateUtils.asTimeOfDay(appointment.stop);
     final TimeOfDay picked =
         await showTimePicker(context: context, initialTime: stopTime);
     print("Stop selected: ${picked.toString()}");
@@ -162,7 +181,8 @@ class AddScreenState extends State<AddScreen> {
 
   /// Edit pause time of the appointment
   Future<Null> _selectPause(
-      BuildContext context, Appointment appointment) async {
+      BuildContext context, Appointment appointment, int index) async {
+    _autoExpandedIndex = index;
     Duration pause = appointment.pause;
     final Duration picked = await showDurationPicker(
       context: context,

@@ -35,7 +35,7 @@ class _ShowAllButtonState extends State<ShowAllButton> {
                     left: 16.0, top: 16.0, bottom: 16, right: 16.0),
                 child: Text(
                   "Show all",
-                  style: TextStyle(color: Theme.of(context).primaryColor),
+                  style: TextStyle(color: Theme.of(context).accentColor),
                 ),
               ),
               Positioned(
