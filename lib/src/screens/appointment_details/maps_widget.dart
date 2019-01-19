@@ -28,13 +28,6 @@ class MapsState extends State<Maps> {
   void initState() {
     map = progressIndicator;
     isLoading = true;
-
-    // setState(() async {
-    //   map = await googleMap().then();
-    // });
-    // googleMap().then((test) {
-    //   setState(() => map = test);
-    // });
     setState(() => setGoogleMap());
     super.initState();
   }
@@ -92,16 +85,10 @@ class MapsState extends State<Maps> {
       isLoading = false;
       Stopwatch sw = new Stopwatch()..start();
       mapController = controller;
-
       placeMark = await Geolocator().placemarkFromAddress(widget.address);
       position = placeMark[0].position;
       latLng = LatLng(position.latitude, position.longitude);
       marker = MarkerOptions(position: latLng);
-      // CameraUpdate.newCameraPosition(CameraPosition(
-      //     bearing: 0.0,
-      //     target: LatLng(position.latitude, position.longitude),
-      //     zoom: 15.0));
-
       sw.stop();
       print("Execution time: ${sw.elapsedMilliseconds}ms");
       mapController.addMarker(marker);
