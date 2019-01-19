@@ -39,17 +39,24 @@ class MapsState extends State<Maps> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    if (mapController != null) {
+      mapController.dispose();
+    }
+  }
+
   setGoogleMap() {
     Stopwatch sw = new Stopwatch()..start();
     map = GoogleMap(
         onMapCreated: _onMapCreated,
         options: GoogleMapOptions(
-          cameraPosition: denmark,
-          mapType: MapType.normal,
-          rotateGesturesEnabled: false,
-          scrollGesturesEnabled: false,
-          zoomGesturesEnabled: false,
-        ));
+            cameraPosition: denmark,
+            mapType: MapType.normal,
+            rotateGesturesEnabled: false,
+            scrollGesturesEnabled: false,
+            zoomGesturesEnabled: false));
     sw.stop();
     print("Execution time: ${sw.elapsedMilliseconds}ms");
   }
