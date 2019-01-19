@@ -68,27 +68,13 @@ class AppointmentList extends StatelessWidget {
                   ),
                 );
               },
-              // onTap: () {
-              //   Navigator.push(
-              //     context,
-              //     SlowMaterialPageRoute(
-              //       builder: (context) {
-              //         return AppointmentDetailsScreen(
-              //             appointment: currentAppointment,
-              //             upcoming: upcoming,
-              //             index: index,
-              //             scaffoldKey: scaffoldKey);
-              //       },
-              //       fullscreenDialog: false,
-              //     ),
-              //   );
-              // },
               child: ListTile(
                 leading: DateIcon(date: currentAppointment.start),
-                title: Text(DateFormat.Hm().format(currentAppointment.start) +
-                    " - " +
-                    DateFormat.Hm().format(currentAppointment.stop)),
-                subtitle: Text(currentAppointment.department),
+                title: Text(currentAppointment.department),
+                subtitle: Text(
+                    DateFormat.Hm().format(currentAppointment.start) +
+                        " - " +
+                        DateFormat.Hm().format(currentAppointment.stop)),
               ),
             ),
           ),
@@ -109,9 +95,7 @@ class HeadingTile extends StatelessWidget {
       ListTile(
         title: Text(title),
       ),
-      Divider(
-        height: 0.0,
-      ),
+      Divider(height: 2.0),
     ]);
   }
 }
@@ -123,48 +107,98 @@ class DateIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    {
-      var day = DateFormat.d().format(date);
-      var month = DateFormat.MMM().format(date);
+    var day = DateFormat.d().format(date);
+    var month = DateFormat.MMM().format(date);
 
-      return Container(
-        child: Stack(
-          children: <Widget>[
-            Icon(
-              Icons.calendar_today,
-              color: Colors.grey,
-              size: 40.0,
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 16),
-              width: 40.0,
-              height: 40.0,
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    day,
-                    textScaleFactor: 0.75,
-                    style: TextStyle(
-                      color: Colors.grey,
-                      height: 0.75,
-                      fontWeight: FontWeight.bold,
-                    ),
+    return Container(
+      child: Stack(
+        children: <Widget>[
+          Icon(
+            Icons.calendar_today,
+            color: Theme.of(context).iconTheme.color,
+            // color: Colors.red.shade500,
+            size: 40.0,
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 16),
+            width: 40.0,
+            height: 40.0,
+            child: Column(
+              children: <Widget>[
+                Text(
+                  day,
+                  textScaleFactor: 0.75,
+                  style: TextStyle(
+                    color: Theme.of(context).iconTheme.color,
+                    height: 0.75,
+                    // fontWeight: FontWeight.bold,
                   ),
-                  Text(
-                    month,
-                    textScaleFactor: 0.75,
-                    style: TextStyle(
-                      color: Colors.grey,
-                      height: 0.75,
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                Text(
+                  month,
+                  textScaleFactor: 0.75,
+                  style: TextStyle(
+                    color: Theme.of(context).iconTheme.color,
+                    height: 0.75,
+                    // fontWeight: FontWeight.bold,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
+
+    // return Container(
+    //   child: Stack(
+    //     children: <Widget>[
+    //       Icon(
+    //         Icons.calendar_today,
+    //         color: Theme.of(context).primaryColor,
+    //         size: 40.0,
+    //       ),
+    //       Positioned(
+    //           top: 0.0,
+    //           left: 0.0,
+    //           child: Container(color: Colors.white, width: 60, height: 5)),
+    //       Container(
+    //         margin: EdgeInsets.only(top: 8, left: 4),
+    //         height: 29.0,
+    //         width: 32.0,
+    //         decoration: BoxDecoration(
+
+    //             borderRadius: BorderRadius.circular(2.0),
+    //             color: Theme.of(context).canvasColor),
+    //       ),
+    //       Container(
+    //         padding: EdgeInsets.only(top: 12),
+    //         width: 40.0,
+    //         height: 40.0,
+    //         child: Column(
+    //           children: <Widget>[
+    //             Text(
+    //               day,
+    //               textScaleFactor: 0.75,
+    //               style: TextStyle(
+    //                 color: Theme.of(context).accentColor,
+    //                 height: 0.75,
+    //               ),
+    //             ),
+    //             Container(height: 4),
+    //             Text(
+    //               month,
+    //               textScaleFactor: 0.75,
+    //               style: TextStyle(
+    //                 color: Theme.of(context).accentColor,
+    //                 height: 0.75,
+    //               ),
+    //             ),
+    //           ],
+    //         ),
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 }
