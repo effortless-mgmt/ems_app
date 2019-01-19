@@ -54,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Hero(
       tag: upcoming ? "seeAllUpcoming" : "seeAllAvailable",
       child: Card(
+        // margin: null,
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Stack(
           children: <Widget>[
