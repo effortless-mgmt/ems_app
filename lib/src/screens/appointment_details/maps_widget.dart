@@ -56,7 +56,7 @@ class MapsState extends State<Maps> {
 
   Future f() {
     return new Future.delayed(
-        Duration(milliseconds: 600), () => isLoading = false);
+        Duration(milliseconds: 300), () => isLoading = false);
   }
 
   @override
@@ -97,12 +97,11 @@ class MapsState extends State<Maps> {
 
       sw.stop();
       print("Execution time: ${sw.elapsedMilliseconds}ms");
-      mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+      mapController.addMarker(marker);
+      mapController.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
           bearing: 0.0,
           target: LatLng(position.latitude, position.longitude),
           zoom: 15.0)));
-
-      mapController.addMarker(marker);
     });
     setState(() {});
   }
