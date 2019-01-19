@@ -88,7 +88,8 @@ class MapsState extends State<Maps> {
       placeMark = await Geolocator().placemarkFromAddress(widget.address);
       position = placeMark[0].position;
       latLng = LatLng(position.latitude, position.longitude);
-      marker = MarkerOptions(position: latLng);
+      marker = MarkerOptions(position: latLng, consumeTapEvents: true);
+
       sw.stop();
       print("Execution time: ${sw.elapsedMilliseconds}ms");
       mapController.addMarker(marker);
@@ -97,6 +98,6 @@ class MapsState extends State<Maps> {
           target: LatLng(position.latitude, position.longitude),
           zoom: 15.0)));
     });
-    setState(() {});
+    // setState(() {});
   }
 }

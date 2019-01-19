@@ -20,7 +20,10 @@ class AppointmentDetailsScreen extends StatelessWidget {
     return Hero(
       tag: upcoming ? "seeUpcoming$index" : "seeAvailable$index",
       child: Scaffold(
-        appBar: AppBarDescriptive(appointment: appointment, upcoming: upcoming),
+        appBar: AppBarDescriptive(
+            appointment: appointment,
+            upcoming: upcoming,
+            iconTheme: Theme.of(context).accentIconTheme),
         body: Column(children: <Widget>[
           Column(
               crossAxisAlignment: CrossAxisAlignment.start,

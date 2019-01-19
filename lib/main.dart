@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/services.dart' show SystemChrome, DeviceOrientation;
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 
 import 'src/app.dart';
@@ -18,6 +19,11 @@ void main() async {
   };
 
   await FlutterCrashlytics().initialize();
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   runZoned<Future<Null>>(() async {
     runApp(App());

@@ -40,15 +40,15 @@ class ChangePasswordSettingScreen extends StatelessWidget {
                   children: <Widget>[
                     FlatButton(
                       child: Text("Cancel"),
-                      textColor: Theme.of(context).primaryColor,
+                      textColor: Theme.of(context).accentColor,
                       onPressed: () {
                         print("Fuck off 1");
                       },
                     ),
-                    RaisedButton(
+                    OutlineButton(
                       child: Text(
                         "Save changes",
-                        style: Theme.of(context).textTheme.button,
+                        style: TextStyle(color: Theme.of(context).primaryColor),
                       ),
                       onPressed: () {
                         print("Fuck off2");
@@ -61,6 +61,7 @@ class ChangePasswordSettingScreen extends StatelessWidget {
           )),
       appBar: AppBar(
         title: Text("Change password"),
+        iconTheme: Theme.of(context).accentIconTheme,
       ),
     );
   }
