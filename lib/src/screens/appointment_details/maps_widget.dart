@@ -28,15 +28,16 @@ class MapsState extends State<Maps> {
   void initState() {
     map = progressIndicator;
     isLoading = true;
-
-    // setState(() async {
-    //   map = await googleMap().then();
-    // });
-    // googleMap().then((test) {
-    //   setState(() => map = test);
-    // });
     setState(() => setGoogleMap());
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (mapController != null) {
+      mapController.dispose();
+    }
   }
 
   setGoogleMap() {
@@ -44,19 +45,18 @@ class MapsState extends State<Maps> {
     map = GoogleMap(
         onMapCreated: _onMapCreated,
         options: GoogleMapOptions(
-          cameraPosition: denmark,
-          mapType: MapType.normal,
-          rotateGesturesEnabled: false,
-          scrollGesturesEnabled: false,
-          zoomGesturesEnabled: false,
-        ));
+            cameraPosition: denmark,
+            mapType: MapType.normal,
+            rotateGesturesEnabled: false,
+            scrollGesturesEnabled: false,
+            zoomGesturesEnabled: false));
     sw.stop();
     print("Execution time: ${sw.elapsedMilliseconds}ms");
   }
 
   Future f() {
     return new Future.delayed(
-        Duration(milliseconds: 600), () => isLoading = false);
+        Duration(milliseconds: 300), () => isLoading = false);
   }
 
   @override
@@ -85,24 +85,17 @@ class MapsState extends State<Maps> {
       isLoading = false;
       Stopwatch sw = new Stopwatch()..start();
       mapController = controller;
-
       placeMark = await Geolocator().placemarkFromAddress(widget.address);
       position = placeMark[0].position;
       latLng = LatLng(position.latitude, position.longitude);
       marker = MarkerOptions(position: latLng);
-      // CameraUpdate.newCameraPosition(CameraPosition(
-      //     bearing: 0.0,
-      //     target: LatLng(position.latitude, position.longitude),
-      //     zoom: 15.0));
-
       sw.stop();
       print("Execution time: ${sw.elapsedMilliseconds}ms");
-      mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+      mapController.addMarker(marker);
+      mapController.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
           bearing: 0.0,
           target: LatLng(position.latitude, position.longitude),
           zoom: 15.0)));
-
-      mapController.addMarker(marker);
     });
     setState(() {});
   }
