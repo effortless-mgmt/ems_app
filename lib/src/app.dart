@@ -60,6 +60,7 @@ class AppState extends State<App> {
   //     ));
 
   final _androidTheme = ThemeData(
+      primaryTextTheme: TextTheme(button: TextStyle(color: Colors.white)),
       primaryColor: Color.fromRGBO(50, 98, 105, 1),
       accentColor: Color.fromRGBO(115, 188, 165, 1),
       iconTheme: IconThemeData(color: Color.fromRGBO(62, 14, 92, 1)),

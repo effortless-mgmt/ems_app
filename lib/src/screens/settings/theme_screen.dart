@@ -65,6 +65,7 @@ class ThemeSettingScreen extends StatelessWidget {
       ),
       appBar: AppBar(
         title: Text("Themes"),
+        iconTheme: Theme.of(context).accentIconTheme,
       ),
     );
   }

@@ -198,7 +198,9 @@ class SettingsScreenState extends State<SettingsScreen> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Are you sure?"),
+          title: new Text(
+            "Are you sure?",
+          ),
           content: new Text(
               "This will erase all data from this device and take you back to the login screen"),
           actions: <Widget>[
@@ -216,9 +218,10 @@ class SettingsScreenState extends State<SettingsScreen> {
               },
             ),
             new RaisedButton(
+              color: Theme.of(context).primaryColor,
               child: new Text(
                 "CANCEL",
-                style: Theme.of(context).textTheme.button,
+                style: Theme.of(context).primaryTextTheme.button,
               ),
               onPressed: () {
                 Navigator.of(context).pop();

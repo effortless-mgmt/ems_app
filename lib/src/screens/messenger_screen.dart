@@ -121,6 +121,7 @@ class MessengerScreenState extends State<MessengerScreen>
                             : null,
                       )
                     : new CupertinoButton(
+                        color: Theme.of(context).iconTheme.color,
                         child: new Text("Send"),
                         onPressed: _isComposing
                             ? () => _submit(_textController.text)
@@ -258,10 +259,12 @@ class ChatMessage extends StatelessWidget {
           ? EdgeInsets.only(left: 10.0)
           : EdgeInsets.only(right: 10.0),
       child: new CircleAvatar(
-          child: new Text(sender[0]),
+          child: new Text(sender[0],
+              style: TextStyle(
+                  color: sender == _myName ? Colors.white : Colors.black)),
           backgroundColor: sender == _myName
-              ? Theme.of(context).accentColor
-              : Theme.of(context).primaryColor,
+              ? Theme.of(context).primaryColor
+              : Theme.of(context).accentColor,
           foregroundColor: sender == _myName
               ? Theme.of(context).accentTextTheme.title.color
               : Theme.of(context).textTheme.title.color),
@@ -282,12 +285,14 @@ class ChatMessage extends StatelessWidget {
                 maxWidth: MediaQuery.of(context).size.width * 0.48),
             child: new Text(
               text,
-              style: new TextStyle(fontSize: 15.0),
+              style: new TextStyle(
+                  fontSize: 15.0,
+                  color: sender == _myName ? Colors.white : Colors.black),
             ),
             decoration: new BoxDecoration(
                 color: sender == _myName
-                    ? Theme.of(context).accentColor.withAlpha(200)
-                    : Theme.of(context).primaryColor.withAlpha(200),
+                    ? Theme.of(context).primaryColor.withAlpha(230)
+                    : Theme.of(context).accentColor.withAlpha(200),
                 borderRadius: new BorderRadius.all(const Radius.circular(6.0))),
           )
         ],
