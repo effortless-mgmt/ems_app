@@ -14,18 +14,19 @@ class User {
   final String address;
   final String email;
   final String phone;
-  final List<dynamic> userRoles;
+  final List<int> userRoles;
 
   factory User.fromJson(Map<dynamic, dynamic> json) {
     return User(
         firstName: json['firstName'],
         lastName: json['lastName'],
-        address: json['address'],
+        address: json['address']['readableAddress'],
         email: json['email'],
         phone: json['phone'],
         userRoles: json['userRoles']);
   }
 
   @override
-    String toString() => 'User { firstName: $firstName, lastName: $lastName, address: $address, email: $email, phone: $phone, userRoles: $userRoles }';
+  String toString() =>
+      'User { firstName: $firstName, lastName: $lastName, address: $address, email: $email, phone: $phone, userRoles: $userRoles }';
 }

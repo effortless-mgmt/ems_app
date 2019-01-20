@@ -7,14 +7,13 @@ class Appointment {
   DateTime _start, _stop;
   Duration _pause;
   // int _workPeriodId;
-  String _workPeriodName;
+  String _description;
   // int _departmentId;
   String _departmentName;
   String _departmentAddress;
   bool _approvedByOwner;
   // DateTime _approvedByOwnerDate;
   num _salary;
-  // String _description;
 
   /// Returns a string date ISO formatted, i.e. "2019-12-24"
   get id => _appointmentId;
@@ -28,7 +27,7 @@ class Appointment {
   get duration => _stop.subtract(_pause).difference(_start);
   get department => _departmentName;
   get address => _departmentAddress;
-  get description => _workPeriodName;
+  get description => _description;
   get salary => _salary;
   get durationFormatted => printDuration(this.duration, abbreviated: true);
   get totalFormatted =>
@@ -51,13 +50,13 @@ class Appointment {
     _start = DateTime.parse(json['start']);
     _stop = DateTime.parse(json['stop']);
     _pause = Duration(minutes: json['break']);
-    _workPeriodName =
-        json['workPeriod'] != null ? json['workPeriod']['name'] : null;
+    _description =
+        json['workPeriod'] != null ? json['workPeriod']['description'] : null;
     _departmentName = json['workPeriod'] != null
         ? json['workPeriod']['department']['name']
         : null;
     _departmentAddress = json['workPeriod'] != null
-        ? "${json['workPeriod']['department']['address']['street']}, ${json['workPeriod']['department']['address']['city']}, ${json['workPeriod']['department']['address']['zipCOde']}, ${json['workPeriod']['department']['address']['country']}"
+        ? json['workPeriod']['department']['address']['readableAddress']
         : null;
     _approvedByOwner = json['approvedByOwner'];
     _salary = json['workPeriod'] != null
@@ -75,8 +74,8 @@ class Appointment {
 
   @override
   String toString() =>
-      'appointmentId: $_appointmentId, start: $_start, stop: $stop, pause: $_pause, workPeriodName: $_workPeriodName, approvedByOwner: $_approvedByOwner, salary$_salary';
+      'appointmentId: $_appointmentId, start: $_start, stop: $stop, pause: $_pause, description: $_description, approvedByOwner: $_approvedByOwner, salary$_salary';
 
   String toStringDetailed() =>
-      'appointmentId: $_appointmentId, start: $_start, stop: $stop, pause: $_pause, workPeriodName: $_workPeriodName, departmentName: $_departmentName, departmentAddress: $_departmentAddress, approvedByOwner: $_approvedByOwner, salary$_salary';
+      'appointmentId: $_appointmentId, start: $_start, stop: $stop, pause: $_pause, description: $_description, departmentName: $_departmentName, departmentAddress: $_departmentAddress, approvedByOwner: $_approvedByOwner, salary$_salary';
 }
