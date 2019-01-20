@@ -121,8 +121,7 @@ class MessengerScreenState extends State<MessengerScreen>
                             : null,
                       )
                     : new CupertinoButton(
-                        color: Theme.of(context).iconTheme.color,
-                        child: new Text("Send"),
+                        child: new Text("Send", style: TextStyle(color: Theme.of(context).iconTheme.color)),
                         onPressed: _isComposing
                             ? () => _submit(_textController.text)
                             : null,
