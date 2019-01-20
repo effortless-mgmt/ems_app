@@ -31,16 +31,25 @@ class AppointmentList extends StatelessWidget {
                   'showall { INDEX: $index, itemCount: ${appointments.length} }');
               return _buildAppointments(context, index);
             })
-        : Container(
-            child: ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: appointments.length > 3 ? 3 : appointments.length,
-                itemBuilder: (context, index) {
-                  debugPrint(
-                      'show fewer { INDEX: $index, itemCount: ${appointments.length} }');
-                  return _buildAppointments(context, index);
-                }));
+        : appointments.isEmpty
+            ? upcoming
+                ? ListTile(
+                    title: Text(
+                        "You have no upcoming appointments at the moment."))
+                : ListTile(
+                    title: Text(
+                        "There are no available appointments at the moment."))
+            : Container(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount:
+                        appointments.length > 3 ? 3 : appointments.length,
+                    itemBuilder: (context, index) {
+                      debugPrint(
+                          'show fewer { INDEX: $index, itemCount: ${appointments.length} }');
+                      return _buildAppointments(context, index);
+                    }));
   }
 
   Widget _buildAppointments(BuildContext context, int index) {
