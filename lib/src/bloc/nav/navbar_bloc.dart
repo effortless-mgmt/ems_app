@@ -12,7 +12,9 @@ class NavBarBloc extends Bloc<NavBarEvent, NavBarState> {
       oldIndex: 0,
       currentIndex: 0,
       screen:
-          NextAppointmentDetailsScreen(appointment: AppointmentDEMO.demodata[4]));
+          // NextAppointmentDetailsScreen(appointment: AppointmentDEMO.demodata[4])
+          NextAppointmentDetailsScreen()
+          );
 
   @override
   Stream<NavBarState> mapEventToState(
@@ -43,10 +45,11 @@ class NavBarBloc extends Bloc<NavBarEvent, NavBarState> {
 
     switch (index) {
       case 0:
-        return NextAppointmentDetailsScreen(
-            appointment: AppointmentDEMO.demodata[4]);
+        // return NextAppointmentDetailsScreen(
+        //     appointment: AppointmentDEMO.demodata[4]);
+        return NextAppointmentDetailsScreen();
       case 1:
-        return HomeScreen();
+        return OverviewScreen();
       case 2:
         return AddScreen();
       case 3:
@@ -54,7 +57,7 @@ class NavBarBloc extends Bloc<NavBarEvent, NavBarState> {
       case 4:
         return ProfileScreen();
       default:
-        return HomeScreen();
+        return OverviewScreen();
     }
   }
 }

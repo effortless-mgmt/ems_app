@@ -1,4 +1,5 @@
 import 'package:ems_app/src/models/DEMO/appointment.dart';
+import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/util/date_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class SliverAppBarDescriptive extends SliverAppBar {
   static TextStyle bodyTextStyle =
       TextStyle(color: Colors.white, fontSize: 12.0);
 
-  SliverAppBarDescriptive({Widget title, AppointmentDEMO appointment})
+  SliverAppBarDescriptive({Widget title, Appointment appointment})
       : super(
           expandedHeight: 200.0,
           pinned: true,
@@ -44,7 +45,7 @@ class SliverAppBarDescriptive extends SliverAppBar {
                       children: <Widget>[
                         Container(
                           padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Text("${appointment.hourlyWage} kr. / h",
+                          child: Text("${appointment.salary} kr. / h",
                               style: titleTextStyle),
                         ),
                       ],
@@ -72,7 +73,7 @@ class AppBarDescriptive extends AppBar {
       TextStyle(color: Colors.white, fontSize: 12.0);
 
   AppBarDescriptive(
-      {AppointmentDEMO appointment, bool upcoming, IconThemeData iconTheme})
+      {Appointment appointment, bool upcoming, IconThemeData iconTheme})
       : super(
           iconTheme: iconTheme,
           title:
@@ -99,7 +100,7 @@ class AppBarDescriptive extends AppBar {
                     children: <Widget>[
                       Container(
                         padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text("${appointment.hourlyWage} kr. / h",
+                        child: Text("${appointment.salary} kr. / h",
                             style: titleTextStyle),
                       ),
                     ],

@@ -13,27 +13,73 @@ class AppointmentInitial extends AppointmentState {
   String toString() => 'Appointments initial';
 }
 
-class AppointmentThing extends AppointmentState {
+class AvailableAppointmentList extends AppointmentState {
   final List<Appointment> appointments;
 
-  AppointmentThing({@required this.appointments}) : super([appointments]);
+  AvailableAppointmentList({@required this.appointments})
+      : super([appointments]);
 
   @override
-  String toString() => 'Appointments updated { appointments: $appointments }';
+  String toString() =>
+      'Available appointments updated { appointments: $appointments }';
 }
 
-class AppointmentStuff extends AppointmentState {
+class UnapprovedAppointmentList extends AppointmentState {
+  final List<Appointment> appointments;
+
+  UnapprovedAppointmentList({@required this.appointments})
+      : super([appointments]);
+
+  @override
+  String toString() =>
+      'Unapproved appointments updated { appointments: $appointments }';
+}
+
+class UpcomingAppointmentList extends AppointmentState {
+  final List<Appointment> appointments;
+
+  UpcomingAppointmentList({@required this.appointments})
+      : super([appointments]);
+
+  @override
+  String toString() =>
+      'Upcoming appointments updated { appointments: $appointments }';
+}
+
+class AllAppointmentList extends AppointmentState {
+  final List<Appointment> appointments;
+
+  AllAppointmentList({@required this.appointments}) : super([appointments]);
+
+  @override
+  String toString() =>
+      'All appointments updated { appointments: $appointments }';
+}
+
+class UpcomingAppointmentItem extends AppointmentState {
   final Appointment appointment;
 
-  AppointmentStuff({@required this.appointment});
+  UpcomingAppointmentItem({@required this.appointment});
 
   @override
   String toString() =>
       'Closest upcoming appointment { appointment: $appointment }';
 }
 
-class AppointmentsLoaded extends AppointmentState {
+class UpcomingAndAvailableAppointmentList extends AppointmentState {
+  final List<Appointment> availableAppointments;
+  final List<Appointment> upcomingAppointments;
+
+  UpcomingAndAvailableAppointmentList(
+      {@required this.availableAppointments,
+      @required this.upcomingAppointments});
+
   @override
   String toString() =>
-      'loaded appointments';
+      'Upcoming and available appointments { upcomingAppointments: $upcomingAppointments, availableAppointments: $availableAppointments }';
+}
+
+class AppointmentsLoaded extends AppointmentState {
+  @override
+  String toString() => 'loaded appointments';
 }

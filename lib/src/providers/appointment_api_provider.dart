@@ -11,20 +11,20 @@ class AppointmentApiProvider {
 
   /// Returns list of all [Appointment]'s (past, present, future) for this user
   /// EXCLUDING those available but not yet claimed by a substitute.
-  Future<String> getAllAppointments({@required String token}) async {
+  Future<List<Appointment>> getAllAppointments({@required String token}) async {
     final response = await _client.get("$_baseUrl$_endpoint",
         headers: {"Authorization": "Bearer $token"});
     if (response.statusCode == 200) {
       final dynamic responsejson = json.decode(response.body);
       debugPrint('getAppointments { appointments: $responsejson }');
-      return responsejson;
+      return _createAppointmentList(responsejson);
     } else {
       throw Exception('Failed to load post');
     }
   }
 
   /// Returns [Appointment] with [id].
-  Future<String> getAppointmentById(
+  Future<List<Appointment>> getAppointmentById(
       {@required int id, @required String token}) async {
     final response = await _client.get("$_baseUrl$_endpoint/$id",
         headers: {"Authorization": "Bearer $token"});
@@ -38,21 +38,21 @@ class AppointmentApiProvider {
   }
 
   /// Returns list of all [Appointment]'s not yet claimed by a substitute.
-  Future<String> getAppointmentsAvailable({@required String token}) async {
+  Future<List<Appointment>> getAppointmentsAvailable({@required String token}) async {
     final response = await _client.get("$_baseUrl$_endpoint/available",
         headers: {"Authorization": "Bearer $token"});
     if (response.statusCode == 200) {
       final dynamic responsejson = json.decode(response.body);
       debugPrint(
           'getAppointmentsAvailable { available appointments: $responsejson }');
-      return responsejson;
+      return _createAppointmentList(responsejson);
     } else {
       throw Exception('Failed to load post');
     }
   }
 
   /// Returns list of all [Appointment]'s not yet approved by this user.
-  Future<String> getAppointmentsUnapproved({@required String token}) async {
+  Future<List<Appointment>> getAppointmentsUnapproved({@required String token}) async {
     final response = await _client.get(
         "$_baseUrl$_endpoint/unapproved/substitute",
         headers: {"Authorization": "Bearer $token"});
@@ -60,7 +60,7 @@ class AppointmentApiProvider {
       final dynamic responsejson = json.decode(response.body);
       debugPrint(
           'getAppointmentsUnapproved { unapproved appointments: $responsejson }');
-      return responsejson;
+      return _createAppointmentList(responsejson);
     } else {
       throw Exception('Failed to load post');
     }
@@ -80,10 +80,24 @@ class AppointmentApiProvider {
     }
   }
 
+   /// Returns all upcoming [Appointment]'s for this user
+  Future<Appointment> getAppointmentUpcomingNext({@required String token}) async {
+    final response = await _client.get("$_baseUrl$_endpoint/upcoming?limit=1",
+        headers: {"Authorization": "Bearer $token"});
+    if (response.statusCode == 200) {
+      final List<dynamic> responsejson = json.decode(response.body);
+      debugPrint(
+          'getAppointmentUpcomingNext { upcoming appointment: $responsejson }');
+      return Appointment.fromJson(responsejson.first);
+    } else {
+      throw Exception('Failed to load post');
+    }
+  }
+
   /// Takes a modified [Appointment] as a json serialized string
   /// along with the [id] of the modified [Appointment].
   /// Returns the modified [Appointment] received from the server
-  Future<String> putAppointment(
+  Future<Appointment> putAppointment(
       {@required String token,
       @required String appointment,
       @required int id}) async {
@@ -97,7 +111,7 @@ class AppointmentApiProvider {
       final dynamic responsejson = json.decode(response.body);
       debugPrint(
           'putAppointment { modified appointment: $responsejson, id: $id }');
-      return responsejson;
+      return Appointment.fromJson(responsejson);
     } else {
       throw Exception('Failed to load post');
     }
@@ -105,7 +119,7 @@ class AppointmentApiProvider {
 
   /// Takes the [id] of the approved [Appointment].
   /// Returns the approved [Appointment] received from the server
-  Future<String> putAppointmentApproved(
+  Future<Appointment> putAppointmentApproved(
       {@required String token, @required int id}) async {
     final response = await _client.put("$_baseUrl$_endpoint/$id/approve",
         headers: {"Authorization": "Bearer $token"});
@@ -113,7 +127,7 @@ class AppointmentApiProvider {
       final dynamic responsejson = json.decode(response.body);
       debugPrint(
           'putAppointmentApproved { approved appointment: $responsejson, id: $id }');
-      return responsejson;
+      return Appointment.fromJson(responsejson);
     } else {
       throw Exception('Failed to load post');
     }
@@ -121,7 +135,7 @@ class AppointmentApiProvider {
 
   /// Takes the [id] of the claimed [Appointment].
   /// Returns the claimed [Appointment] received from the server
-  Future<String> claimAppointmentAvailable(
+  Future<Appointment> claimAppointmentAvailable(
       {@required String token, @required int id}) async {
     final response = await _client.put("$_baseUrl$_endpoint/$id/claim",
         headers: {"Authorization": "Bearer $token"});
@@ -129,16 +143,16 @@ class AppointmentApiProvider {
       final dynamic responsejson = json.decode(response.body);
       debugPrint(
           'claimAppointmentAvailable { claimed appointment: $responsejson, id: $id }');
-      return responsejson;
+      return Appointment.fromJson(responsejson);
     } else {
       throw Exception('Failed to load post');
     }
   }
 
-  _createAppointmentList(Map<String, dynamic> json) {
+  _createAppointmentList(List<dynamic> json) {
     final List<Appointment> list = List<Appointment>();
-    for (var appointment in json.entries) {
-      list.add(Appointment.fromJson(appointment.value));
+    for (var appointment in json) {
+      list.add(Appointment.fromJson(appointment));
     }
     return list;
   }

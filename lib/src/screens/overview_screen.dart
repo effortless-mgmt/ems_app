@@ -1,56 +1,78 @@
-import 'package:ems_app/src/models/DEMO/appointment.dart';
+import 'package:ems_app/src/models/appointment.dart';
+import 'package:ems_app/src/providers/appointment_api_provider.dart';
 import 'package:ems_app/src/screens/home_screen/all_shifts_screen.dart';
 import 'package:ems_app/src/screens/home_screen/appointment_list.dart';
 import 'package:ems_app/src/screens/home_screen/page_routes.dart';
 import 'package:ems_app/src/screens/home_screen/show_all_button.dart';
+import 'package:ems_app/src/bloc/appointment/appointment.dart';
+import 'package:ems_app/src/widgets/loading_indicator.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomeScreen extends StatefulWidget {
+class OverviewScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _HomeScreenState();
+  State<StatefulWidget> createState() => _OverviewScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _OverviewScreenState extends State<OverviewScreen> {
   final scaffoldKey = new GlobalKey<ScaffoldState>();
-  final List<AppointmentDEMO> upcomingShifts = [
-    AppointmentDEMO.demodata[0],
-    AppointmentDEMO.demodata[1],
-    AppointmentDEMO.demodata[2],
-    AppointmentDEMO.demodata[3],
-  ];
-
-  final List<AppointmentDEMO> availableShifts = [
-    AppointmentDEMO.demodata[3],
-    AppointmentDEMO.demodata[4],
-    AppointmentDEMO.demodata[5],
-    AppointmentDEMO.demodata[6]
-  ];
+  AppointmentBloc _appointmentBloc;
+  AppointmentApiProvider _appointmentApiProvider;
+  List<Appointment> _upcomingAppointments;
+  List<Appointment> _availableAppointments;
 
   bool tapped;
 
   @override
   void initState() {
     super.initState();
+    _appointmentApiProvider = AppointmentApiProvider();
+    _appointmentBloc =
+        AppointmentBloc(appointmentApiProvider: _appointmentApiProvider);
+    _appointmentBloc.dispatch(LoadUpcomingAndAvailableAppointments());
     tapped = false;
   }
 
   @override
+  void dispose() {
+    _appointmentBloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        key: scaffoldKey,
-        appBar: AppBar(title: Text("Overview")),
-        body: ListView(
-          children: <Widget>[
-            _shiftCard(context, true),
-            _shiftCard(context, false)
-          ],
-        ));
+    return BlocProvider<AppointmentBloc>(
+      bloc: _appointmentBloc,
+      child: BlocBuilder(
+        bloc: _appointmentBloc,
+        builder: (BuildContext context, AppointmentState appointmentState) {
+          if (appointmentState is AppointmentInitial) {
+            return LoadingIndicator();
+          }
+          if (appointmentState is UpcomingAndAvailableAppointmentList) {
+            _availableAppointments = appointmentState.availableAppointments;
+            _upcomingAppointments = appointmentState.upcomingAppointments;
+          }
+
+          return Scaffold(
+              key: scaffoldKey,
+              appBar: AppBar(title: Text("Overview")),
+              body: ListView(
+                children: <Widget>[
+                  _shiftCard(context, true),
+                  _shiftCard(context, false)
+                ],
+              ));
+        },
+      ),
+    );
   }
 
   Widget _shiftCard(context, bool upcoming) {
-    final activateShowAll =
-        upcoming ? upcomingShifts.length > 3 : availableShifts.length > 3;
+    final activateShowAll = upcoming
+        ? _upcomingAppointments.length > 3
+        : _availableAppointments.length > 3;
 
     return Hero(
       tag: upcoming ? "seeAllUpcoming" : "seeAllAvailable",
@@ -64,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 HeadingTile(
                     title: upcoming ? "Upcoming Shifts" : "Available Shifts"),
                 AppointmentList(
+                    appointmentBloc: _appointmentBloc,
                     upcoming: upcoming,
                     scaffoldKey: scaffoldKey,
                     showAll: false),
@@ -96,33 +119,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-//########################################
-//#####Sebastian wanted to keep this######
-//########################################
-
-// class ShiftItem extends ListItem {
-//   final Appointment appointment;
-
-//   ShiftItem.protected(this.appointment);
-
-// factory ShiftItem.fromJson(Map<dynamic, dynamic> json) {
-// Appointment appointment = Appointment();
-// appointment.start = DateTime.parse(json["shiftStart"]);
-// appointment.stop = DateTime.parse(json["shiftStart"]);
-// appointment.department = json["department"];
-// appointment.address = json["address"];
-// appointment.description = json["description"];
-// appointment.hourlyWage = json["salary"];
-
-// if (json["type"] == "available") {
-//   return AvailableShift(appointment: appointment);
-// } else if (json["type"] == "upcoming") {
-//   return UpcomingShift(
-//     status: json["status"],
-//     appointment: appointment,
-//   );
-// } else {
-//   return null;
-// }
-// }

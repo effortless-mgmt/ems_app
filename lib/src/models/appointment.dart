@@ -50,13 +50,19 @@ class Appointment {
     _appointmentId = json['id'];
     _start = DateTime.parse(json['start']);
     _stop = DateTime.parse(json['stop']);
-    // pause may break if minutes go above 59.
     _pause = Duration(minutes: json['break']);
-    _workPeriodName = json['workPeriod']['name'];
-    _departmentName = json['workPeriod']['department']['name'];
-    _departmentAddress = json['workPeriod']['department']['address'].toString();
+    _workPeriodName =
+        json['workPeriod'] != null ? json['workPeriod']['name'] : null;
+    _departmentName = json['workPeriod'] != null
+        ? json['workPeriod']['department']['name']
+        : null;
+    _departmentAddress = json['workPeriod'] != null
+        ? "${json['workPeriod']['department']['address']['street']}, ${json['workPeriod']['department']['address']['city']}, ${json['workPeriod']['department']['address']['zipCOde']}, ${json['workPeriod']['department']['address']['country']}"
+        : null;
     _approvedByOwner = json['approvedByOwner'];
-    _salary = json['earnings'];
+    _salary = json['workPeriod'] != null
+        ? json['workPeriod']['agreement']['salary']
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -66,4 +72,8 @@ class Appointment {
     data['break'] = this._pause;
     return data;
   }
+
+  @override
+  String toString() =>
+      'appointmentId: $_appointmentId, start: $_start, stop: $stop, pause: $_pause, workPeriodName: $_workPeriodName, departmentName: $_departmentName, departmentAddress: $_departmentAddress, approvedByOwner: $_approvedByOwner, salary$_salary';
 }

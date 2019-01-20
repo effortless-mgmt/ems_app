@@ -4,7 +4,10 @@ class AppointmentRepository {
   static final AppointmentRepository _appointmentRepository =
       AppointmentRepository._internal();
   
+  List<Appointment> availableAppointments = List<Appointment>();
+  List<Appointment> unapprovedAppointments = List<Appointment>();
   List<Appointment> upcomingAppointments = List<Appointment>();
+  List<Appointment> allAppointments = List<Appointment>();
 
   // private internal constructor to make it singleton
   AppointmentRepository._internal();
@@ -13,13 +16,19 @@ class AppointmentRepository {
     return _appointmentRepository;
   }
 
-  void updateUpcomingAppointments(List<Appointment> appointments) {
-    upcomingAppointments = appointments;
-    upcomingAppointments.sort((a, b) => a.start.compareTo(b.start));
+  void updateAvailableAppointments(List<Appointment> appointments) {
+    availableAppointments = appointments;
   }
 
+  void updateUnapprovedAppointments(List<Appointment> appointments) {
+    unapprovedAppointments = appointments;
+  }
 
-  Appointment getNextAppointment() {
-    return upcomingAppointments.first;
+  void updateUpcomingAppointments(List<Appointment> appointments) {
+    upcomingAppointments = appointments;
+  }
+
+  void updateAllAppointments(List<Appointment> appointments) {
+    allAppointments = appointments;
   }
 }

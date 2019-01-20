@@ -20,24 +20,59 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
   AppointmentState get initialState => AppointmentInitial();
 
   @override
-    Stream<AppointmentEvent> transform(Stream<AppointmentEvent> events) {
-      // TODO: implement transform
-      return super.transform(events);
-    }
+  Stream<AppointmentEvent> transform(Stream<AppointmentEvent> events) {
+    // TODO: implement transform
+    return super.transform(events);
+  }
 
   @override
   Stream<AppointmentState> mapEventToState(
       AppointmentState currentState, AppointmentEvent event) async* {
+    if (event is LoadAvailableAppointments) {
+      String token = await authApiProvider.readToken();
+      List<Appointment> appointments =
+          await appointmentApiProvider.getAppointmentsAvailable(token: token);
+      AppointmentRepository.get().updateAvailableAppointments(appointments);
+      yield AvailableAppointmentList(appointments: appointments);
+    }
+
+    if (event is LoadUnapprovedAppointments) {
+      String token = await authApiProvider.readToken();
+      List<Appointment> appointments =
+          await appointmentApiProvider.getAppointmentsUnapproved(token: token);
+      AppointmentRepository.get().updateUnapprovedAppointments(appointments);
+      yield UnapprovedAppointmentList(appointments: appointments);
+    }
+
     if (event is LoadUpcomingAppointments) {
       String token = await authApiProvider.readToken();
-      List<Appointment> appointments = await appointmentApiProvider.getAppointmentsUpcoming(token: token);
+      List<Appointment> appointments =
+          await appointmentApiProvider.getAppointmentsUpcoming(token: token);
       AppointmentRepository.get().updateUpcomingAppointments(appointments);
-      yield AppointmentsLoaded();
+      yield UpcomingAppointmentList(appointments: appointments);
+    }
+
+    if (event is LoadUpcomingAndAvailableAppointments) {
+      String token = await authApiProvider.readToken();
+      List<Appointment> availableAppointments =
+          await appointmentApiProvider.getAppointmentsAvailable(token: token);
+      AppointmentRepository.get()
+          .updateAvailableAppointments(availableAppointments);
+      List<Appointment> upcomingAppointments =
+          await appointmentApiProvider.getAppointmentsUpcoming(token: token);
+      AppointmentRepository.get()
+          .updateUpcomingAppointments(upcomingAppointments);
+      yield UpcomingAndAvailableAppointmentList(
+          availableAppointments: availableAppointments,
+          upcomingAppointments: upcomingAppointments);
     }
 
     if (event is LoadNextAppointment) {
-      Appointment appointment = AppointmentRepository.get().getNextAppointment();
-      yield AppointmentStuff(appointment: appointment);
+      String token = await authApiProvider.readToken();
+      Appointment appointment =
+          await appointmentApiProvider.getAppointmentUpcomingNext(token: token);
+      // yield AppointmentsLoaded();
+      yield UpcomingAppointmentItem(appointment: appointment);
     }
   }
 }

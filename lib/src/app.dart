@@ -5,7 +5,7 @@ import 'providers/auth_api_provider.dart';
 import 'bloc/auth/auth.dart';
 import 'bloc/nav/navbar.dart';
 
-import 'screens/home_screen.dart';
+import 'screens/overview_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/login_screen.dart';
 import 'widgets/loading_indicator.dart';
@@ -148,7 +148,7 @@ class MainAppState extends State<MainApp> {
                   return navBarState.screen;
                 } else {
                   // fallback (most likely not needed).
-                  return HomeScreen();
+                  return OverviewScreen();
                 }
               })),
     );

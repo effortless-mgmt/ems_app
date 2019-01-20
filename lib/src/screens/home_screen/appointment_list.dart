@@ -1,49 +1,70 @@
-import 'package:ems_app/src/models/DEMO/appointment.dart';
+import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/screens/appointment_details/appointment_details_screen.dart';
 import 'package:ems_app/src/screens/home_screen/page_routes.dart';
+import 'package:ems_app/src/bloc/appointment/appointment.dart';
+import 'package:ems_app/src/widgets/loading_indicator.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class AppointmentList extends StatelessWidget {
   final bool upcoming;
   final bool showAll;
+  final AppointmentBloc appointmentBloc;
+
   final GlobalKey<ScaffoldState> scaffoldKey;
-  final List<AppointmentDEMO> upcomingShifts = [
-    AppointmentDEMO.demodata[0],
-    AppointmentDEMO.demodata[1],
-    AppointmentDEMO.demodata[2],
-    AppointmentDEMO.demodata[3],
-  ];
 
-  final List<AppointmentDEMO> availableShifts = [
-    AppointmentDEMO.demodata[4],
-    AppointmentDEMO.demodata[5],
-    AppointmentDEMO.demodata[6],
-    AppointmentDEMO.demodata[7]
-  ];
-
-  AppointmentList({this.upcoming, this.scaffoldKey, this.showAll});
+  AppointmentList(
+      {this.upcoming, this.scaffoldKey, this.showAll, this.appointmentBloc});
 
   @override
   Widget build(BuildContext context) {
-    final int count = upcoming ? upcomingShifts.length : availableShifts.length;
-    print("COUNT: $count");
-    return showAll
-        ? ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: count,
-            itemBuilder: _buildAppointments)
-        : Container(
-            constraints: BoxConstraints(maxHeight: 200.0),
-            child: ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 3,
-                itemBuilder: _buildAppointments));
+    return BlocBuilder(
+      bloc: appointmentBloc,
+      builder: (BuildContext context, AppointmentState appointmentState) {
+        if (appointmentState is AppointmentInitial) {
+          return LoadingIndicator();
+        }
+        if (appointmentState is UpcomingAndAvailableAppointmentList) {
+          final int count = upcoming
+              ? appointmentState.upcomingAppointments.length
+              : appointmentState.availableAppointments.length;
+          return showAll
+              ? ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: count,
+                  itemBuilder: (context, index) {
+                    _buildAppointments(
+                        context,
+                        index,
+                        appointmentState.upcomingAppointments,
+                        appointmentState.availableAppointments);
+                  })
+              : Container(
+                  constraints: BoxConstraints(maxHeight: 200.0),
+                  child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 3,
+                      itemBuilder: (context, index) {
+                        _buildAppointments(
+                            context,
+                            index,
+                            appointmentState.upcomingAppointments,
+                            appointmentState.availableAppointments);
+                      }));
+        }
+      },
+    );
   }
 
-  Widget _buildAppointments(BuildContext context, int index) {
+  Widget _buildAppointments(
+      BuildContext context,
+      int index,
+      List<Appointment> upcomingAppointments,
+      List<Appointment> availableAppointments) {
     var currentAppointment =
-        upcoming ? upcomingShifts[index] : availableShifts[index];
+        upcoming ? upcomingAppointments[index] : availableAppointments[index];
     return Hero(
       tag: upcoming ? "seeUpcoming$index" : "seeAvailable$index",
       child: Stack(

@@ -10,24 +10,30 @@ class LoadAppointments extends AppointmentEvent {
   String toString() => 'Load appointments';
 }
 
+class LoadAvailableAppointments extends AppointmentEvent {
+  @override
+  String toString() => 'Load available appointments';
+}
+
 class LoadUpcomingAppointments extends AppointmentEvent {
   @override
   String toString() => 'Load upcoming appointments';
+}
+
+class LoadUnapprovedAppointments extends AppointmentEvent {
+  @override
+  String toString() => 'Load unapproved appointments';
+}
+
+class LoadUpcomingAndAvailableAppointments extends AppointmentEvent {
+  @override
+  String toString() => 'Load upcoming and available appointments';
 }
 
 class LoadNextAppointment extends AppointmentEvent {
   @override
   String toString() => 'Load next appointment';
 }
-
-// class RemoveAppointment extends AppointmentEvent {
-//   final int id;
-
-//   RemoveAppointment({@required this.id}) : super([id]);
-
-//   @override
-//   String toString() => 'Remove appointment with id: $id';
-// }
 
 class ApproveAppointment extends AppointmentEvent {
   final int id;
@@ -48,7 +54,7 @@ class ModifyAppointment extends AppointmentEvent {
     stop = null,
     pause = null,
   }) : super([id, start, stop, pause]) {
-     if (start != null) {
+    if (start != null) {
       this.start = start;
     }
     if (stop != null) {
@@ -57,7 +63,7 @@ class ModifyAppointment extends AppointmentEvent {
     if (pause != null) {
       this.pause = pause;
     }
-  } 
+  }
 
   @override
   String toString() =>
