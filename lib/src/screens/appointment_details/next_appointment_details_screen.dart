@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NextAppointmentDetailsScreen extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() => new _AppointmentDetailsState();
 }
@@ -32,57 +31,54 @@ class _AppointmentDetailsState extends State<NextAppointmentDetailsScreen> {
   }
 
   @override
-    void dispose() {
-      _appointmentBloc.dispose();
-      super.dispose();
-    }
+  void dispose() {
+    _appointmentBloc.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AppointmentBloc>(
+    return BlocBuilder(
       bloc: _appointmentBloc,
-      child: BlocBuilder(
-        bloc: _appointmentBloc,
-        builder: (BuildContext context, AppointmentState appointmentState) {
-          if (appointmentState is AppointmentInitial) {
-            return LoadingIndicator();
-          }
-          if (appointmentState is UpcomingAppointmentItem) {
-            _appointment = appointmentState.appointment;
-          }
-          return Scaffold(
-            resizeToAvoidBottomPadding: false,
-            body: NestedScrollView(
-                headerSliverBuilder:
-                    (BuildContext context, bool innerBoxIsScrolled) {
-                  return <Widget>[
-                    SliverAppBarDescriptive(
-                        title: Text("Next Appointment"),
-                        appointment: _appointment)
-                  ];
-                },
-                body: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Maps(address: _appointment.address),
-                    Container(
-                        padding: const EdgeInsets.only(left: 16.0, top: 10.0),
-                        child: Text("${_appointment.address}")),
-                    Container(
-                        padding: const EdgeInsets.only(top: 16.0, left: 16.0),
-                        child:
-                            Text("Contacts", style: TextStyle(fontSize: 16.0))),
-                    Flexible(
-                      child: ListView.builder(
-                          primary: true,
-                          itemBuilder: _listBuilder,
-                          itemCount: sampleUserList.userList.length),
-                    ),
-                  ],
-                )),
-          );
-        },
-      ),
+      builder: (BuildContext context, AppointmentState appointmentState) {
+        if (appointmentState is AppointmentInitial) {
+          return LoadingIndicator();
+        }
+        if (appointmentState is UpcomingAppointmentItem) {
+          _appointment = appointmentState.appointment;
+        }
+        return Scaffold(
+          resizeToAvoidBottomPadding: false,
+          body: NestedScrollView(
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverAppBarDescriptive(
+                      title: Text("Next Appointment"),
+                      appointment: _appointment)
+                ];
+              },
+              body: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Maps(address: _appointment.address),
+                  Container(
+                      padding: const EdgeInsets.only(left: 16.0, top: 10.0),
+                      child: Text("${_appointment.address}")),
+                  Container(
+                      padding: const EdgeInsets.only(top: 16.0, left: 16.0),
+                      child:
+                          Text("Contacts", style: TextStyle(fontSize: 16.0))),
+                  Flexible(
+                    child: ListView.builder(
+                        primary: true,
+                        itemBuilder: _listBuilder,
+                        itemCount: sampleUserList.userList.length),
+                  ),
+                ],
+              )),
+        );
+      },
     );
   }
 
