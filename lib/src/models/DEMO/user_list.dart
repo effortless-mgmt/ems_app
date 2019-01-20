@@ -1,20 +1,20 @@
 import 'user.dart';
 
-class UserList_DEMO {
-  UserList_DEMO({this.userList});
+class UserListDEMO {
+  UserListDEMO({this.userList});
 
-  final List<User_DEMO> userList;
+  final List<UserDEMO> userList;
 
-  factory UserList_DEMO.fromJson(Map<dynamic, dynamic> json) {
-    List<User_DEMO> temp;
+  factory UserListDEMO.fromJson(Map<dynamic, dynamic> json) {
+    List<UserDEMO> temp;
     for (var user in json.entries) {
-      temp.add(User_DEMO.fromJson(user.value));
+      temp.add(UserDEMO.fromJson(user.value));
     }
-    return UserList_DEMO(userList: temp);
+    return UserListDEMO(userList: temp);
   }
 }
 
-final sampleUserList = new UserList_DEMO(userList: <User_DEMO>[
+final sampleUserList = new UserListDEMO(userList: <UserDEMO>[
   sampleUser1,
   sampleUser2,
   sampleUser3,

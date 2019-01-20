@@ -1,4 +1,4 @@
-import 'package:ems_app/src/models/appointment.dart';
+import 'package:ems_app/src/models/DEMO/appointment.dart';
 import 'package:ems_app/src/screens/appointment_details/next_appointment_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
@@ -47,7 +47,7 @@ class NavBarBloc extends Bloc<NavBarEvent, NavBarState> {
         return AddScreen();
       case 3:
         return NextAppointmentDetailsScreen(
-            appointment: Appointment.demodata[0]);
+            appointment: AppointmentDEMO.demodata[0]);
       case 4:
         return ProfileScreen();
       default:

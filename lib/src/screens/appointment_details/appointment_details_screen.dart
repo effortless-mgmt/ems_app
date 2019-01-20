@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:ems_app/src/models/appointment.dart';
+import 'package:ems_app/src/models/DEMO/appointment.dart';
 import 'package:ems_app/src/screens/appointment_details/appBarDescriptive.dart';
 import 'package:ems_app/src/screens/appointment_details/maps_widget.dart';
 import 'package:flutter/material.dart';
 
 class AppointmentDetailsScreen extends StatelessWidget {
-  final Appointment appointment;
+  final AppointmentDEMO appointment;
   final GlobalKey<ScaffoldState> scaffoldKey;
   final bool isJobOffer;
 

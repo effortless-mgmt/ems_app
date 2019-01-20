@@ -1,4 +1,4 @@
-import 'package:ems_app/src/models/appointment.dart';
+import 'package:ems_app/src/models/DEMO/appointment.dart';
 import 'package:ems_app/src/screens/appointment_details/appointment_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -132,12 +132,12 @@ class HeadingItem extends ListItem {
 }
 
 class ShiftItem extends ListItem {
-  final Appointment appointment;
+  final AppointmentDEMO appointment;
 
   ShiftItem.protected(this.appointment);
 
   factory ShiftItem.fromJson(Map<dynamic, dynamic> json) {
-    Appointment appointment = Appointment();
+    AppointmentDEMO appointment = AppointmentDEMO();
     appointment.start = DateTime.parse(json["shiftStart"]);
     appointment.stop = DateTime.parse(json["shiftStart"]);
     appointment.department = json["department"];

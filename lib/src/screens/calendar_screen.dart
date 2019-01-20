@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:ems_app/src/models/appointment.dart';
+import 'package:ems_app/src/models/DEMO/appointment.dart';
 import 'package:ems_app/src/widgets/appointment_widget.dart';
 import 'package:ems_app/src/widgets/calendar/calendar_widget.dart';
 
@@ -26,11 +26,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
         children: <Widget>[
           new Calendar(
               selectedDate: selected,
-              appointments: Appointment.demodata,
+              appointments: AppointmentDEMO.demodata,
               onDateSelected: (date) => setState(() => selected = date)),
           new Expanded(
             child: new ListView.builder(
-                itemCount: Appointment.demodata.length,
+                itemCount: AppointmentDEMO.demodata.length,
                 itemBuilder: _appointmentBuilder),
           ),
         ],
@@ -40,11 +40,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   Widget _appointmentBuilder(BuildContext context, int index) {
     bool isOldAppointment =
-        Appointment.demodata[index].stop.isBefore(DateTime.now());
+        AppointmentDEMO.demodata[index].stop.isBefore(DateTime.now());
     return isOldAppointment
         ? Container(height: 0.0, width: 0.0)
         : AppointmentWidget(
-            appointment: Appointment.demodata[index],
+            appointment: AppointmentDEMO.demodata[index],
             currentDateTime: selected,
             onAppointmentSelected: (app) =>
                 setState(() => selected = app.start));

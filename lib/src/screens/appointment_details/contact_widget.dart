@@ -5,7 +5,7 @@ import 'package:ems_app/src/screens/messenger_screen.dart';
 import 'package:ems_app/src/models/DEMO/user.dart';
 
 class ContactListTile extends ListTile {
-  ContactListTile({User_DEMO user})
+  ContactListTile({UserDEMO user})
       : super(
           leading: CircleAvatar(
               backgroundImage: NetworkImage(user.imgURL), radius: 20.0),

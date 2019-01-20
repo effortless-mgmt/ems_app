@@ -1,4 +1,4 @@
-import 'package:ems_app/src/models/appointment.dart';
+import 'package:ems_app/src/models/DEMO/appointment.dart';
 import 'package:ems_app/src/util/date_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +16,7 @@ class SliverAppBarDescriptive extends SliverAppBar {
   static TextStyle bodyTextStyle =
       TextStyle(color: Colors.white, fontSize: 12.0);
 
-  SliverAppBarDescriptive({Widget title, Appointment appointment})
+  SliverAppBarDescriptive({Widget title, AppointmentDEMO appointment})
       : super(
           expandedHeight: 200.0,
           pinned: true,
@@ -71,7 +71,7 @@ class AppBarDescriptive extends AppBar {
   static TextStyle bodyTextStyle =
       TextStyle(color: Colors.white, fontSize: 12.0);
 
-  AppBarDescriptive({Appointment appointment, bool isJobOffer})
+  AppBarDescriptive({AppointmentDEMO appointment, bool isJobOffer})
       : super(
           title: isJobOffer ? Text("Job Offer") : Text("Appointment Details"),
           bottom: PreferredSize(

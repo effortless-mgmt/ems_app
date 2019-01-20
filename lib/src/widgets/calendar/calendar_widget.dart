@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
-import 'package:ems_app/src/models/appointment.dart';
+import 'package:ems_app/src/models/DEMO/appointment.dart';
 import 'package:ems_app/src/widgets/calendar/calendar_tile.dart';
 import 'package:ems_app/src/util/date_utils.dart';
 
@@ -18,7 +18,7 @@ class Calendar extends StatefulWidget {
   final bool showTodayAction;
   final bool showCalendarPickerIcon;
   final DateTime initialCalendarDateOverride;
-  final List<Appointment> appointments;
+  final List<AppointmentDEMO> appointments;
 
   Calendar(
       {this.selectedDate,
@@ -40,11 +40,11 @@ class _CalendarState extends State<Calendar> {
   List<DateTime> selectedMonthsDays;
   Iterable<DateTime> selectedWeeksDays;
   DateTime _selectedDate;
-  List<Appointment> _appointments;
+  List<AppointmentDEMO> _appointments;
   String currentMonth;
   bool isExpanded = true;
   String displayMonth;
-  Appointment appointment;
+  AppointmentDEMO appointment;
   bool selectedHasAppointment = false;
   bool selectedAppointmentIsOld = false;
   int appointmentCount = 0;
@@ -167,7 +167,7 @@ class _CalendarState extends State<Calendar> {
         bool appointmentIsOld = false;
         bool appointmentIsApproved = false;
 
-        for (Appointment a in _appointments) {
+        for (AppointmentDEMO a in _appointments) {
           if (DateUtils.isSameDay(a.start, day)) {
             hasAppointment = true;
             if (a.stop.isBefore(DateTime.now())) {
@@ -492,7 +492,7 @@ class _CalendarState extends State<Calendar> {
     selectedHasAppointment = false;
     selectedAppointmentIsOld = false;
     appointmentCount = 0;
-    for (Appointment a in _appointments) {
+    for (AppointmentDEMO a in _appointments) {
       if (DateUtils.isSameDay(a.start, day)) {
         appointment = a;
         selectedHasAppointment = true;

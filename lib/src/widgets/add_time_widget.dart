@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:ems_app/src/models/appointment.dart';
+import 'package:ems_app/src/models/DEMO/appointment.dart';
 import 'package:ems_app/src/util/date_utils.dart';
 
 class AddTimeWidget extends StatefulWidget {
-  final ValueChanged<Appointment> onAccepted;
-  final ValueChanged<Appointment> changeStartTime;
-  final ValueChanged<Appointment> changeStopTime;
-  final ValueChanged<Appointment> changePauseTime;
-  final Appointment appointment;
+  final ValueChanged<AppointmentDEMO> onAccepted;
+  final ValueChanged<AppointmentDEMO> changeStartTime;
+  final ValueChanged<AppointmentDEMO> changeStopTime;
+  final ValueChanged<AppointmentDEMO> changePauseTime;
+  final AppointmentDEMO appointment;
   final Color color;
 
   AddTimeWidget({

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 
-import 'package:ems_app/src/models/appointment.dart';
+import 'package:ems_app/src/models/DEMO/appointment.dart';
 import 'package:ems_app/src/models/substitute.dart';
 import 'package:ems_app/src/widgets/add_time_widget.dart';
 import 'package:ems_app/src/util/date_utils.dart';
@@ -17,14 +17,14 @@ class AddScreenState extends State<AddScreen> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 
   Substitute _subDemo;
-  List<Appointment> _unApprovedAppointments;
+  List<AppointmentDEMO> _unApprovedAppointments;
   num _month;
   Color _calendarIconColor;
 
   @override
   void initState() {
     super.initState();
-    _subDemo = new Substitute(Appointment.demodata);
+    _subDemo = new Substitute(AppointmentDEMO.demodata);
     _unApprovedAppointments = _subDemo.unapprovedAppointments;
     _calendarIconColor = Colors.grey;
     _month = -1;
@@ -89,7 +89,7 @@ class AddScreenState extends State<AddScreen> {
   }
 
   _acceptAppointment(
-      Appointment appointment, int index, Animation<double> animation,
+      AppointmentDEMO appointment, int index, Animation<double> animation,
       {bool dismissed}) {
     final String location = appointment.department;
     final String date = DateUtils.fullDayFormat(appointment.start);
@@ -132,7 +132,7 @@ class AddScreenState extends State<AddScreen> {
 
   /// Edit start time of the appointment
   Future<Null> _selectStart(
-      BuildContext context, Appointment appointment) async {
+      BuildContext context, AppointmentDEMO appointment) async {
     TimeOfDay startTime = DateUtils.asTimeOfDay(appointment.start);
     final TimeOfDay picked =
         await showTimePicker(context: context, initialTime: startTime);
@@ -147,7 +147,7 @@ class AddScreenState extends State<AddScreen> {
 
   /// Edit stop time of the appointment
   Future<Null> _selectStop(
-      BuildContext context, Appointment appointment) async {
+      BuildContext context, AppointmentDEMO appointment) async {
     TimeOfDay stopTime = DateUtils.asTimeOfDay(appointment.start);
     final TimeOfDay picked =
         await showTimePicker(context: context, initialTime: stopTime);
@@ -162,7 +162,7 @@ class AddScreenState extends State<AddScreen> {
 
   /// Edit pause time of the appointment
   Future<Null> _selectPause(
-      BuildContext context, Appointment appointment) async {
+      BuildContext context, AppointmentDEMO appointment) async {
     Duration pause = appointment.pause;
     final Duration picked = await showDurationPicker(
       context: context,

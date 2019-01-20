@@ -12,7 +12,7 @@ class ContactsCard extends StatelessWidget {
     // @required this.pageVisibility,
   });
 
-  final User_DEMO user;
+  final UserDEMO user;
   // final PageVisibility pageVisibility;
 
   @override
