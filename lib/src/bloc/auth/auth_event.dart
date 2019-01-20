@@ -11,12 +11,12 @@ class AppStart extends AuthenticationEvent {
 }
 
 class Login extends AuthenticationEvent {
-  final String token;
+  final Map<dynamic, dynamic> authjson;
 
-  Login({@required this.token}) : super([token]);
+  Login({@required this.authjson}) : super([authjson]);
 
   @override
-  String toString() => 'Login { token: $token }';
+  String toString() => 'Login { authjson: $authjson }';
 }
 
 class Logout extends AuthenticationEvent {
