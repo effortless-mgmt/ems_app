@@ -9,7 +9,7 @@ class AppointmentRepository {
   List<Appointment> upcomingAppointments = List<Appointment>();
   List<Appointment> allAppointments = List<Appointment>();
 
-  // private internal constructor to make it singleton
+  // private internal constructor to make it a singleton
   AppointmentRepository._internal();
 
   static AppointmentRepository get() {

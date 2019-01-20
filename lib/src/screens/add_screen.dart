@@ -1,22 +1,25 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 
-import 'package:ems_app/src/models/DEMO/appointment.dart';
-import 'package:ems_app/src/models/substitute.dart';
 import 'package:ems_app/src/widgets/add_time_widget.dart';
 import 'package:ems_app/src/util/date_utils.dart';
+import 'package:ems_app/src/bloc/appointment/appointment.dart';
+import 'package:ems_app/src/models/appointment.dart';
+import 'package:ems_app/src/providers/appointment_api_provider.dart';
+import 'package:ems_app/src/widgets/loading_indicator.dart';
 
-/// The add screen widget
 class AddScreen extends StatefulWidget {
   State<StatefulWidget> createState() => AddScreenState();
 }
 
-/// The state for the add screen
 class AddScreenState extends State<AddScreen> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  Substitute _subDemo;
-  List<AppointmentDEMO> _unApprovedAppointments;
+  AppointmentBloc _appointmentBloc;
+  AppointmentApiProvider _appointmentApiProvider;
+  List<Appointment> _appointments;
   int _autoExpandedIndex;
   num _month;
   // Color _calendarIconColor;
@@ -25,8 +28,10 @@ class AddScreenState extends State<AddScreen> {
   void initState() {
     super.initState();
     _autoExpandedIndex = -1;
-    _subDemo = new Substitute(AppointmentDEMO.demodata);
-    _unApprovedAppointments = _subDemo.unapprovedAppointments;
+    _appointmentApiProvider = AppointmentApiProvider();
+    _appointmentBloc =
+        AppointmentBloc(appointmentApiProvider: _appointmentApiProvider);
+    _appointmentBloc.dispatch(LoadUnapprovedAppointments());
     _month = -1;
   }
 
@@ -38,18 +43,48 @@ class AddScreenState extends State<AddScreen> {
 
   @override
   void dispose() {
+    _appointmentBloc.dispose();
     super.dispose();
   }
 
-  Widget _buildItem(
-      BuildContext context, int index, Animation<double> animation) {
-    print("MONTH IS: $_month");
+  @override
+  Widget build(BuildContext context) {
+    _month = -1;
+    // debugPrint("You have ${_appointments.length} missing registrations");
+    return BlocProvider<AppointmentBloc>(
+      bloc: _appointmentBloc,
+      child: BlocBuilder(
+        bloc: _appointmentBloc,
+        builder: (BuildContext context, AppointmentState appointmentState) {
+          if (appointmentState is AppointmentInitial) {
+            return LoadingIndicator();
+          }
+          if (appointmentState is UnapprovedAppointmentList) {
+            _appointments = appointmentState.appointments;
+          }
+          return Scaffold(
+              appBar: AppBar(title: Text("Pending Registrations")),
+              body: AnimatedList(
+                  key: _listKey,
+                  initialItemCount: _appointments.length,
+                  itemBuilder:
+                      (BuildContext context, int index, Animation animation) {
+                    return SizeTransition(
+                        sizeFactor: animation,
+                        child: _buildItem(context, index, animation));
+                  }));
+        },
+      ),
+    );
+  }
+
+  _buildItem(BuildContext context, int index, Animation<double> animation) {
     MonthlySeparator separator;
     bool expanded = _autoExpandedIndex == index;
-    final currentAppointment = _unApprovedAppointments[index];
+    final currentAppointment = _appointments[index];
     if (_month != currentAppointment.start.month) {
       _month = currentAppointment.start.month;
-      separator = new MonthlySeparator(date: currentAppointment.start);
+      separator = MonthlySeparator(date: currentAppointment.start);
     }
 
     var addTime = AddTimeWidget(
@@ -92,50 +127,36 @@ class AddScreenState extends State<AddScreen> {
     return ListTileWithSeparator(separator: separator, child: addTimeTile);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    _month = -1;
-    debugPrint(
-        "You have ${_unApprovedAppointments.length} missing registrations");
-    return Scaffold(
-        appBar: AppBar(title: Text("Pending Registrations")),
-        body: AnimatedList(
-            key: _listKey,
-            initialItemCount: _unApprovedAppointments.length,
-            itemBuilder:
-                (BuildContext context, int index, Animation animation) {
-              return SizeTransition(
-                  sizeFactor: animation,
-                  child: _buildItem(context, index, animation));
-            }));
-  }
-
   _acceptAppointment(
-      AppointmentDEMO appointment, int index, Animation<double> animation,
+      Appointment appointment, int index, Animation<double> animation,
       {bool dismissed}) {
     final String location = appointment.department;
     final String date = DateUtils.fullDayFormat(appointment.start);
-    final snackBar = new SnackBar(
-      action: new SnackBarAction(
+    bool _remove = true;
+    Timer _timer;
+    final snackBar = SnackBar(
+      action: SnackBarAction(
           label: "Undo",
           onPressed: () {
+            // ohno.cancel();
             setState(() {
+              _remove = false;
               // _month = -1;
               appointment.approvedByOwner = false;
-              _unApprovedAppointments.insert(index, appointment);
+              // _appointments.insert(index, appointment);
               _listKey.currentState
                   .insertItem(index, duration: Duration(milliseconds: 300));
             });
           }),
-      duration: new Duration(seconds: 2),
+      duration: Duration(seconds: 2),
       content: Wrap(
         children: <Widget>[
           Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Text("$location on $date"),
-                new Text(appointment.registeredMessage),
+                Text("$location on $date"),
+                Text(appointment.registeredMessage),
               ],
             ),
           ),
@@ -144,17 +165,27 @@ class AddScreenState extends State<AddScreen> {
     );
 
     setState(() {
-      _unApprovedAppointments.remove(appointment);
       appointment.approvedByOwner = true;
       Scaffold.of(context).showSnackBar(snackBar);
-      removeAppointment(index, dismissed);
+      _removeAppointment(index, dismissed);
       // _month = -1;
+    });
+
+    // send event to server after 3 second, but only if user hasn't clicked undo in the given timeframe.
+    _timer = new Timer(const Duration(seconds: 3), () {
+      if (_remove) {
+        _appointmentBloc.dispatch(ApproveAppointment(id: appointment.id));
+        debugPrint('removed');
+      } else {
+        debugPrint('cancelled');
+      }
+      _timer.cancel();
     });
   }
 
   /// Edit start time of the appointment
   Future<Null> _selectStart(
-      BuildContext context, AppointmentDEMO appointment, int index) async {
+      BuildContext context, Appointment appointment, int index) async {
     _autoExpandedIndex = index;
     TimeOfDay startTime = DateUtils.asTimeOfDay(appointment.start);
     final TimeOfDay picked =
@@ -164,13 +195,14 @@ class AddScreenState extends State<AddScreen> {
       setState(() {
         startTime = picked;
         appointment.start = DateUtils.changeTime(appointment.start, startTime);
+        _appointmentBloc.dispatch(ModifyAppointment(appointment: appointment));
       });
     }
   }
 
   /// Edit stop time of the appointment
   Future<Null> _selectStop(
-      BuildContext context, AppointmentDEMO appointment, int index) async {
+      BuildContext context, Appointment appointment, int index) async {
     _autoExpandedIndex = index;
     TimeOfDay stopTime = DateUtils.asTimeOfDay(appointment.stop);
     final TimeOfDay picked =
@@ -180,13 +212,14 @@ class AddScreenState extends State<AddScreen> {
       setState(() {
         stopTime = picked;
         appointment.stop = DateUtils.changeTime(appointment.stop, stopTime);
+        _appointmentBloc.dispatch(ModifyAppointment(appointment: appointment));
       });
     }
   }
 
   /// Edit pause time of the appointment
   Future<Null> _selectPause(
-      BuildContext context, AppointmentDEMO appointment, int index) async {
+      BuildContext context, Appointment appointment, int index) async {
     _autoExpandedIndex = index;
     Duration pause = appointment.pause;
     final Duration picked = await showDurationPicker(
@@ -197,11 +230,12 @@ class AddScreenState extends State<AddScreen> {
     if (picked != pause && picked != null) {
       setState(() {
         appointment.pause = picked;
+        _appointmentBloc.dispatch(ModifyAppointment(appointment: appointment));
       });
     }
   }
 
-  void removeAppointment(int index, bool dismissed) {
+  void _removeAppointment(int index, bool dismissed) {
     dismissed
         ? _listKey.currentState.removeItem(index,
             (BuildContext context, Animation<double> animation) {

@@ -88,3 +88,13 @@ class AppointmentClaimed extends AppointmentState {
   @override
   String toString() => 'claimed an appointment';
 }
+
+class AppointmentModified extends AppointmentState {
+  @override
+  String toString() => 'modified an appointment';
+}
+
+class AppointmentApproved extends AppointmentState {
+  @override
+  String toString() => 'Approved an appointment';
+}

@@ -23,15 +23,15 @@ class Appointment {
   get stop => _stop;
   get stopTimeFormatted => DateFormat('HH:mm').format(_stop);
   get pause => _pause;
-  get pauseTimeFormatted => printDuration(this.pause, abbreviated: true);
+  get pauseTimeFormatted => prettyDuration(this.pause, abbreviated: true);
   get duration => _stop.subtract(_pause).difference(_start);
   get department => _departmentName;
   get address => _departmentAddress;
   get description => _description;
   get salary => _salary;
-  get durationFormatted => printDuration(this.duration, abbreviated: true);
+  get durationFormatted => prettyDuration(this.duration, abbreviated: true);
   get totalFormatted =>
-      printDuration(this.duration + this.pause, abbreviated: true);
+      prettyDuration(this.duration + this.pause, abbreviated: true);
   get registeredMessage =>
       "Worked: ${this.durationFormatted} \nBreak: ${this.pauseTimeFormatted} \nTotal: ${this.totalFormatted}";
   get approvedByOwner => _approvedByOwner;
@@ -66,9 +66,9 @@ class Appointment {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['start'] = this._start;
-    data['stop'] = this._stop;
-    data['break'] = this._pause;
+    data['start'] = this._start.toIso8601String();
+    data['stop'] = this._stop.toIso8601String();
+    data['break'] = this._pause.inMinutes;
     return data;
   }
 

@@ -1,5 +1,6 @@
 import 'package:ems_app/src/bloc/appointment/appointment_repo.dart';
 import 'package:ems_app/src/bloc/auth/auth_repo.dart';
+import 'package:ems_app/src/models/user.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
@@ -81,6 +82,22 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
           token: token, id: event.id);
       yield AppointmentClaimed();
       this.dispatch(LoadUpcomingAndAvailableAppointments());
+    }
+
+    if (event is ModifyAppointment) {
+      String token = await AuthenticationRepository.get().readToken();
+      await appointmentApiProvider.putAppointment(
+          token: token,
+          appointment: event.appointment.toJson(),
+          id: event.appointment.id);
+      yield AppointmentModified();
+    }
+
+    if (event is ApproveAppointment) {
+      String token = await AuthenticationRepository.get().readToken();
+      await appointmentApiProvider.putAppointmentApproved(
+          token: token, id: event.id);
+      yield AppointmentApproved();
     }
   }
 }

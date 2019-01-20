@@ -1,3 +1,4 @@
+import 'package:ems_app/src/models/appointment.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 
@@ -44,30 +45,15 @@ class ApproveAppointment extends AppointmentEvent {
 }
 
 class ModifyAppointment extends AppointmentEvent {
-  int id;
-  DateTime start, stop;
-  Duration pause;
-
+  final Appointment appointment;
+ 
   ModifyAppointment({
-    @required this.id,
-    start = null,
-    stop = null,
-    pause = null,
-  }) : super([id, start, stop, pause]) {
-    if (start != null) {
-      this.start = start;
-    }
-    if (stop != null) {
-      this.stop = stop;
-    }
-    if (pause != null) {
-      this.pause = pause;
-    }
-  }
+    @required this.appointment,
+  });
 
   @override
   String toString() =>
-      'Modify appointment { id: $id, start: $start, stop: $stop, pause: $pause }';
+      'Modify appointment { id: ${appointment.id}, start: ${appointment.start}, stop: ${appointment.stop}, pause: ${appointment.pause} }';
 }
 
 class ClaimAppointment extends AppointmentEvent {

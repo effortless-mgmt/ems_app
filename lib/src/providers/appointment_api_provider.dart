@@ -1,8 +1,9 @@
 import 'dart:convert';
-import 'package:ems_app/src/models/appointment.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' show Client;
 import 'package:flutter/foundation.dart';
+
+import 'package:ems_app/src/models/appointment.dart';
 
 class AppointmentApiProvider {
   final Client _client = Client();
@@ -103,14 +104,14 @@ class AppointmentApiProvider {
   /// Returns the modified [Appointment] received from the server
   Future<Appointment> putAppointment(
       {@required String token,
-      @required String appointment,
+      @required Map<dynamic, dynamic> appointment,
       @required int id}) async {
     final response = await _client.put("$_baseUrl$_endpoint/$id",
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer $token"
         },
-        body: appointment);
+        body: json.encode(appointment));
     if (response.statusCode == 200) {
       final dynamic responsejson = json.decode(response.body);
       debugPrint('putAppointment { id: $id }');
