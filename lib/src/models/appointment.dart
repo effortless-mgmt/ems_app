@@ -51,17 +51,17 @@ class Appointment {
     _stop = DateTime.parse(json['stop']);
     _pause = Duration(minutes: json['break']);
     _description =
-        json['workPeriod'] != null ? json['workPeriod']['description'] : null;
+        json['workPeriod'] != null && json['workPeriod']['description'] != null ? json['workPeriod']['description'] : '';
     _departmentName = json['workPeriod'] != null
         ? json['workPeriod']['department']['name']
-        : null;
+        : '';
     _departmentAddress = json['workPeriod'] != null
         ? json['workPeriod']['department']['address']['readableAddress']
-        : null;
+        : '';
     _approvedByOwner = json['approvedByOwner'];
     _salary = json['workPeriod'] != null
         ? json['workPeriod']['agreement']['salary']
-        : null;
+        : 0.0;
   }
 
   Map<String, dynamic> toJson() {
