@@ -21,6 +21,14 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
   @override
   Stream<AppointmentState> mapEventToState(
       AppointmentState currentState, AppointmentEvent event) async* {
+    if (event is LoadAppointments) {
+      String token = await authApiProvider.readToken();
+      List<Appointment> appointments =
+          await appointmentApiProvider.getAllAppointments(token: token);
+      AppointmentRepository.get().updateAllAppointments(appointments);
+      yield AllAppointmentList(appointments: appointments);
+    }
+
     if (event is LoadAvailableAppointments) {
       String token = await authApiProvider.readToken();
       List<Appointment> appointments =

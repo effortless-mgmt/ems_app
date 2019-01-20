@@ -1,12 +1,12 @@
+import 'package:ems_app/src/models/appointment.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ems_app/src/models/DEMO/appointment.dart';
 import 'package:ems_app/src/util/date_utils.dart';
 
 class AppointmentWidget extends StatelessWidget {
-  final AppointmentDEMO appointment;
+  final Appointment appointment;
   final DateTime currentDateTime;
-  final ValueChanged<AppointmentDEMO> onAppointmentSelected;
+  final ValueChanged<Appointment> onAppointmentSelected;
 
   final TextStyle selectedStyle = TextStyle(color: Colors.white);
   AppointmentWidget(
