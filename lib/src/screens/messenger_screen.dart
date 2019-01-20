@@ -33,6 +33,7 @@ class MessengerScreenState extends State<MessengerScreen>
     return new Scaffold(
       key: _scaffoldKey,
       appBar: new AppBar(
+        iconTheme: Theme.of(context).accentIconTheme,
         title: new Text(_recipName),
         elevation:
             Theme.of(context).platform == TargetPlatform.android ? 4.0 : 0.0,
@@ -82,53 +83,51 @@ class MessengerScreenState extends State<MessengerScreen>
   }
 
   Widget _buildEditText() {
-    return new IconTheme(
-      data: IconThemeData(color: Colors.blueAccent),
-      child: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(textFocus),
-        child: new Container(
-          decoration: BoxDecoration(
-              color: Colors
-                  .transparent), // Added transparent fill to allow requestFocus from the entire container
-          margin: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: new Row(
-            children: <Widget>[
-              new Flexible(
-                child: new TextField(
-                  focusNode: textFocus,
-                  controller: _textController,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  textCapitalization: TextCapitalization.sentences,
-                  onChanged: (String text) {
-                    setState(() {
-                      _isComposing = text.length > 0;
-                    });
-                  },
-                  onSubmitted: _submit,
-                  decoration: new InputDecoration.collapsed(
-                    hintText: "Send a message",
-                  ),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(textFocus),
+      child: new Container(
+        decoration: BoxDecoration(
+            color: Colors
+                .transparent), // Added transparent fill to allow requestFocus from the entire container
+        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: new Row(
+          children: <Widget>[
+            new Flexible(
+              child: new TextField(
+                focusNode: textFocus,
+                controller: _textController,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                textCapitalization: TextCapitalization.sentences,
+                onChanged: (String text) {
+                  setState(() {
+                    _isComposing = text.length > 0;
+                  });
+                },
+                onSubmitted: _submit,
+                decoration: new InputDecoration.collapsed(
+                  hintText: "Send a message",
                 ),
               ),
-              new Container(
-                  margin: new EdgeInsets.symmetric(horizontal: 4.0),
-                  child: Theme.of(context).platform == TargetPlatform.android
-                      ? new IconButton(
-                          icon: new Icon(Icons.send,
-                              color: Theme.of(context).iconTheme.color),
-                          onPressed: _isComposing
-                              ? () => _submit(_textController.text)
-                              : null,
-                        )
-                      : new CupertinoButton(
-                          child: new Text("Send"),
-                          onPressed: _isComposing
-                              ? () => _submit(_textController.text)
-                              : null,
-                        )),
-            ],
-          ),
+            ),
+            new Container(
+                margin: new EdgeInsets.symmetric(horizontal: 4.0),
+                child: Theme.of(context).platform == TargetPlatform.android
+                    ? new IconButton(
+                        icon: new Icon(Icons.send,
+                            color: Theme.of(context).iconTheme.color),
+                        onPressed: _isComposing
+                            ? () => _submit(_textController.text)
+                            : null,
+                      )
+                    : new CupertinoButton(
+                        color: Theme.of(context).iconTheme.color,
+                        child: new Text("Send"),
+                        onPressed: _isComposing
+                            ? () => _submit(_textController.text)
+                            : null,
+                      )),
+          ],
         ),
       ),
     );
@@ -260,10 +259,12 @@ class ChatMessage extends StatelessWidget {
           ? EdgeInsets.only(left: 10.0)
           : EdgeInsets.only(right: 10.0),
       child: new CircleAvatar(
-          child: new Text(sender[0]),
+          child: new Text(sender[0],
+              style: TextStyle(
+                  color: sender == _myName ? Colors.white : Colors.black)),
           backgroundColor: sender == _myName
-              ? Theme.of(context).accentColor
-              : Theme.of(context).primaryColor,
+              ? Theme.of(context).primaryColor
+              : Theme.of(context).accentColor,
           foregroundColor: sender == _myName
               ? Theme.of(context).accentTextTheme.title.color
               : Theme.of(context).textTheme.title.color),
@@ -284,12 +285,14 @@ class ChatMessage extends StatelessWidget {
                 maxWidth: MediaQuery.of(context).size.width * 0.48),
             child: new Text(
               text,
-              style: new TextStyle(fontSize: 15.0),
+              style: new TextStyle(
+                  fontSize: 15.0,
+                  color: sender == _myName ? Colors.white : Colors.black),
             ),
             decoration: new BoxDecoration(
                 color: sender == _myName
-                    ? Theme.of(context).accentColor.withAlpha(200)
-                    : Theme.of(context).primaryColor.withAlpha(200),
+                    ? Theme.of(context).primaryColor.withAlpha(230)
+                    : Theme.of(context).accentColor.withAlpha(200),
                 borderRadius: new BorderRadius.all(const Radius.circular(6.0))),
           )
         ],

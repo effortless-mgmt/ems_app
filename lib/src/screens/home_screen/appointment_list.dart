@@ -75,6 +75,8 @@ class AppointmentList extends StatelessWidget {
                     DateFormat.Hm().format(currentAppointment.start) +
                         " - " +
                         DateFormat.Hm().format(currentAppointment.stop)),
+                trailing:
+                    Text(DateFormat.EEEE().format(currentAppointment.start)),
               ),
             ),
           ),

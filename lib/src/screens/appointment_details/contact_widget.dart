@@ -26,7 +26,7 @@ class MessageIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        icon: Icon(Icons.chat),
+        icon: Icon(Icons.chat, color: Theme.of(context).primaryIconTheme.color),
         onPressed: () {
           Navigator.push(
             context,
@@ -46,7 +46,7 @@ class CallIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        icon: Icon(Icons.call),
+        icon: Icon(Icons.call, color: Theme.of(context).primaryIconTheme.color),
         onPressed: () {
           launch("tel://$phoneNumber");
         });

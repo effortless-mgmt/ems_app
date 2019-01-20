@@ -15,6 +15,7 @@ class CalendarSettingScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Calendar settings"),
+        iconTheme: Theme.of(context).accentIconTheme,
       ),
       body: BlocBuilder<SettingsEvent, SettingsState>(
         bloc: settingsBloc,
@@ -46,30 +47,24 @@ class CalendarSettingScreen extends StatelessWidget {
                                 RadioListTile(
                                     title: Text("Saturday"),
                                     value: 'Saturday',
-                                    activeColor:
-                                        Theme.of(context).primaryColorDark,
+                                    activeColor: Theme.of(context).primaryColor,
                                     groupValue: state.startOfWeek,
-                                    onChanged: (value) => settingsBloc
-                                        .dispatch(ChangeStartOfWeek(
-                                            startOfWeek: value))),
+                                    onChanged: (value) => settingsBloc.dispatch(
+                                        ChangeStartOfWeek(startOfWeek: value))),
                                 RadioListTile(
                                     title: Text("Sunday"),
                                     value: 'Sunday',
-                                    activeColor:
-                                        Theme.of(context).primaryColorDark,
+                                    activeColor: Theme.of(context).primaryColor,
                                     groupValue: state.startOfWeek,
-                                    onChanged: (value) => settingsBloc
-                                        .dispatch(ChangeStartOfWeek(
-                                            startOfWeek: value))),
+                                    onChanged: (value) => settingsBloc.dispatch(
+                                        ChangeStartOfWeek(startOfWeek: value))),
                                 RadioListTile(
                                     title: Text("Monday"),
                                     value: 'Monday',
-                                    activeColor:
-                                        Theme.of(context).primaryColorDark,
+                                    activeColor: Theme.of(context).primaryColor,
                                     groupValue: state.startOfWeek,
-                                    onChanged: (value) => settingsBloc
-                                        .dispatch(ChangeStartOfWeek(
-                                            startOfWeek: value)))
+                                    onChanged: (value) => settingsBloc.dispatch(
+                                        ChangeStartOfWeek(startOfWeek: value)))
                               ],
                             );
                           },

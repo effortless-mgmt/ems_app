@@ -31,7 +31,7 @@ class UserDEMO {
 final sampleUser1 = new UserDEMO(
     firstName: "Lee",
     lastName: "Wang",
-    title: "Spreader of raughs",
+    title: "Supervisor",
     company: "Real Good Raughs ltd.",
     description: "Does the Raughing",
     imgURL: "https://i.imgur.com/pQFvMMU.jpg",
@@ -39,7 +39,7 @@ final sampleUser1 = new UserDEMO(
 final sampleUser2 = new UserDEMO(
     firstName: "Ötzi",
     lastName: "Thall",
-    title: "Djent Stick salesman",
+    title: "Supervisor",
     company: "Djent memes are still relevant inc.",
     description: "Knows his 0001-01-000-110-10-01",
     imgURL: "https://i.imgur.com/pNpQRtB.jpg",
@@ -47,7 +47,7 @@ final sampleUser2 = new UserDEMO(
 final sampleUser3 = new UserDEMO(
     firstName: "Bat",
     lastName: "Man",
-    title: "Vigilanté",
+    title: "Warehouse Manager",
     company: "Wayne Corp.",
     description: "Fights crime and stuff",
     imgURL: "https://i.imgur.com/0sLF0e4.jpg",
@@ -55,7 +55,7 @@ final sampleUser3 = new UserDEMO(
 final sampleUser4 = new UserDEMO(
     firstName: "Arse",
     lastName: "Biscuité",
-    title: "General",
+    title: "Secretary",
     company: "Army",
     description: "Generally an arse",
     imgURL: "https://i.imgur.com/RrQ0jpl.jpg",

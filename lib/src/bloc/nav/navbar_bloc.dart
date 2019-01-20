@@ -8,8 +8,11 @@ import 'package:ems_app/src/screens/nav_bar_screens.dart';
 
 class NavBarBloc extends Bloc<NavBarEvent, NavBarState> {
   @override
-  NavBarState get initialState =>
-      NavBarJump(oldIndex: 0, currentIndex: 0, screen: HomeScreen());
+  NavBarState get initialState => NavBarJump(
+      oldIndex: 0,
+      currentIndex: 0,
+      screen:
+          NextAppointmentDetailsScreen(appointment: AppointmentDEMO.demodata[4]));
 
   @override
   Stream<NavBarState> mapEventToState(
@@ -40,14 +43,14 @@ class NavBarBloc extends Bloc<NavBarEvent, NavBarState> {
 
     switch (index) {
       case 0:
-        return HomeScreen();
+        return NextAppointmentDetailsScreen(
+            appointment: AppointmentDEMO.demodata[4]);
       case 1:
-        return CalendarScreen();
+        return HomeScreen();
       case 2:
         return AddScreen();
       case 3:
-        return NextAppointmentDetailsScreen(
-            appointment: AppointmentDEMO.demodata[0]);
+        return CalendarScreen();
       case 4:
         return ProfileScreen();
       default:

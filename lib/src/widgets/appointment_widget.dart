@@ -27,9 +27,8 @@ class AppointmentWidget extends StatelessWidget {
         margin: const EdgeInsets.all(2.0),
         decoration: selected
             ? new BoxDecoration(
-                color: Colors.blueAccent[200],
-                borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                border: new Border.all(color: Colors.blueAccent, width: 0.0))
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.all(Radius.circular(4.0)))
             : null,
         child: ListTile(
             trailing: new Text(DateUtils.fullDayFormat(appointment.start),

@@ -78,7 +78,12 @@ class AddScreenState extends State<AddScreen> {
     var addTimeTile = Dismissible(
       child: addTime,
       key: UniqueKey(),
-      background: ListTile(trailing: Icon(Icons.check, color: Colors.white)),
+      background: Container(
+        color: Theme.of(context).primaryColor,
+        child: ListTile(
+            trailing: Icon(Icons.check,
+                color: Theme.of(context).accentIconTheme.color)),
+      ),
       onDismissed: (_) => _acceptAppointment(
           currentAppointment, index, animation,
           dismissed: true),

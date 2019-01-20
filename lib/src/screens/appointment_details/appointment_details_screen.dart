@@ -21,7 +21,10 @@ class AppointmentDetailsScreen extends StatelessWidget {
     return Hero(
       tag: upcoming ? "seeUpcoming$index" : "seeAvailable$index",
       child: Scaffold(
-        appBar: AppBarDescriptive(appointment: appointment, upcoming: upcoming),
+        appBar: AppBarDescriptive(
+            appointment: appointment,
+            upcoming: upcoming,
+            iconTheme: Theme.of(context).accentIconTheme),
         body: Column(children: <Widget>[
           Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,8 +65,11 @@ class AppointmentDetailsScreen extends StatelessWidget {
                                 ),
                               );
                             }),
-                        OutlineButton(
-                            child: Text("Accept"),
+                        RaisedButton(
+                            color: Theme.of(context).primaryColor,
+                            child: Text("Accept",
+                                style:
+                                    Theme.of(context).primaryTextTheme.button),
                             onPressed: () {
                               Navigator.of(context).pop();
                               scaffoldKey.currentState.showSnackBar(
