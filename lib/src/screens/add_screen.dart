@@ -143,7 +143,7 @@ class AddScreenState extends State<AddScreen> {
               _remove = false;
               // _month = -1;
               appointment.approvedByOwner = false;
-              // _appointments.insert(index, appointment);
+              _appointments.insert(index, appointment);
               _listKey.currentState
                   .insertItem(index, duration: Duration(milliseconds: 300));
             });
@@ -165,6 +165,7 @@ class AddScreenState extends State<AddScreen> {
     );
 
     setState(() {
+      _appointments.remove(appointment);
       appointment.approvedByOwner = true;
       Scaffold.of(context).showSnackBar(snackBar);
       _removeAppointment(index, dismissed);
