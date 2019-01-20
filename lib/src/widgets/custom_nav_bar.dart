@@ -45,11 +45,11 @@ class _CustomNavBarState extends State<CustomNavBar> {
           icon: Stack(
             children: <Widget>[
               Icon(Icons.home),
-              Positioned(
-                  top: 0.0,
-                  right: 0.0,
-                  child: Icon(Icons.brightness_1,
-                      size: 8.0, color: Theme.of(context).errorColor)),
+              // Positioned(
+              //     top: 0.0,
+              //     right: 0.0,
+              //     child: Icon(Icons.brightness_1,
+              //         size: 8.0, color: Theme.of(context).errorColor)),
             ],
           ),
           title: Text("Home")),
@@ -61,11 +61,11 @@ class _CustomNavBarState extends State<CustomNavBar> {
         icon: Stack(
           children: <Widget>[
             Icon(Icons.event_available),
-            Positioned(
-                top: 0.0,
-                right: 0.0,
-                child: Icon(Icons.brightness_1,
-                    size: 8.0, color: Theme.of(context).errorColor)),
+            // Positioned(
+            //     top: 0.0,
+            //     right: 0.0,
+            //     child: Icon(Icons.brightness_1,
+            //         size: 8.0, color: Theme.of(context).errorColor)),
           ],
         ),
         title: Text("Register"),
