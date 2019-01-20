@@ -1,4 +1,3 @@
-import 'package:ems_app/src/models/DEMO/appointment.dart';
 import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/util/date_utils.dart';
 import 'package:flutter/material.dart';

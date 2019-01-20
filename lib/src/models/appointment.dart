@@ -76,7 +76,7 @@ class Appointment {
   @override
   String toString() =>
       'appointmentId: $_appointmentId, start: $_start, stop: $stop, pause: $_pause, workPeriodName: $_workPeriodName, approvedByOwner: $_approvedByOwner, salary$_salary';
-  
+
   String toStringDetailed() =>
       'appointmentId: $_appointmentId, start: $_start, stop: $stop, pause: $_pause, workPeriodName: $_workPeriodName, departmentName: $_departmentName, departmentAddress: $_departmentAddress, approvedByOwner: $_approvedByOwner, salary$_salary';
 }

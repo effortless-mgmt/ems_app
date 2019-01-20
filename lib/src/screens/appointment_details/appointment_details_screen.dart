@@ -75,7 +75,8 @@ class AppointmentDetailsScreen extends StatelessWidget {
                                 style:
                                     Theme.of(context).primaryTextTheme.button),
                             onPressed: () {
-                              appointmentBloc.dispatch(ClaimAppointment(id: appointment.id));
+                              appointmentBloc.dispatch(
+                                  ClaimAppointment(id: appointment.id));
                               Navigator.of(context).pop();
                               scaffoldKey.currentState.showSnackBar(
                                   new SnackBar(

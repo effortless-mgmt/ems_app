@@ -70,10 +70,10 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
 
     if (event is ClaimAppointment) {
       String token = await authApiProvider.readToken();
-      await appointmentApiProvider.claimAppointmentAvailable(token: token, id: event.id);
+      await appointmentApiProvider.claimAppointmentAvailable(
+          token: token, id: event.id);
       yield AppointmentClaimed();
       this.dispatch(LoadUpcomingAndAvailableAppointments());
     }
-
   }
 }

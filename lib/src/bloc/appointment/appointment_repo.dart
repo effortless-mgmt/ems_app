@@ -3,7 +3,7 @@ import 'package:ems_app/src/models/appointment.dart';
 class AppointmentRepository {
   static final AppointmentRepository _appointmentRepository =
       AppointmentRepository._internal();
-  
+
   List<Appointment> availableAppointments = List<Appointment>();
   List<Appointment> unapprovedAppointments = List<Appointment>();
   List<Appointment> upcomingAppointments = List<Appointment>();
