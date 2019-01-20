@@ -10,7 +10,7 @@ class Appointment {
   String _description;
   // int _departmentId;
   String _departmentName;
-  String _departmentAddress;
+  String _departmentAddressFormatted;
   bool _approvedByOwner;
   // DateTime _approvedByOwnerDate;
   num _salary;
@@ -26,7 +26,7 @@ class Appointment {
   get pauseTimeFormatted => prettyDuration(this.pause, abbreviated: true);
   get duration => _stop.subtract(_pause).difference(_start);
   get department => _departmentName;
-  get address => _departmentAddress;
+  get addressFormatted => _departmentAddressFormatted;
   get description => _description;
   get salary => _salary;
   get durationFormatted => prettyDuration(this.duration, abbreviated: true);
@@ -55,7 +55,7 @@ class Appointment {
     _departmentName = json['workPeriod'] != null
         ? json['workPeriod']['department']['name']
         : '';
-    _departmentAddress = json['workPeriod'] != null
+    _departmentAddressFormatted = json['workPeriod'] != null
         ? json['workPeriod']['department']['address']['readableAddress']
         : '';
     _approvedByOwner = json['approvedByOwner'];
@@ -77,5 +77,5 @@ class Appointment {
       'appointmentId: $_appointmentId, start: $_start, stop: $stop, pause: $_pause, description: $_description, approvedByOwner: $_approvedByOwner, salary$_salary';
 
   String toStringDetailed() =>
-      'appointmentId: $_appointmentId, start: $_start, stop: $stop, pause: $_pause, description: $_description, departmentName: $_departmentName, departmentAddress: $_departmentAddress, approvedByOwner: $_approvedByOwner, salary$_salary';
+      'appointmentId: $_appointmentId, start: $_start, stop: $stop, pause: $_pause, description: $_description, departmentName: $_departmentName, departmentAddress: $_departmentAddressFormatted, approvedByOwner: $_approvedByOwner, salary$_salary';
 }

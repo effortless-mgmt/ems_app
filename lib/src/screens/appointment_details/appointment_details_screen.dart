@@ -33,10 +33,10 @@ class AppointmentDetailsScreen extends StatelessWidget {
           Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Maps(address: appointment.address),
+                Maps(address: appointment.addressFormatted),
                 Container(
                     padding: const EdgeInsets.only(left: 16.0, top: 10.0),
-                    child: Text("${appointment.address}")),
+                    child: Text("${appointment.addressFormatted}")),
                 Container(
                     padding: const EdgeInsets.all(16),
                     child: Text("Contacts", style: TextStyle(fontSize: 16.0))),

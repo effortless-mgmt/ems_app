@@ -61,10 +61,10 @@ class _AppointmentDetailsState extends State<NextAppointmentDetailsScreen> {
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Maps(address: _appointment.address),
+                  Maps(address: _appointment.addressFormatted),
                   Container(
                       padding: const EdgeInsets.only(left: 16.0, top: 10.0),
-                      child: Text("${_appointment.address}")),
+                      child: Text("${_appointment.addressFormatted}")),
                   Container(
                       padding: const EdgeInsets.only(top: 16.0, left: 16.0),
                       child:
