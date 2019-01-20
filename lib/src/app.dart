@@ -53,6 +53,8 @@ class AppState extends State<App> {
       //     500], // The background color for major parts of the app (toolbars, tab bars, etc)
       // primaryColorDark: Colors.blue[700],
       accentColor: Colors.blue[700],
+      // primaryColor: Colors.orange[300],
+      // accentColor: Colors.deepOrangeAccent[700],
       textTheme: TextTheme(
         overline: TextStyle(color: Colors.blue[500]),
       ));
