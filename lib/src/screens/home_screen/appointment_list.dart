@@ -27,8 +27,8 @@ class AppointmentList extends StatelessWidget {
         ? ListView.builder(
             itemCount: appointments.length,
             itemBuilder: (context, index) {
-              debugPrint(
-                  'showall { INDEX: $index, itemCount: ${appointments.length} }');
+              // debugPrint(
+              //     'showall { INDEX: $index, itemCount: ${appointments.length} }');
               return _buildAppointments(context, index);
             })
         : appointments.isEmpty
@@ -46,15 +46,15 @@ class AppointmentList extends StatelessWidget {
                     itemCount:
                         appointments.length > 3 ? 3 : appointments.length,
                     itemBuilder: (context, index) {
-                      debugPrint(
-                          'show fewer { INDEX: $index, itemCount: ${appointments.length} }');
+                      // debugPrint(
+                      //     'show fewer { INDEX: $index, itemCount: ${appointments.length} }');
                       return _buildAppointments(context, index);
                     }));
   }
 
   Widget _buildAppointments(BuildContext context, int index) {
     var currentAppointment = appointments[index];
-    debugPrint('current Appointment: $currentAppointment');
+    // debugPrint('current Appointment: $currentAppointment');
     return Hero(
       tag: upcoming ? "seeUpcoming$index" : "seeAvailable$index",
       child: Stack(
@@ -68,7 +68,7 @@ class AppointmentList extends StatelessWidget {
                   context,
                   SlowMaterialPageRoute(
                     builder: (context) {
-                      print("INDEX: $index");
+                      // print("INDEX: $index");
                       return AppointmentDetailsScreen(
                           appointmentBloc: appointmentBloc,
                           appointment: currentAppointment,
