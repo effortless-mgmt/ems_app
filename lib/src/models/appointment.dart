@@ -1,4 +1,5 @@
 import 'package:duration/duration.dart';
+import 'package:ems_app/src/util/user.dart';
 import 'package:intl/intl.dart';
 
 class Appointment {
@@ -9,7 +10,8 @@ class Appointment {
       this._start,
       this._stop,
       this._pause,
-      this._hourlyWage]);
+      this._hourlyWage,
+      this._owner]);
 
   /* Maybe ID could come in handy? */
 
@@ -18,6 +20,7 @@ class Appointment {
   String _department;
   String _address;
   String _description;
+  User _owner;
   num _hourlyWage;
 
   //Should only be used until we can access API. Will only fetch unapproved appointmens for registration anyway.
@@ -35,6 +38,7 @@ class Appointment {
   String get department => _department;
   String get address => _address;
   String get description => _description;
+  User get owner => _owner;
   num get hourlyWage => _hourlyWage;
 
   String get durationFormatted =>
@@ -52,6 +56,7 @@ class Appointment {
   set hourlyWage(wage) => _hourlyWage = wage;
   set department(dep) => _department = dep;
   set address(add) => _address = add;
+  set owner(user) => _owner = user;
 
   void record(DateTime start, DateTime stop, Duration pause, bool isApproved) {
     _start = start;
@@ -68,72 +73,72 @@ class Appointment {
         "Mimersvej 1, 4600 Køge",
         "Netto Køl",
         mockDescription,
-        new DateTime(2018, 10, 29, 07, 30),
-        new DateTime(2018, 10, 29, 15, 30),
+        new DateTime(2018, 12, 29, 07, 30),
+        new DateTime(2018, 12, 29, 15, 30),
         new Duration(minutes: 30),
         124.38),
     new Appointment(
         "Lærkevej 37, 2670 Greve",
         "L'oréal CPD",
         mockDescription,
-        new DateTime(2018, 10, 30, 09, 00),
-        new DateTime(2018, 10, 30, 19, 00),
+        new DateTime(2018, 12, 30, 09, 00),
+        new DateTime(2018, 12, 30, 19, 00),
         new Duration(minutes: 30),
         144.17),
     new Appointment(
         "Lergravsvej 21, 2670 Greve",
         "H&M Incoming",
         mockDescription,
-        new DateTime(2018, 11, 03, 04, 30),
-        new DateTime(2018, 11, 03, 13, 00),
+        new DateTime(2019, 01, 03, 04, 30),
+        new DateTime(2019, 01, 03, 13, 00),
         new Duration(minutes: 30),
         138.38),
     new Appointment(
         "Mimersvej 1, 4600 Køge",
         "Netto Kolonial",
         mockDescription,
-        new DateTime(2018, 11, 04, 07, 00),
-        new DateTime(2018, 11, 04, 15, 00),
+        new DateTime(2019, 01, 18, 07, 00),
+        new DateTime(2019, 01, 18, 15, 00),
         new Duration(minutes: 30),
         124.38),
     new Appointment(
         "Sommervej 10, 4100 Sorø",
         "Nilfisk Truck",
         mockDescription,
-        new DateTime(2018, 11, 06, 06, 00),
-        new DateTime(2018, 11, 06, 22, 00),
+        new DateTime(2019, 01, 20, 06, 00),
+        new DateTime(2019, 01, 20, 22, 00),
         new Duration(minutes: 30),
         141.38),
     new Appointment(
         "Sommervej 10, 4100 Sorø",
         "Nilfisk Truck",
         mockDescription,
-        new DateTime(2018, 11, 07, 06, 00),
-        new DateTime(2018, 11, 07, 14, 00),
+        new DateTime(2019, 01, 21, 06, 00),
+        new DateTime(2019, 01, 21, 14, 00),
         new Duration(minutes: 30),
         141.38),
     new Appointment(
         "Venstrupvej 109B, 7100 Fredericia",
         "Fiskars Gaveudpakning",
         mockDescription,
-        new DateTime(2018, 11, 10, 08, 00),
-        new DateTime(2018, 11, 10, 16, 00),
+        new DateTime(2019, 01, 24, 08, 00),
+        new DateTime(2019, 11, 24, 16, 00),
         new Duration(minutes: 30),
         178.66),
     new Appointment(
         "Venstrupvej 109B, 7100 Fredericia",
         "Fiskars Gaveudpakning",
         mockDescription,
-        new DateTime(2018, 11, 11, 08, 00),
-        new DateTime(2018, 11, 11, 16, 00),
+        new DateTime(2019, 01, 25, 08, 00),
+        new DateTime(2019, 01, 25, 16, 00),
         new Duration(minutes: 30),
         178.66),
     new Appointment(
         "Mimersvej 1, 4600 Køge",
         "Netto Kolonial Nat",
         mockDescription,
-        new DateTime(2018, 11, 11, 23, 00),
-        new DateTime(2018, 11, 11, 07, 00),
+        new DateTime(2019, 01, 28, 23, 00),
+        new DateTime(2019, 01, 28, 07, 00),
         new Duration(minutes: 30),
         124.38),
   ];

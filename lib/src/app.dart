@@ -45,17 +45,27 @@ class AppState extends State<App> {
   //             Colors.white), //Used for text on [RaisedButton] and [FlatButton].
   //   ),
   // );
+  // final _androidTheme = ThemeData(
+  //     // brightness: Brightness.dark,
+  //     // primaryColorLight:
+  //     //     Colors.blue[200], //A lighter version of the primaryColor.
+  //     // primaryColor: Colors.blue[
+  //     //     500], // The background color for major parts of the app (toolbars, tab bars, etc)
+  //     // primaryColorDark: Colors.blue[700],
+  //     accentColor: Colors.blue[700],
+  //     // primaryColor: Colors.orange[300],
+  //     // accentColor: Colors.deepOrangeAccent[700],
+  //     textTheme: TextTheme(
+  //       overline: TextStyle(color: Colors.blue[500]),
+  //     ));
+
   final _androidTheme = ThemeData(
-      brightness: Brightness.dark,
-      // primaryColorLight:
-      //     Colors.blue[200], //A lighter version of the primaryColor.
-      // primaryColor: Colors.blue[
-      //     500], // The background color for major parts of the app (toolbars, tab bars, etc)
-      // primaryColorDark: Colors.blue[700],
-      accentColor: Colors.blue[700],
-      textTheme: TextTheme(
-        overline: TextStyle(color: Colors.blue[500]),
-      ));
+      primaryTextTheme: TextTheme(button: TextStyle(color: Colors.white)),
+      primaryColor: Color.fromRGBO(50, 98, 105, 1),
+      accentColor: Color.fromRGBO(115, 188, 165, 1),
+      iconTheme: IconThemeData(color: Color.fromRGBO(62, 14, 92, 1)),
+      accentIconTheme: IconThemeData(color: Color.fromRGBO(197, 210, 219, 1)),
+      primaryIconTheme: IconThemeData(color: Color.fromRGBO(105, 57, 150, 1)));
 
   @override
   void initState() {

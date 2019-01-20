@@ -121,7 +121,7 @@ class LoginFormState extends State<LoginForm> {
             Scaffold.of(context).showSnackBar(
               SnackBar(
                 content: Text('${loginState.error}'),
-                backgroundColor: Colors.red,
+                backgroundColor: Theme.of(context).errorColor,
               ),
             );
           });
@@ -137,7 +137,10 @@ class LoginFormState extends State<LoginForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          ListTile(title: Text("Sign In"), trailing: Icon(Icons.verified_user)),
+          ListTile(
+              title: Text("Sign In"),
+              trailing: Icon(Icons.verified_user,
+                  color: Theme.of(context).iconTheme.color)),
           FormElement(child: _emailField()),
           FormElement(child: _passwordField()),
           ButtonTheme.bar(
@@ -187,10 +190,10 @@ class LoginFormState extends State<LoginForm> {
   }
 
   Widget _loginButton(LoginState loginState) {
-    return RaisedButton(
+    return FlatButton(
       child: Text(
         "Login",
-        style: Theme.of(context).textTheme.button,
+        style: TextStyle(color: Theme.of(context).primaryColor),
       ),
       onPressed: loginState is! LoginLoading ? _onLoginButtonPressed : null,
     );
