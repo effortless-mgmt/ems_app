@@ -54,7 +54,6 @@ class _OverviewScreenState extends State<OverviewScreen> {
             _availableAppointments = appointmentState.availableAppointments;
             _upcomingAppointments = appointmentState.upcomingAppointments;
           }
-
           return Scaffold(
               key: scaffoldKey,
               appBar: AppBar(title: Text("Overview")),
@@ -77,7 +76,6 @@ class _OverviewScreenState extends State<OverviewScreen> {
     return Hero(
       tag: upcoming ? "seeAllUpcoming" : "seeAllAvailable",
       child: Card(
-        // margin: null,
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Stack(
           children: <Widget>[
@@ -89,7 +87,10 @@ class _OverviewScreenState extends State<OverviewScreen> {
                     appointmentBloc: _appointmentBloc,
                     upcoming: upcoming,
                     scaffoldKey: scaffoldKey,
-                    showAll: false),
+                    showAll: false,
+                    appointments: upcoming
+                        ? _upcomingAppointments
+                        : _availableAppointments),
                 activateShowAll
                     ? ShowAllButton(
                         tapped: tapped,
@@ -102,8 +103,11 @@ class _OverviewScreenState extends State<OverviewScreen> {
                           Navigator.push(
                             context,
                             SlowMaterialPageRoute(
-                              builder: (context) =>
-                                  AllShiftsScreen(upcoming: upcoming),
+                              builder: (context) => AllShiftsScreen(
+                                  upcoming: upcoming,
+                                  appointments: upcoming
+                                      ? _upcomingAppointments
+                                      : _availableAppointments),
                               fullscreenDialog: false,
                             ),
                           ).then((value) {

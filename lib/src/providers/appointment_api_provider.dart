@@ -16,7 +16,7 @@ class AppointmentApiProvider {
         headers: {"Authorization": "Bearer $token"});
     if (response.statusCode == 200) {
       final dynamic responsejson = json.decode(response.body);
-      debugPrint('getAppointments { appointments: $responsejson }');
+      // debugPrint('getAppointments { appointments: $responsejson }');
       return _createAppointmentList(responsejson);
     } else {
       throw Exception('Failed to load post');
@@ -30,7 +30,7 @@ class AppointmentApiProvider {
         headers: {"Authorization": "Bearer $token"});
     if (response.statusCode == 200) {
       final dynamic responsejson = json.decode(response.body);
-      debugPrint('getAppointmentById { appointment: $responsejson, id: $id }');
+      // debugPrint('getAppointmentById { appointment: $responsejson, id: $id }');
       return responsejson;
     } else {
       throw Exception('Failed to load post');
@@ -43,8 +43,8 @@ class AppointmentApiProvider {
         headers: {"Authorization": "Bearer $token"});
     if (response.statusCode == 200) {
       final dynamic responsejson = json.decode(response.body);
-      debugPrint(
-          'getAppointmentsAvailable { available appointments: $responsejson }');
+      // debugPrint(
+      //     'getAppointmentsAvailable { available appointments: $responsejson }');
       return _createAppointmentList(responsejson);
     } else {
       throw Exception('Failed to load post');
@@ -58,8 +58,8 @@ class AppointmentApiProvider {
         headers: {"Authorization": "Bearer $token"});
     if (response.statusCode == 200) {
       final dynamic responsejson = json.decode(response.body);
-      debugPrint(
-          'getAppointmentsUnapproved { unapproved appointments: $responsejson }');
+      // debugPrint(
+      //     'getAppointmentsUnapproved { unapproved appointments: $responsejson }');
       return _createAppointmentList(responsejson);
     } else {
       throw Exception('Failed to load post');
@@ -72,8 +72,8 @@ class AppointmentApiProvider {
         headers: {"Authorization": "Bearer $token"});
     if (response.statusCode == 200) {
       final dynamic responsejson = json.decode(response.body);
-      debugPrint(
-          'getAppointmentsUpcoming { upcoming appointments: $responsejson }');
+      // debugPrint(
+          // 'getAppointmentsUpcoming { upcoming appointments: $responsejson }');
       return _createAppointmentList(responsejson);
     } else {
       throw Exception('Failed to load post');
@@ -86,8 +86,8 @@ class AppointmentApiProvider {
         headers: {"Authorization": "Bearer $token"});
     if (response.statusCode == 200) {
       final List<dynamic> responsejson = json.decode(response.body);
-      debugPrint(
-          'getAppointmentUpcomingNext { upcoming appointment: $responsejson }');
+      // debugPrint(
+      //     'getAppointmentUpcomingNext { upcoming appointment: $responsejson }');
       return Appointment.fromJson(responsejson.first);
     } else {
       throw Exception('Failed to load post');
@@ -110,7 +110,7 @@ class AppointmentApiProvider {
     if (response.statusCode == 200) {
       final dynamic responsejson = json.decode(response.body);
       debugPrint(
-          'putAppointment { modified appointment: $responsejson, id: $id }');
+          'putAppointment { id: $id }');
       return Appointment.fromJson(responsejson);
     } else {
       throw Exception('Failed to load post');
@@ -126,7 +126,7 @@ class AppointmentApiProvider {
     if (response.statusCode == 200) {
       final dynamic responsejson = json.decode(response.body);
       debugPrint(
-          'putAppointmentApproved { approved appointment: $responsejson, id: $id }');
+          'putAppointmentApproved { id: $id }');
       return Appointment.fromJson(responsejson);
     } else {
       throw Exception('Failed to load post');
@@ -142,7 +142,7 @@ class AppointmentApiProvider {
     if (response.statusCode == 200) {
       final dynamic responsejson = json.decode(response.body);
       debugPrint(
-          'claimAppointmentAvailable { claimed appointment: $responsejson, id: $id }');
+          'claimAppointmentAvailable { id: $id }');
       return Appointment.fromJson(responsejson);
     } else {
       throw Exception('Failed to load post');

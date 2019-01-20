@@ -21,7 +21,7 @@ class AvailableAppointmentList extends AppointmentState {
 
   @override
   String toString() =>
-      'Available appointments updated { appointments: $appointments }';
+      'Available appointments updated { appointments: ${appointments.length} }';
 }
 
 class UnapprovedAppointmentList extends AppointmentState {
@@ -32,7 +32,7 @@ class UnapprovedAppointmentList extends AppointmentState {
 
   @override
   String toString() =>
-      'Unapproved appointments updated { appointments: $appointments }';
+      'Unapproved appointments updated { appointments: ${appointments.length} }';
 }
 
 class UpcomingAppointmentList extends AppointmentState {
@@ -43,7 +43,7 @@ class UpcomingAppointmentList extends AppointmentState {
 
   @override
   String toString() =>
-      'Upcoming appointments updated { appointments: $appointments }';
+      'Upcoming appointments updated { appointments: ${appointments.length} }';
 }
 
 class AllAppointmentList extends AppointmentState {
@@ -53,7 +53,7 @@ class AllAppointmentList extends AppointmentState {
 
   @override
   String toString() =>
-      'All appointments updated { appointments: $appointments }';
+      'All appointments updated { appointments: ${appointments.length} }';
 }
 
 class UpcomingAppointmentItem extends AppointmentState {
@@ -76,10 +76,15 @@ class UpcomingAndAvailableAppointmentList extends AppointmentState {
 
   @override
   String toString() =>
-      'Upcoming and available appointments { upcomingAppointments: $upcomingAppointments, availableAppointments: $availableAppointments }';
+      'Upcoming and available appointments { upcomingAppointments: ${upcomingAppointments.length}, availableAppointments: ${availableAppointments.length} }';
 }
 
 class AppointmentsLoaded extends AppointmentState {
   @override
   String toString() => 'loaded appointments';
+}
+
+class AppointmentClaimed extends AppointmentState {
+  @override
+  String toString() => 'claimed an appointment';
 }

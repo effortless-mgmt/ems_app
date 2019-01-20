@@ -16,14 +16,7 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
       : assert(appointmentApiProvider != null);
 
   @override
-  // TODO: implement initialState
   AppointmentState get initialState => AppointmentInitial();
-
-  @override
-  Stream<AppointmentEvent> transform(Stream<AppointmentEvent> events) {
-    // TODO: implement transform
-    return super.transform(events);
-  }
 
   @override
   Stream<AppointmentState> mapEventToState(
@@ -74,5 +67,13 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
       // yield AppointmentsLoaded();
       yield UpcomingAppointmentItem(appointment: appointment);
     }
+
+    if (event is ClaimAppointment) {
+      String token = await authApiProvider.readToken();
+      await appointmentApiProvider.claimAppointmentAvailable(token: token, id: event.id);
+      yield AppointmentClaimed();
+      this.dispatch(LoadUpcomingAndAvailableAppointments());
+    }
+
   }
 }
