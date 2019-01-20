@@ -1,5 +1,5 @@
-class User {
-  User(
+class UserDEMO {
+  UserDEMO(
       {this.firstName,
       this.lastName,
       this.title,
@@ -16,8 +16,8 @@ class User {
   final String imgURL;
   final int phoneNumber;
 
-  factory User.fromJson(Map<dynamic, dynamic> json) {
-    return User(
+  factory UserDEMO.fromJson(Map<dynamic, dynamic> json) {
+    return UserDEMO(
         firstName: json["firstName"],
         lastName: json["lastName"],
         title: json["title"],
@@ -28,7 +28,7 @@ class User {
   }
 }
 
-final sampleUser1 = new User(
+final sampleUser1 = new UserDEMO(
     firstName: "Lee",
     lastName: "Wang",
     title: "Supervisor",
@@ -36,7 +36,7 @@ final sampleUser1 = new User(
     description: "Does the Raughing",
     imgURL: "https://i.imgur.com/pQFvMMU.jpg",
     phoneNumber: 11111111);
-final sampleUser2 = new User(
+final sampleUser2 = new UserDEMO(
     firstName: "Ötzi",
     lastName: "Thall",
     title: "Supervisor",
@@ -44,7 +44,7 @@ final sampleUser2 = new User(
     description: "Knows his 0001-01-000-110-10-01",
     imgURL: "https://i.imgur.com/pNpQRtB.jpg",
     phoneNumber: 22222222);
-final sampleUser3 = new User(
+final sampleUser3 = new UserDEMO(
     firstName: "Bat",
     lastName: "Man",
     title: "Warehouse Manager",
@@ -52,7 +52,7 @@ final sampleUser3 = new User(
     description: "Fights crime and stuff",
     imgURL: "https://i.imgur.com/0sLF0e4.jpg",
     phoneNumber: 33333333);
-final sampleUser4 = new User(
+final sampleUser4 = new UserDEMO(
     firstName: "Arse",
     lastName: "Biscuité",
     title: "Secretary",

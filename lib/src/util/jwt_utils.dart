@@ -22,10 +22,10 @@ class JwtUtils {
     String payload = token.split('.')[1];
     // We use JWS tokens in the backend, these do not adhere to the 'length is a multiple of 4'-rule of base64.
     final int missingChars = payload.length % 4;
-    debugPrint('missingchars: $missingChars');
+    debugPrint('decodePayload { missingchars: $missingChars }');
     if (missingChars != 0) {
       payload = payload.padRight(payload.length + (4 - missingChars), '=');
-      debugPrint('payload: $payload');
+      // debugPrint('payload: $payload');
     }
     final String decodedPayload = Utf8Decoder().convert(base64Decode(payload));
     return JsonDecoder().convert(decodedPayload);
@@ -34,7 +34,7 @@ class JwtUtils {
   bool validate(String token) {
     final Map<dynamic, dynamic> json = decodePayload(token);
     debugPrint(
-        'exp: ${(json['exp'] * 1000)}, current epoch: ${DateTime.now().millisecondsSinceEpoch}');
+        'validate { exp(ms): ${(json['exp'] * 1000)}, current epoch(ms): ${DateTime.now().millisecondsSinceEpoch} }');
     // TODO: write a method to detect whether or not epoch is in milliseconds.
     if ((json['exp'] * 1000) > DateTime.now().millisecondsSinceEpoch) {
       return true;

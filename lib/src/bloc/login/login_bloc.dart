@@ -26,13 +26,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginLoading();
 
       try {
-        final token = await authApiProvider.authenticate(
+        final Map<dynamic, dynamic> authjson =
+            await authApiProvider.authenticate(
           username: event.username,
           password: event.password,
         );
 
         // change authentication state to authenticated.
-        authenticationBloc.dispatch(Login(token: token));
+        authenticationBloc.dispatch(Login(authjson: authjson));
         yield LoginInitial();
       } catch (error) {
         yield LoginFailure(error: error.toString());

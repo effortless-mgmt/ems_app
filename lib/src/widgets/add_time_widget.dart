@@ -1,7 +1,7 @@
+import 'package:ems_app/src/models/appointment.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/util/date_utils.dart';
 
 class AddTimeWidget extends StatefulWidget {
@@ -9,9 +9,9 @@ class AddTimeWidget extends StatefulWidget {
   final ValueChanged<Appointment> changeStartTime;
   final ValueChanged<Appointment> changeStopTime;
   final ValueChanged<Appointment> changePauseTime;
+  final Appointment appointment;
   final ValueChanged<bool> onExpansionChanged;
   final bool expanded;
-  final Appointment appointment;
   // final Color color;
 
   AddTimeWidget({

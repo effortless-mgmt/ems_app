@@ -1,5 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:ems_app/src/bloc/appointment/appointment.dart';
+import 'package:ems_app/src/bloc/appointment/appointment_bloc.dart';
 import 'package:ems_app/src/models/appointment.dart';
+import 'package:flutter/material.dart';
+
 import 'package:ems_app/src/screens/appointment_details/appBarDescriptive.dart';
 import 'package:ems_app/src/screens/appointment_details/maps_widget.dart';
 
@@ -8,12 +11,14 @@ class AppointmentDetailsScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
   final bool upcoming;
   final int index;
+  final AppointmentBloc appointmentBloc;
 
   AppointmentDetailsScreen(
       {@required this.appointment,
       this.scaffoldKey,
       @required this.upcoming,
-      @required this.index});
+      @required this.index,
+      @required this.appointmentBloc});
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +33,10 @@ class AppointmentDetailsScreen extends StatelessWidget {
           Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Maps(address: appointment.address),
+                Maps(address: appointment.addressFormatted),
                 Container(
                     padding: const EdgeInsets.only(left: 16.0, top: 10.0),
-                    child: Text("${appointment.address}")),
+                    child: Text("${appointment.addressFormatted}")),
                 Container(
                     padding: const EdgeInsets.all(16),
                     child: Text("Contacts", style: TextStyle(fontSize: 16.0))),
@@ -70,6 +75,8 @@ class AppointmentDetailsScreen extends StatelessWidget {
                                 style:
                                     Theme.of(context).primaryTextTheme.button),
                             onPressed: () {
+                              appointmentBloc.dispatch(
+                                  ClaimAppointment(id: appointment.id));
                               Navigator.of(context).pop();
                               scaffoldKey.currentState.showSnackBar(
                                   new SnackBar(

@@ -1,3 +1,4 @@
+import 'package:ems_app/src/bloc/auth/auth_repo.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
@@ -8,7 +9,6 @@ import 'package:ems_app/src/providers/auth_api_provider.dart';
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final AuthApiProvider authApiProvider;
-  // final UserRepository userRepository;
 
   AuthenticationBloc({@required this.authApiProvider})
       : assert(authApiProvider != null);
@@ -25,11 +25,12 @@ class AuthenticationBloc
     AuthenticationEvent event,
   ) async* {
     if (event is AppStart) {
-      // TODO: check for token in userrepo instead
-      final bool hasToken = await authApiProvider.hasToken();
+      final bool hasToken = await AuthenticationRepository.get().hasToken();
 
       if (hasToken) {
-        yield AuthenticationAuthenticated();
+        yield AuthenticationAuthenticated(
+            token: await AuthenticationRepository.get().readToken(),
+            user: AuthenticationRepository.get().user);
       } else {
         yield AuthenticationUnauthenticated();
       }
@@ -37,15 +38,16 @@ class AuthenticationBloc
 
     if (event is Login) {
       yield AuthenticationLoading();
-      // TODO: put token into persistant storage through the userrepo
-      await authApiProvider.persistToken(event.token);
-      yield AuthenticationAuthenticated();
+      final String token =
+          AuthenticationRepository.get().convertAuthJsonToToken(event.authjson);
+      await AuthenticationRepository.get().persistToken(token);
+      yield AuthenticationAuthenticated(
+          token: token, user: AuthenticationRepository.get().user);
     }
 
     if (event is Logout) {
       yield AuthenticationLoading();
-      //TODO: delete token from persistant storage in userrepo
-      await authApiProvider.deleteToken();
+      await AuthenticationRepository.get().deleteToken();
       yield AuthenticationUnauthenticated();
     }
   }

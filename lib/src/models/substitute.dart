@@ -1,21 +1,21 @@
-import 'package:ems_app/src/models/appointment.dart';
+import 'package:ems_app/src/models/DEMO/appointment.dart';
 
 /// A user with appointments
 class Substitute {
-  List<Appointment> _appointments;
-  List<Appointment> _unregistered = <Appointment>[];
+  List<AppointmentDEMO> _appointments;
+  List<AppointmentDEMO> _unregistered = <AppointmentDEMO>[];
 
   Substitute([this._appointments]);
 
-  List<Appointment> get appointments {
+  List<AppointmentDEMO> get appointments {
     _appointments.sort((a, b) => a.start.compareTo(b.start));
     return _appointments;
   }
 
-  List<Appointment> get unapprovedAppointments {
-    _unregistered = <Appointment>[];
+  List<AppointmentDEMO> get unapprovedAppointments {
+    _unregistered = <AppointmentDEMO>[];
 
-    for (Appointment e in _appointments) {
+    for (AppointmentDEMO e in _appointments) {
       if (!e.approvedByOwner && e.stop.isBefore(DateTime.now())) {
         _unregistered.add(e);
       }

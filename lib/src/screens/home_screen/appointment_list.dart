@@ -1,49 +1,60 @@
+import 'package:ems_app/src/bloc/appointment/appointment.dart';
 import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/screens/appointment_details/appointment_details_screen.dart';
 import 'package:ems_app/src/screens/home_screen/page_routes.dart';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AppointmentList extends StatelessWidget {
   final bool upcoming;
   final bool showAll;
+  final List<Appointment> appointments;
+  final AppointmentBloc appointmentBloc;
+
   final GlobalKey<ScaffoldState> scaffoldKey;
-  final List<Appointment> upcomingShifts = [
-    Appointment.demodata[0],
-    Appointment.demodata[1],
-    Appointment.demodata[2],
-    Appointment.demodata[3],
-  ];
 
-  final List<Appointment> availableShifts = [
-    Appointment.demodata[4],
-    Appointment.demodata[5],
-    Appointment.demodata[6],
-    Appointment.demodata[7]
-  ];
-
-  AppointmentList({this.upcoming, this.scaffoldKey, this.showAll});
+  AppointmentList(
+      {this.upcoming,
+      this.scaffoldKey,
+      this.showAll,
+      this.appointments,
+      this.appointmentBloc});
 
   @override
   Widget build(BuildContext context) {
-    final int count = upcoming ? upcomingShifts.length : availableShifts.length;
-    print("COUNT: $count");
     return showAll
         ? ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: count,
-            itemBuilder: _buildAppointments)
-        : Container(
-            constraints: BoxConstraints(maxHeight: 200.0),
-            child: ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 3,
-                itemBuilder: _buildAppointments));
+            itemCount: appointments.length,
+            itemBuilder: (context, index) {
+              // debugPrint(
+              //     'showall { INDEX: $index, itemCount: ${appointments.length} }');
+              return _buildAppointments(context, index);
+            })
+        : appointments.isEmpty
+            ? upcoming
+                ? ListTile(
+                    title: Text(
+                        "You have no upcoming appointments at the moment."))
+                : ListTile(
+                    title: Text(
+                        "There are no available appointments at the moment."))
+            : Container(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount:
+                        appointments.length > 3 ? 3 : appointments.length,
+                    itemBuilder: (context, index) {
+                      // debugPrint(
+                      //     'show fewer { INDEX: $index, itemCount: ${appointments.length} }');
+                      return _buildAppointments(context, index);
+                    }));
   }
 
   Widget _buildAppointments(BuildContext context, int index) {
-    var currentAppointment =
-        upcoming ? upcomingShifts[index] : availableShifts[index];
+    var currentAppointment = appointments[index];
+    // debugPrint('current Appointment: $currentAppointment');
     return Hero(
       tag: upcoming ? "seeUpcoming$index" : "seeAvailable$index",
       child: Stack(
@@ -57,8 +68,9 @@ class AppointmentList extends StatelessWidget {
                   context,
                   SlowMaterialPageRoute(
                     builder: (context) {
-                      print("INDEX: $index");
+                      // print("INDEX: $index");
                       return AppointmentDetailsScreen(
+                          appointmentBloc: appointmentBloc,
                           appointment: currentAppointment,
                           upcoming: upcoming,
                           index: index,

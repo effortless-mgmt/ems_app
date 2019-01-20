@@ -44,7 +44,7 @@ class SliverAppBarDescriptive extends SliverAppBar {
                       children: <Widget>[
                         Container(
                           padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Text("${appointment.hourlyWage} kr. / h",
+                          child: Text("${appointment.salary} kr. / h",
                               style: titleTextStyle),
                         ),
                       ],
@@ -99,7 +99,7 @@ class AppBarDescriptive extends AppBar {
                     children: <Widget>[
                       Container(
                         padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text("${appointment.hourlyWage} kr. / h",
+                        child: Text("${appointment.salary} kr. / h",
                             style: titleTextStyle),
                       ),
                     ],

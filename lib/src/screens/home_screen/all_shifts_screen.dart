@@ -1,10 +1,12 @@
+import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/screens/home_screen/appointment_list.dart';
 import 'package:flutter/material.dart';
 
 class AllShiftsScreen extends StatefulWidget {
   final bool upcoming;
+  final List<Appointment> appointments;
 
-  AllShiftsScreen({this.upcoming});
+  AllShiftsScreen({this.upcoming, this.appointments});
   @override
   State<StatefulWidget> createState() => _AllShiftsScreenState();
 }
@@ -34,8 +36,11 @@ class _AllShiftsScreenState extends State<AllShiftsScreen> {
                   ? Text("Upcoming Appointments")
                   : Text("Available Appointments")),
           body: buildComplete
-              ? new AppointmentList(
-                  upcoming: upcoming, showAll: true, scaffoldKey: scaffoldKey)
+              ? AppointmentList(
+                  upcoming: upcoming,
+                  showAll: true,
+                  scaffoldKey: scaffoldKey,
+                  appointments: widget.appointments)
               : Container(),
         ));
   }

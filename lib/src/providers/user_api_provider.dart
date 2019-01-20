@@ -1,28 +1,32 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
-
-import 'package:ems_app/src/util/user_list.dart';
+import 'package:ems_app/src/models/user.dart';
+import 'package:http/http.dart' show Client;
+import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
 
 class UserApiProvider {
-  final String api_url = "bluh";
-  final String api_key = "bleh";
-  UserList _currentUserList;
+  final Client _client = Client();
+  final String _baseUrl = "https://api.effortless.dk";
+  final String _endpoint = "/api/user";
 
-  Future<UserList> fetchUserList(String token) async {
-    print("Fetching List of Users. Token used: $token");
-    final response = await http.get("not a website yet/$token");
-
+  Future<User> getUser({
+    @required String token,
+    @required String name,
+  }) async {
+    final response = await _client.get("$_baseUrl$_endpoint/$name",
+        headers: {"Authorization": "Bearer $token"});
     if (response.statusCode == 200) {
-      UserList userList = UserList.fromJson(json.decode(response.body));
-      _currentUserList = userList;
-      return userList;
-    } else if (response.statusCode == 430) {
-      // TODO: de-auth user and request resubmit of user credentials
+      // If the call to the server was successful, parse the JSON.
+      Map<dynamic, dynamic> responsejson = json.decode(response.body);
+      final String userstring = responsejson.toString();
+      debugPrint(userstring);
+      User user = User.fromJson(responsejson);
+      debugPrint(user.toString());
+      return user;
     } else {
-      throw TimeoutException("Failed to load contact");
+      // If that call was not successful, throw an error.
+      throw Exception('Failed to load post');
     }
   }
-
-  UserList get current => _currentUserList;
 }
