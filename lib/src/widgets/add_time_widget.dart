@@ -59,7 +59,7 @@ class _AddTimeWidgetState extends State<AddTimeWidget> {
       initiallyExpanded: _expanded,
       leading: DateIcon(
           date: widget.appointment.start,
-          color: _expanded ? theme.accentColor : iconTheme.color),
+          color: _expanded ? theme.primaryIconTheme.color : iconTheme.color),
       // title: ListTile(
       //     title: Text("${widget.appointment.department}",
       //         style: TextStyle(
@@ -81,8 +81,9 @@ class _AddTimeWidgetState extends State<AddTimeWidget> {
         children: <Widget>[
           Text("${widget.appointment.department}",
               style: TextStyle(
-                  color:
-                      _expanded ? theme.accentColor : textTheme.subhead.color,
+                  color: _expanded
+                      ? theme.primaryIconTheme.color
+                      : textTheme.subhead.color,
                   fontSize: textTheme.subhead.fontSize)),
           _expanded
               ? Container(height: 0.0)
@@ -98,29 +99,34 @@ class _AddTimeWidgetState extends State<AddTimeWidget> {
       children: <Widget>[
         ListTile(
           // leading: Container(width: 56),
-          leading: Container(child: Icon(Icons.access_time)),
+          leading: Container(
+              child: Icon(Icons.access_time, color: theme.iconTheme.color)),
           title: Text("Start"),
           trailing: Text(widget.appointment.startTimeFormatted),
           onTap: () => widget.changeStartTime(widget.appointment),
         ),
         ListTile(
           // leading: Container(width: 56),
-          leading: Container(child: Icon(Icons.access_time)),
+          leading: Container(
+              child: Icon(Icons.access_time, color: theme.iconTheme.color)),
           title: Text("Stop"),
           trailing: Text(widget.appointment.stopTimeFormatted),
           onTap: () => widget.changeStopTime(widget.appointment),
         ),
         ListTile(
           // leading: Container(width: 56),
-          leading: Container(child: Icon(Icons.access_time)),
+          leading: Container(
+              child: Icon(Icons.access_time, color: theme.iconTheme.color)),
           title: Text("Pause"),
           trailing: Text(widget.appointment.pauseTimeFormatted),
           onTap: () => widget.changePauseTime(widget.appointment),
         ),
         ButtonBar(
           children: <Widget>[
-            OutlineButton(
-              child: Text("Accept"),
+            RaisedButton(
+              color: Theme.of(context).primaryColor,
+              child: Text("Accept",
+                  style: Theme.of(context).primaryTextTheme.button),
               onPressed: () => widget.onAccepted(widget.appointment),
             )
           ],

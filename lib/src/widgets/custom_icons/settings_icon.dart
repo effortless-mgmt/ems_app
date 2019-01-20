@@ -6,7 +6,8 @@ class SettingsIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.settings),
+      icon:
+          Icon(Icons.settings, color: Theme.of(context).accentIconTheme.color),
       onPressed: () {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => SettingsScreen()));

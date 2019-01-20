@@ -30,33 +30,38 @@ class ProfileScreen extends StatelessWidget {
               Card(
                 child: Column(
                   children: <Widget>[
-                    const ListTile(
+                    ListTile(
                       //trailing: Text('data'),
-                      leading: Icon(Icons.portrait),
+                      leading: Icon(Icons.portrait,
+                          color: Theme.of(context).primaryIconTheme.color),
                       title: Text('Kim Jong Un'),
                       subtitle: Text('Name'),
                     ),
                     Divider(),
                     ListTile(
-                      leading: Icon(Icons.map),
+                      leading: Icon(Icons.map,
+                          color: Theme.of(context).primaryIconTheme.color),
                       title: Text('조선민주주의인민공화국'),
                       subtitle: Text('Address'),
                     ),
                     Divider(),
                     ListTile(
-                      leading: Icon(Icons.phone),
+                      leading: Icon(Icons.phone,
+                          color: Theme.of(context).primaryIconTheme.color),
                       title: Text('+850 2 18111'),
                       subtitle: Text('Phone'),
                     ),
                     Divider(),
                     ListTile(
-                      leading: Icon(Icons.email),
+                      leading: Icon(Icons.email,
+                          color: Theme.of(context).primaryIconTheme.color),
                       title: Text('김정은@김.은'),
                       subtitle: Text('Email'),
                     ),
                     Divider(),
                     ListTile(
-                      leading: Icon(Icons.local_atm),
+                      leading: Icon(Icons.local_atm,
+                          color: Theme.of(context).primaryIconTheme.color),
                       title: Text('None'),
                       subtitle: Text('Tax Card'),
                     )

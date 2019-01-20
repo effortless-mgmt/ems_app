@@ -29,6 +29,7 @@ class _AllShiftsScreenState extends State<AllShiftsScreen> {
         child: Scaffold(
           key: scaffoldKey,
           appBar: AppBar(
+              iconTheme: Theme.of(context).accentIconTheme,
               title: upcoming
                   ? Text("Upcoming Appointments")
                   : Text("Available Appointments")),

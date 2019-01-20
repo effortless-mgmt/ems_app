@@ -33,21 +33,23 @@ class SettingsScreenState extends State<SettingsScreen> {
     final SettingsState settingsState =
         SettingsState(startOfWeek: startOfWeek, showWeekNumber: showWeekNumber);
     debugPrint('initial settingsState created: $settingsState');
-    _settingsBloc = SettingsBloc(settingsState: settingsState, prefProvider: _preferences);
+    _settingsBloc =
+        SettingsBloc(settingsState: settingsState, prefProvider: _preferences);
     debugPrint('finished loading settings from storage');
   }
 
   @override
-    void dispose() {
-      debugPrint('Settings BLoC disposed :(');
-      _settingsBloc.dispose();
-      super.dispose();
-    }
+  void dispose() {
+    debugPrint('Settings BLoC disposed :(');
+    _settingsBloc.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: Theme.of(context).accentIconTheme,
         title: Text('Settings'),
       ),
       body: SingleChildScrollView(
@@ -105,7 +107,8 @@ class SettingsScreenState extends State<SettingsScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => CalendarSettingScreen(settingsBloc: _settingsBloc)),
+                      builder: (context) =>
+                          CalendarSettingScreen(settingsBloc: _settingsBloc)),
                 );
               },
             ),
@@ -195,7 +198,9 @@ class SettingsScreenState extends State<SettingsScreen> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Are you sure?"),
+          title: new Text(
+            "Are you sure?",
+          ),
           content: new Text(
               "This will erase all data from this device and take you back to the login screen"),
           actions: <Widget>[
@@ -213,9 +218,10 @@ class SettingsScreenState extends State<SettingsScreen> {
               },
             ),
             new RaisedButton(
+              color: Theme.of(context).primaryColor,
               child: new Text(
                 "CANCEL",
-                style: Theme.of(context).textTheme.button,
+                style: Theme.of(context).primaryTextTheme.button,
               ),
               onPressed: () {
                 Navigator.of(context).pop();
