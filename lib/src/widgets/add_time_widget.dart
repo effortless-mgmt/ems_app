@@ -123,9 +123,10 @@ class _AddTimeWidgetState extends State<AddTimeWidget> {
         ),
         ButtonBar(
           children: <Widget>[
-            OutlineButton(
+            RaisedButton(
+              color: Theme.of(context).primaryColor,
               child: Text("Accept",
-                  style: TextStyle(color: Theme.of(context).primaryColor)),
+                  style: Theme.of(context).primaryTextTheme.button),
               onPressed: () => widget.onAccepted(widget.appointment),
             )
           ],

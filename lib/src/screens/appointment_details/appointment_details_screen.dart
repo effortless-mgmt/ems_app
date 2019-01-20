@@ -64,8 +64,11 @@ class AppointmentDetailsScreen extends StatelessWidget {
                                 ),
                               );
                             }),
-                        OutlineButton(
-                            child: Text("Accept"),
+                        RaisedButton(
+                            color: Theme.of(context).primaryColor,
+                            child: Text("Accept",
+                                style:
+                                    Theme.of(context).primaryTextTheme.button),
                             onPressed: () {
                               Navigator.of(context).pop();
                               scaffoldKey.currentState.showSnackBar(
