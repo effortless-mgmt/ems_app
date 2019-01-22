@@ -1,6 +1,5 @@
 import 'package:ems_app/src/bloc/appointment/appointment_repo.dart';
 import 'package:ems_app/src/bloc/auth/auth_repo.dart';
-import 'package:ems_app/src/models/user.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 

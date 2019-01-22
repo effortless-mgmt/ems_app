@@ -1,4 +1,3 @@
-import 'package:ems_app/src/models/DEMO/appointment.dart';
 import 'package:ems_app/src/screens/appointment_details/next_appointment_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';

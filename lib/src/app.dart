@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'providers/auth_api_provider.dart';
-import 'bloc/auth/auth.dart';
-import 'bloc/nav/navbar.dart';
-
-import 'screens/overview_screen.dart';
-import 'screens/splash_screen.dart';
-import 'screens/login_screen.dart';
-import 'widgets/loading_indicator.dart';
-import 'widgets/custom_nav_bar.dart';
+import 'package:ems_app/src/providers/auth_api_provider.dart';
+import 'package:ems_app/src/bloc/auth/auth.dart';
+import 'package:ems_app/src/bloc/nav/navbar.dart';
+import 'package:ems_app/src/screens/overview_screen.dart';
+import 'package:ems_app/src/screens/splash_screen.dart';
+import 'package:ems_app/src/screens/login_screen.dart';
+import 'package:ems_app/src/widgets/loading_indicator.dart';
+import 'package:ems_app/src/widgets/custom_nav_bar.dart';
 
 class App extends StatefulWidget {
   final AuthApiProvider authApiProvider;

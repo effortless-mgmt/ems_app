@@ -1,8 +1,7 @@
-import 'package:ems_app/src/bloc/appointment/appointment.dart';
-import 'package:ems_app/src/bloc/appointment/appointment_bloc.dart';
-import 'package:ems_app/src/models/appointment.dart';
 import 'package:flutter/material.dart';
 
+import 'package:ems_app/src/bloc/appointment/appointment.dart';
+import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/screens/appointment_details/appBarDescriptive.dart';
 import 'package:ems_app/src/screens/appointment_details/maps_widget.dart';
 

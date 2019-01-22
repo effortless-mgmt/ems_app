@@ -4,10 +4,10 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart' show SystemChrome, DeviceOrientation;
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 
-import 'src/app.dart';
+import 'package:ems_app/src/app.dart';
 
 void main() async {
-  bool isInDebugMode = true;
+  bool isInDebugMode = false;
   BlocSupervisor().delegate = SimpleBlocDelegate();
 
   FlutterError.onError = (FlutterErrorDetails details) {

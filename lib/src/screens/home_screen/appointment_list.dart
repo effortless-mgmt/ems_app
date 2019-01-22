@@ -1,10 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 import 'package:ems_app/src/bloc/appointment/appointment.dart';
 import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/screens/appointment_details/appointment_details_screen.dart';
 import 'package:ems_app/src/screens/home_screen/page_routes.dart';
-
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class AppointmentList extends StatelessWidget {
   final bool upcoming;
