@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+
 import 'package:ems_app/src/models/appointment.dart';
 import 'package:ems_app/src/screens/home_screen/appointment_list.dart';
-import 'package:flutter/material.dart';
 
 class AllShiftsScreen extends StatefulWidget {
   final bool upcoming;
