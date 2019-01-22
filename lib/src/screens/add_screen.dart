@@ -130,6 +130,7 @@ class AddScreenState extends State<AddScreen> {
   _acceptAppointment(
       Appointment appointment, int index, Animation<double> animation,
       {bool dismissed}) {
+    final int id = appointment.id;
     final String location = appointment.department;
     final String date = DateUtils.fullDayFormat(appointment.start);
     bool _remove = true;
@@ -175,7 +176,7 @@ class AddScreenState extends State<AddScreen> {
     // send event to server after 3 second, but only if user hasn't clicked undo in the given timeframe.
     _timer = new Timer(const Duration(seconds: 3), () {
       if (_remove) {
-        _appointmentBloc.dispatch(ApproveAppointment(id: appointment.id));
+        _appointmentBloc.dispatch(ApproveAppointment(id: id));
         debugPrint('removed');
       } else {
         debugPrint('cancelled');
